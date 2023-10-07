@@ -1,9 +1,10 @@
 import express from 'express';
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
-import { PORT } from './utils/Constants';
+import { PORT } from './utils/Constants.js';
 // import the pharmacyapi 
-import  { pharmacy }  from './api/pharmacy.js';
+import { pharmacist } from './api/PharmacistAPI.js';
+import { medicine } from './api/MedicineAPI.js';
 
 dotenv.config();
 const app = express();
@@ -15,7 +16,7 @@ const connect = async () => {
 		await mongoose.connect(mongoURL);
 		console.log('Database connected');
 	} catch (err) {
-		console.error('Error connecting to the database:', err); 
+		console.error('Error connecting to the database:', err);
 	}
 };
 
@@ -23,7 +24,8 @@ await connect();
 
 app.use(express.json());
 
-pharmacy(app);
+pharmacist(app);
+medicine(app);
 
 const port = process.env.PORT || PORT;
 
