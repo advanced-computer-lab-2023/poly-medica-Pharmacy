@@ -33,4 +33,18 @@ export const pharmacy = (app) =>{
         }
         
     });
+
+    app.get('/get-all-pharmacist', async(req,res)=>{
+        try{
+            const pharmacists = await service.getAllPharmacist();
+            if(pharmacists){
+                res.status(200).json({pharmacists});
+            }else{
+                res.status(404).json({message:"pharmacists not found"})
+            }
+        }catch(err){
+            res.status(500).json({err : err.message});
+        }
+        
+    });
 }

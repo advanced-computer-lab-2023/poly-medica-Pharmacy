@@ -9,6 +9,11 @@ class PharmacyService{
         const pharmacist = await this.repository.findPharmacist(id);
         return pharmacist;
     }
+
+    async getAllPharmacist(){
+        const pharmacist = await this.repository.findAllPharmacist();
+        return pharmacist;
+    }
 }
 
 export default PharmacyService;
