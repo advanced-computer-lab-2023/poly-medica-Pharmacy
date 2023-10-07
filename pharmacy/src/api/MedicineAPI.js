@@ -5,7 +5,7 @@ import { ERROR_STATUS_CODE, NOT_FOUND_STATUS_CODE, OK_STATUS_CODE } from '../uti
 export const medicine = (app) => {
 	const service = new MedicineService();
 
-	app.get('/get-all-medicines', async (req, res) => {
+	app.get('/medicines', async (req, res) => {
 		try {
 			const medicines = await service.getAllMedicines();
 			if (medicines) {
@@ -18,7 +18,7 @@ export const medicine = (app) => {
 		}
 	});
 
-	app.post('/add-medicine', async (req, res) => {
+	app.post('/medicine', async (req, res) => {
 		try {
 			const { newMedicine } = req.body;
 			const addedMedicine = await service.addMedicine(newMedicine);

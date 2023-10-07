@@ -19,7 +19,7 @@ export const pharmacist = (app) => {
        
 	});
 
-	app.get('/get-pharmacist', async(req,res) => {
+	app.get('/pharmacist', async(req,res) => {
 		const id = req.body.id;
 		//const email = req.body.email;
 		try{
@@ -35,7 +35,7 @@ export const pharmacist = (app) => {
         
 	});
 
-	app.get('/get-all-pharmacists', async(req,res) => {
+	app.get('/pharmacist', async(req,res) => {
 		try{
 			const pharmacists = await service.getAllPharmacists();
 			if(pharmacists){
