@@ -26,10 +26,6 @@ jobs:
         run: npm ci
         working-directory: client
 
-      - name: Build frontend
-        run: npm run build
-        working-directory: client
-
       - name: ESLint check (Frontend)
         run: npm run lint
         working-directory: client
