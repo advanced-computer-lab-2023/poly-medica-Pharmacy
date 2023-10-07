@@ -3,7 +3,7 @@ import mongoose from 'mongoose';
 import dotenv from 'dotenv';
 import { PORT } from './utils/Constants';
 // import the pharmacyapi 
-import  {pharmacy}  from "./api/pharmacy.js";
+import  { pharmacy }  from './api/pharmacy.js';
 
 dotenv.config();
 const app = express();

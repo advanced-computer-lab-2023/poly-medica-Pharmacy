@@ -1,16 +1,16 @@
 import PharmacistModel from '../models/Pharmacist.js';
 
-class PharmacyRepository{
+class PharmacyRepository {
 
-    async findPharmacist(id){
-        const pharmacist = await PharmacistModel.findById(id);
-        return pharmacist;
-    }
+	async findOnePharmacist(id) {
+		const pharmacist = await PharmacistModel.findById(id);
+		return pharmacist;
+	}
 
-    async findPharmacist(){
-        const pharmacists = await PharmacistModel.find();
-        return pharmacists;
-    }
+	async findAllPharmacists() {
+		const pharmacists = await PharmacistModel.find();
+		return pharmacists;
+	}
 }
 
 export default PharmacyRepository;
