@@ -6,14 +6,16 @@ export const pharmacy = (app) =>{
     const service = new PharmacyService();
 
     app.get('/get-all-patients', async (req,res)=>{
-        const getPatientsURL = "http://localhost:8002/get-all-patients"
-        const response = await axios.get(getPatientsURL);
-        const allPatients = response.data;
-        if(allPatients.length > 0){
+        const getPatientsURL = "http://localhost:8002/all-patients"
+        try{
+            const response = await axios.get(getPatientsURL);
+            const allPatients = response.data;
             res.status(200).json(allPatients);
-        }else{
-            res.status(404).json({message:"patients not found"});
+        }catch(err){
+            res.status(500).json({err : err.message});
         }
+        
+       
     });
 
     app.get('/get-pharmacist', async(req,res)=>{

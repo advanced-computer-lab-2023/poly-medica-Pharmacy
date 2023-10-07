@@ -1,7 +1,7 @@
 import express from "express";
 import mongoose from "mongoose";
 import dotenv from 'dotenv';
-import  pharmacy  from "./api/pharmacy.js";
+import  {pharmacy}  from "./api/pharmacy.js";
 
 dotenv.config();
 const app = express();
