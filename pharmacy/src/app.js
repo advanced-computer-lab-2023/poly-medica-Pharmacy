@@ -1,7 +1,7 @@
 import express from "express";
 import mongoose from "mongoose";
 import dotenv from 'dotenv';
-// import the pharmacyapi 
+import  {pharmacy}  from "./api/pharmacy.js";
 
 dotenv.config();
 const app = express();
@@ -22,7 +22,7 @@ await connect();
 
 app.use(express.json());
 
-// call the api class here and pass the app as parm
+pharmacy(app);
 
 const port = process.env.PORT || 8003;
 
