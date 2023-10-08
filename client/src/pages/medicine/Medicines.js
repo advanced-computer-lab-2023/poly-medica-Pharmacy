@@ -7,9 +7,12 @@ import MedicinesList from './MedicinesList';
 import MedicineDetails from './MedicineDetails';
 import AddMedicine from './AddMedicine';
 import EditMedicine from './EditMedicine';
+import { useSearch } from 'contexts/SearchContext';
 
 const Medicines = () => {
 	const [medicines, setMedicines] = useState([]);
+	const [originalMedicines, setOriginalMedicines] = useState([]);
+	const { searchQuery } = useSearch();
 	const [selectedMedicine, setSelectedMedicine] = useState(null);
 	const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
 	const [newMedicine, setNewMedicine] = useState({
@@ -28,11 +31,19 @@ const Medicines = () => {
 		pharmacyAxios.get('/medicines')
 			.then((response) => {
 				setMedicines(response.data.medicines);
+				setOriginalMedicines(response.data.medicines);
 			})
 			.catch(error => {
 				console.log(error);
 			});
 	}, []);
+
+	useEffect(() => {
+		const filteredMedicines = originalMedicines.filter((medicine) =>
+			medicine.name.toLowerCase().includes(searchQuery.toLowerCase())
+		);
+		setMedicines(filteredMedicines);
+	}, [searchQuery, originalMedicines]);
 
 	const handleDialogClose = () => {
 		setSelectedMedicine(null);
