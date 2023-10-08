@@ -1,21 +1,20 @@
 import axios from 'axios';
+import { CLINIC_BASE_URL, PATIENT_BASE_URL, PHARMACY_BASE_URL } from './Constants';
 
 // Define the base URLs for each microservice
-const clinicBaseUrl = 'http://localhost:8001';
-const patientBaseUrl = 'http://localhost:8002';
-const pharmacyBaseUrl = 'http://localhost:8003';
+
 
 export const clinicAxios = axios.create({
-	baseURL: clinicBaseUrl,
+	baseURL: CLINIC_BASE_URL,
 	withCredentials: true,
 });
 
 export const patientAxios = axios.create({
-	baseURL: patientBaseUrl,
+	baseURL: PATIENT_BASE_URL,
 	withCredentials: true,
 });
 
 export const pharmacyAxios = axios.create({
-	baseURL: pharmacyBaseUrl,
+	baseURL: PHARMACY_BASE_URL,
 	withCredentials: true,
 });
