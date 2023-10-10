@@ -1,7 +1,7 @@
 
 import axios from 'axios';
 import PharmacistService from '../service/pharmacist-service.js';
-import { ERROR_STATUS_CODE, NOT_FOUND_STATUS_CODE, OK_STATUS_CODE } from '../utils/Constants.js';
+import { BAD_REQUEST_CODE_400, DUPLICATE_KEY_ERROR_CODE, ERROR_STATUS_CODE, NOT_FOUND_STATUS_CODE, OK_STATUS_CODE, PHARMACIST_ENUM } from '../utils/Constants.js';
 
 export const pharmacist = (app) => {
 	const service = new PharmacistService();
@@ -47,5 +47,19 @@ export const pharmacist = (app) => {
 			res.status(ERROR_STATUS_CODE).json({ err : err.message });
 		}
         
+	});
+
+	app.post('/add-pharmacist-req', async (req, res) =>{
+		try{
+			const pharmacistUser = await service.addReqPharmacist(req);
+			req.body = {userId: pharmacistUser._id, email: pharmacistUser.userData.email, password: pharmacistUser.userData.password, userName: pharmacistUser.userData.userName, type: PHARMACIST_ENUM}
+			res.send(req.body);
+		} catch(err){
+			if(err.code == DUPLICATE_KEY_ERROR_CODE){
+				const duplicateKeyAttrb = Object.keys(err.keyPattern)[0];
+				let keyAttrb = duplicateKeyAttrb.split('.')
+				res.status(BAD_REQUEST_CODE_400).send({errCode:DUPLICATE_KEY_ERROR_CODE ,errMessage:`that ${keyAttrb[keyAttrb.length -1 ]} is already registered`});
+			} else res.status(BAD_REQUEST_CODE_400).send({errMessage: err.message});
+		}
 	});
 };

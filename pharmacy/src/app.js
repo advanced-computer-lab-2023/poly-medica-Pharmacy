@@ -1,15 +1,29 @@
 import express from 'express';
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
-import { PORT } from './utils/Constants.js';
-// import the pharmacyapi 
+import { PORT } from './utils/Constants.js'; 
 import { pharmacist } from './api/PharmacistAPI.js';
 import { medicine } from './api/MedicineAPI.js';
+import morgan from 'morgan';
+import cors from 'cors'
+import cookieParser from 'cookie-parser';
+import bodyParser from 'body-parser';
+import { checkUser } from './middleware/authMiddleware.js';
 
 dotenv.config();
 const app = express();
 
-const mongoURL = process.env.MONGO_URI;
+app.use(morgan('dev'));
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(cookieParser())
+app.use(cors({
+    origin: 'http://localhost:3000',
+    credentials: true,
+}));
+
+
+const mongoURL = process.env.MONGO_URI || "mongodb://localhost:27017";
 
 const connect = async () => {
 	try {
@@ -24,6 +38,7 @@ await connect();
 
 app.use(express.json());
 
+app.use('*', checkUser);
 pharmacist(app);
 medicine(app);
 
