@@ -4,6 +4,7 @@ import dotenv from 'dotenv';
 import { PORT } from './utils/Constants.js'; 
 import { pharmacist } from './api/PharmacistAPI.js';
 import { medicine } from './api/MedicineAPI.js';
+import { AdminAPI } from './api/AdminAPI.js';
 import morgan from 'morgan';
 import cors from 'cors'
 import cookieParser from 'cookie-parser';
@@ -23,7 +24,7 @@ app.use(cors({
 }));
 
 
-const mongoURL = process.env.MONGO_URI || "mongodb://localhost:27017";
+const mongoURL = process.env.MONGO_URI || "mongodb://localhost:27017/pharmacy";
 
 const connect = async () => {
 	try {
@@ -39,6 +40,7 @@ await connect();
 app.use(express.json());
 
 app.use('*', checkUser);
+AdminAPI(app);
 pharmacist(app);
 medicine(app);
 
