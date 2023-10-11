@@ -1,17 +1,17 @@
 
 import axios from 'axios';
 import PharmacistService from '../service/pharmacist-service.js';
-import { ERROR_STATUS_CODE, NOT_FOUND_STATUS_CODE, OK_STATUS_CODE } from '../utils/Constants.js';
+import { ERROR_STATUS_CODE, NOT_FOUND_STATUS_CODE, OK_STATUS_CODE, PATIENTS_BASE_URL } from '../utils/Constants.js';
 
 export const pharmacist = (app) => {
 	const service = new PharmacistService();
 
-	app.get('/get-all-patients', async (req,res) => {
-		const getPatientsURL = 'http://localhost:8002/all-patients';
+	app.get('/patients', async (req,res) => {
+		const getPatientsURL = `${PATIENTS_BASE_URL}/patients`;
 		try{
 			const response = await axios.get(getPatientsURL);
 			const allPatients = response.data;
-			res.status(OK_STATUS_CODE).json(allPatients);
+			res.status(OK_STATUS_CODE).json({ allPatients });
 		}catch(err){
 			res.status(ERROR_STATUS_CODE).json({ err : err.message });
 		}
