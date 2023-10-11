@@ -2,6 +2,7 @@ import express from 'express';
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
 import { PORT } from './utils/Constants.js';
+import cors from 'cors';
 // import the pharmacyapi 
 import { pharmacist } from './api/PharmacistAPI.js';
 import { medicine } from './api/MedicineAPI.js';
@@ -23,6 +24,10 @@ const connect = async () => {
 await connect();
 
 app.use(express.json());
+app.use(cors({
+	origin: ['http://localhost:3000','http://localhost:3001', 'http://localhost:3002'],
+	credentials: true
+}));
 
 pharmacist(app);
 medicine(app);

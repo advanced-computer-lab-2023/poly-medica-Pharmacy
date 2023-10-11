@@ -10,8 +10,22 @@ class MedicineService {
 		return medicines;
 	}
 
+	async getOneMedicine(id) {
+		const medicine = await this.repository.getOneMedicine(id);
+		return medicine;
+	}
+
+	async updateMedicine(updatedMedicine) {
+		const updated = await this.repository.updateMedicine(updatedMedicine);
+		return updated;
+	}
+
 	async addMedicine(newMedicine) {
 		return await this.repository.addMidicine(newMedicine);
+	}
+
+	getPicture(pictureName) {
+		return this.repository.getPicture(pictureName);
 	}
 }
 
