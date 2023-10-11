@@ -2,9 +2,9 @@ import express from 'express';
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
 import { PORT } from './src/utils/Constants.js';
-// import the pharmacyapi 
 import { pharmacist } from './src/api/PharmacistAPI.js';
 import { medicine } from './src/api/MedicineAPI.js';
+import { admin } from './src/api/AdminAPI.js';
 
 dotenv.config();
 const app = express();
@@ -24,6 +24,7 @@ await connect();
 
 app.use(express.json());
 
+admin(app);
 pharmacist(app);
 medicine(app);
 
