@@ -140,7 +140,7 @@ const Admins = () => {
 							<TableHead>
 								<TableRow>
 									<TableCell>Username</TableCell>
-									{/* <TableCell>Delete</TableCell> */}
+									<TableCell>Delete</TableCell>
 								</TableRow>
 							</TableHead>
 							<TableBody>
