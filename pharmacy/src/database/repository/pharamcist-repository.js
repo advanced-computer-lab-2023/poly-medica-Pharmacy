@@ -20,6 +20,13 @@ class PharmacyRepository {
 		const newPharmacist = await PharmacistModel.create(pharmacist);
 		return newPharmacist;
 	}
+
+	async deletePharmacist(id) {
+		const deletedPharmacist = await PharmacistModel.findByIdAndDelete(
+			id,
+		).select(PHARMACIST_PROJECTION);
+		return deletedPharmacist;
+	}
 }
 
 export default PharmacyRepository;

@@ -4,6 +4,7 @@ import {
 	NOT_FOUND_STATUS_CODE,
 	OK_STATUS_CODE,
 	CREATED_STATUS_CODE,
+	UNAUTHORIZED_STATUS_CODE,
 } from '../utils/Constants.js';
 
 export const pharmacist = (app) => {
@@ -46,6 +47,31 @@ export const pharmacist = (app) => {
 			res
 				.status(CREATED_STATUS_CODE)
 				.json({ message: 'pharmacist created!', newPharmacist });
+		} catch (err) {
+			res.status(ERROR_STATUS_CODE).json({ err: err.message });
+		}
+	});
+
+	app.delete('/pharmacists/:id', async (req, res) => {
+		try {
+			const role = 'ADMIN'; // to be adjusted later on with the role of the logged in user
+			if (role == 'ADMIN') {
+				const id = req.params.id;
+				const deletedPharmacist = await service.deletePharmacist(id);
+				if (deletedPharmacist) {
+					res
+						.status(OK_STATUS_CODE)
+						.json({ message: 'pharmacist deleted!', deletedPharmacist });
+				} else {
+					res
+						.status(NOT_FOUND_STATUS_CODE)
+						.json({ message: 'pharmacist not found!' });
+				}
+			} else {
+				res
+					.status(UNAUTHORIZED_STATUS_CODE)
+					.json({ message: 'You are not authorized to delete a pharmacist!' });
+			}
 		} catch (err) {
 			res.status(ERROR_STATUS_CODE).json({ err: err.message });
 		}

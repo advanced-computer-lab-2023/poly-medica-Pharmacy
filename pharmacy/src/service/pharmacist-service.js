@@ -18,6 +18,11 @@ class PharmacistService {
 		const newPharmacist = await this.repository.createPharmacist(pharmacist);
 		return newPharmacist;
 	}
+
+	async deletePharmacist(id) {
+		const deletedPharmacist = await this.repository.deletePharmacist(id);
+		return deletedPharmacist;
+	}
 }
 
 export default PharmacistService;
