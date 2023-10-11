@@ -1,10 +1,10 @@
 
 import axios from 'axios';
-import PharmacyService from '../service/pharmacy-service.js';
+import PharmacistService from '../service/pharmacist-service.js';
 import { ERROR_STATUS_CODE, NOT_FOUND_STATUS_CODE, OK_STATUS_CODE } from '../utils/Constants.js';
 
-export const pharmacy = (app) => {
-	const service = new PharmacyService();
+export const pharmacist = (app) => {
+	const service = new PharmacistService();
 
 	app.get('/get-all-patients', async (req,res) => {
 		const getPatientsURL = 'http://localhost:8002/all-patients';
@@ -19,7 +19,7 @@ export const pharmacy = (app) => {
        
 	});
 
-	app.get('/get-pharmacist', async(req,res) => {
+	app.get('/pharmacist', async(req,res) => {
 		const id = req.body.id;
 		//const email = req.body.email;
 		try{
@@ -35,9 +35,9 @@ export const pharmacy = (app) => {
         
 	});
 
-	app.get('/get-all-pharmacist', async(req,res) => {
+	app.get('/pharmacist', async(req,res) => {
 		try{
-			const pharmacists = await service.getAllPharmacist();
+			const pharmacists = await service.getAllPharmacists();
 			if(pharmacists){
 				res.status(OK_STATUS_CODE).json({ pharmacists });
 			}else{

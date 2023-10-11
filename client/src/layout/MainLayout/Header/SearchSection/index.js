@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types';
 import { useState } from 'react';
+import { useSearch } from 'contexts/SearchContext';
 
 // material-ui
 import { useTheme, styled } from '@mui/material/styles';
@@ -60,12 +61,20 @@ const HeaderAvatarStyle = styled(Avatar, { shouldForwardProp })(({ theme }) => (
 
 const MobileSearch = ({ value, setValue, popupState }) => {
 	const theme = useTheme();
+	const { updateSearchQuery } = useSearch(); 
+
+	const handleInputChange = (e) => {
+		const inputValue = e.target.value;
+		console.log('input value = ', inputValue);
+		setValue(inputValue);
+		updateSearchQuery(inputValue); 
+	};
 
 	return (
 		<OutlineInputStyle
 			id="input-search-header"
 			value={value}
-			onChange={(e) => setValue(e.target.value)}
+			onChange={e => handleInputChange(e)}
 			placeholder="Search"
 			startAdornment={
 				<InputAdornment position="start">
@@ -118,6 +127,13 @@ MobileSearch.propTypes = {
 const SearchSection = () => {
 	const theme = useTheme();
 	const [value, setValue] = useState('');
+	const { updateSearchQuery } = useSearch(); 
+	const handleInputChange = (e) => {
+		const inputValue = e.target.value;
+		console.log('input value = ', inputValue);
+		setValue(inputValue);
+		updateSearchQuery(inputValue); 
+	};
 
 	return (
 		<>
@@ -165,7 +181,7 @@ const SearchSection = () => {
 				<OutlineInputStyle
 					id="input-search-header"
 					value={value}
-					onChange={(e) => setValue(e.target.value)}
+					onChange={e => handleInputChange(e)}
 					placeholder="Search"
 					startAdornment={
 						<InputAdornment position="start">
