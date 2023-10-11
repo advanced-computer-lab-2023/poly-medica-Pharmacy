@@ -2,6 +2,7 @@ import express from 'express';
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
 import { PORT } from './utils/Constants.js'; 
+import cors from 'cors';
 import { pharmacist } from './api/PharmacistAPI.js';
 import { medicine } from './api/MedicineAPI.js';
 import { AdminAPI } from './api/AdminAPI.js';
@@ -38,6 +39,10 @@ const connect = async () => {
 await connect();
 
 app.use(express.json());
+app.use(cors({
+	origin: ['http://localhost:3000','http://localhost:3001', 'http://localhost:3002'],
+	credentials: true
+}));
 
 app.use('*', checkUser);
 AdminAPI(app);

@@ -6,7 +6,7 @@ import Loadable from 'ui-component/Loadable';
 
 // dashboard routing
 const DashboardDefault = Loadable(lazy(() => import('pages/dashboard')));
-const LazyMedicines = Loadable(lazy(() => import('pages/Medicines')));
+const LazyMedicines = Loadable(lazy(() => import('pages/medicine/Medicines')));
 // utilities routing
 const UtilsTypography = Loadable(lazy(() => import('pages/utilities/Typography')));
 const UtilsColor = Loadable(lazy(() => import('pages/utilities/Color')));
