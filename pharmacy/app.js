@@ -5,6 +5,7 @@ import { PORT } from './src/utils/Constants.js';
 import { pharmacist } from './src/api/PharmacistAPI.js';
 import { medicine } from './src/api/MedicineAPI.js';
 import { admin } from './src/api/AdminAPI.js';
+import cors from 'cors';
 
 dotenv.config();
 const app = express();
@@ -23,6 +24,16 @@ const connect = async () => {
 await connect();
 
 app.use(express.json());
+app.use(
+	cors({
+		origin: [
+			'http://localhost:3000',
+			'http://localhost:3001',
+			'http://localhost:3002',
+		],
+		credentials: true,
+	}),
+);
 
 admin(app);
 pharmacist(app);

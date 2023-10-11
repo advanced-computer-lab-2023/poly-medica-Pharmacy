@@ -5,6 +5,16 @@ class AdminService {
 		this.repository = new AdminRepository();
 	}
 
+	async findAdminByUserName(userName) {
+		const admin = await this.repository.findAdminByUserName(userName);
+		return admin;
+	}
+
+	async findAdminById(id) {
+		const admin = await this.repository.findAdminById(id);
+		return admin;
+	}
+
 	async findAllAdmins() {
 		const admins = await this.repository.findAllAdmins();
 		return admins;
