@@ -1,9 +1,9 @@
 import { ListItem, ListItemText } from '@mui/material';
 
 
-const InfoCard = ({ pharmacist, setSelectedMedicine }) => {
+const InfoCard = ({ pharmacist, setSelectedPharmacists }) => {
     return (
-        <ListItem button onClick={() => setSelectedMedicine(pharmacist)}>
+        <ListItem button onClick={() => setSelectedPharmacists(pharmacist)}>
             <ListItemText primary={pharmacist.userData.name} secondary={
                 <div
                     style={{ overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis' }}>
