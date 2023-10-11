@@ -1,7 +1,7 @@
 
 import axios from 'axios';
 import PharmacistService from '../service/pharmacist-service.js';
-import { ERROR_STATUS_CODE, NOT_FOUND_STATUS_CODE, OK_STATUS_CODE } from '../utils/Constants.js';
+import { ERROR_STATUS_CODE, NOT_FOUND_STATUS_CODE, OK_STATUS_CODE, PATIENTS_BASE_URL } from '../utils/Constants.js';
 
 export const pharmacist = (app) => {
 	const service = new PharmacistService();
