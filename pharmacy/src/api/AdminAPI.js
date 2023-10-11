@@ -69,7 +69,6 @@ export const admin = (app) => {
 	});
 
 	app.delete('/patients/:id', async (req, res) => {
-		console.log('in delete patient in admin api  in pharmacy');
 		try {
 			const role = 'ADMIN'; // to be adjusted later on with the role of the logged in user
 			if (role == 'ADMIN') {

@@ -1,15 +1,24 @@
 import PharmacistModel from '../models/Pharmacist.js';
+import { PHARMACIST_PROJECTION } from '../../utils/Constants.js';
 
 class PharmacyRepository {
+	async getAllPharmacists() {
+		const pharmacists = await PharmacistModel.find({}).select(
+			PHARMACIST_PROJECTION,
+		);
+		return pharmacists;
+	}
 
-	async findOnePharmacist(id) {
-		const pharmacist = await PharmacistModel.findById(id);
+	async getPharmacistById(id) {
+		const pharmacist = await PharmacistModel.findById(id).select(
+			PHARMACIST_PROJECTION,
+		);
 		return pharmacist;
 	}
 
-	async findAllPharmacists() {
-		const pharmacists = await PharmacistModel.find();
-		return pharmacists;
+	async createPharmacist(pharmacist) {
+		const newPharmacist = await PharmacistModel.create(pharmacist);
+		return newPharmacist;
 	}
 }
 
