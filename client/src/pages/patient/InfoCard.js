@@ -14,7 +14,7 @@ const InfoCard = ({ patient, setSelectedPatients }) => {
                 lineHeight: '1.5em',
                 maxHeight: '3em',
             }} />
-            <ListItemText sx={{ paddingLeft: '2%' }} primary={`$${patient.gender}`} />
+            <ListItemText sx={{ paddingLeft: '2%' }} primary={`${patient.gender}`} />
         </ListItem>
     );
 };

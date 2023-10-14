@@ -5,6 +5,7 @@ import InfoList from './InfoList';
 import PharmacistsDetails from './PharmacistsDetails';
 
 const ParmacistInfo = () => {
+    
     const [pharmacists, setPharmacists] = useState([]);
     const [selectedPharmacists, setSelectedPharmacists] = useState(null);
     const [loading, setLoading] = useState(true);

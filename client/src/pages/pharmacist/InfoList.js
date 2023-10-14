@@ -3,14 +3,15 @@ import React from 'react';
 import { List } from '@mui/material';
 import InfoCard from './InfoCard';
 
-const InfoList = ({ pharmasicts, setSelectedPharmacist }) => {
+const InfoList = ({ pharmacists, setSelectedPharmacists }) => {
+    console.log('Pharmacist = ', pharmacists);
     return (
         <List>
-            {Array.isArray(pharmasicts) &&
-                pharmasicts.map((pharmasict, index) => (
+            {Array.isArray(pharmacists) &&
+                pharmacists.map((pharmasict, index) => (
                     <div key={index}>
                         <div key={index}>
-                            <InfoCard pharmasict={pharmasict} setSelectedPharmacist={setSelectedPharmacist}></InfoCard>
+                            <InfoCard pharmacist={pharmasict} setSelectedPharmacists={setSelectedPharmacists}></InfoCard>
                         </div>
                     </div>
                 ))}

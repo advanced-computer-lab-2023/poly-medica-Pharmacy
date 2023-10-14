@@ -13,7 +13,7 @@ const PatientInfo = () => {
     useEffect(() => {
 		pharmacyAxios.get('/patients')
 			.then((response) => {
-				setPatients(response.data.allPatients);
+				setPatients(response.data.allPatients.patients);
                 setLoading(false);
 			})
 			.catch(error => {

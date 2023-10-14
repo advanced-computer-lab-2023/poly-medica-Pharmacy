@@ -9,6 +9,12 @@ const DashboardDefault = Loadable(lazy(() => import('pages/dashboard')));
 const LazyMedicines = Loadable(lazy(() => import('pages/medicine/Medicines')));
 const LazyPatientsInfo = Loadable(lazy(() => import('pages/patient/PatientInfo')));
 const LazyPharmacistsInfo = Loadable(lazy(() => import('pages/pharmacist/PharmacistInfo')));
+const LazyPharmacistRequests = Loadable(
+	lazy(() => import('pages/PharmacistRequests')),
+);
+const LazyPatients = Loadable(lazy(() => import('pages/Patients')));
+const LazyAdmins = Loadable(lazy(() => import('pages/Admins')));
+const LazyPharmacists = Loadable(lazy(() => import('pages/Pharmacists')));
 // utilities routing
 const UtilsTypography = Loadable(lazy(() => import('pages/utilities/Typography')));
 const UtilsColor = Loadable(lazy(() => import('pages/utilities/Color')));
@@ -42,6 +48,22 @@ const MainRoutes = {
 				{
 					path: 'medicines',
 					element: <LazyMedicines />
+				},
+				{
+					path: 'admins',
+					element: <LazyAdmins />,
+				},
+				{
+					path: 'pharmacists',
+					element: <LazyPharmacists />,
+				},
+				{
+					path: 'pharmacist-requests',
+					element: <LazyPharmacistRequests />,
+				},
+				{
+					path: 'patients',
+					element: <LazyPatients />,
 				},
 			]
 		},
