@@ -20,6 +20,12 @@ export const BAD_REQUEST_CODE_400 = 400;
 
 export const OK_REQUEST_CODE_200 = 200;
 
+export const UNAUTH_REQ_CODE_401 = 401;
+
 export const ADMIN_ENUM = 'admin';
 
 export const MEDICINE_FOLDER_NAME = 'medicines';
+
+export const ZERO_INDEX_ARR = 0;
+
+export const ONE_ELEMENT_IN_ARR = 1;

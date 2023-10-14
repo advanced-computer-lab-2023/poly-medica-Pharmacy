@@ -1,4 +1,5 @@
 import jwt from 'jsonwebtoken';
+import { UNAUTHORIZED_STATUS_CODE } from '../utils/Constants';
 
 export const requireAuth = (req, res, next) => {
 	const token = req.cookies.jwt;
@@ -8,14 +9,14 @@ export const requireAuth = (req, res, next) => {
 		jwt.verify(token, process.env.JWT_SECRET, (err, decodedToken) => {
 			if (err) {
 				console.log(err.message);
-				res.status(401).send({ message: 'you are not Auth' });
+				res.status(UNAUTHORIZED_STATUS_CODE).send({ message: 'you are not Auth' });
 			} else {
 				console.log(decodedToken);
 				next();
 			}
 		});
 	} else {
-		res.status(401).send({ message: 'you are not Auth' });
+		res.status(UNAUTHORIZED_STATUS_CODE).send({ message: 'you are not Auth' });
 	}
 };
 
