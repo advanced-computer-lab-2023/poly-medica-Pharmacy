@@ -29,7 +29,6 @@ export const user = (app) => {
 	};
 
 	app.post('/signup', async (req, res) => {
-		console.log(req.body, 'req');
 		try {
 			const { type } = req.body;
 			delete req.body.type;
@@ -106,10 +105,9 @@ export const user = (app) => {
 				maxAge: ONE_DAY_MAX_AGE_IN_MILLEMIINUTS,
 			});
 			res.send({
-				id: logedinUser._id,
-				name: logedinUser.userName,
+				id: logedinUser.userId,
+				userName: logedinUser.userName,
 				type: logedinUser.type,
-				token: token,
 			});
 		} catch (err) {
 			res.status(BAD_REQUEST_CODE_400).send({ message: err.message });
@@ -122,6 +120,7 @@ export const user = (app) => {
 			await user.deleteUser(userId);
 			res.status(OK_REQUEST_CODE_200).end();
 		} catch (err) {
+			console.log(err.message);
 			res
 				.status(SERVER_ERR_REQUEST_CODE_500)
 				.send({ errMessage: "coudn't delete the user" });

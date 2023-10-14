@@ -5,6 +5,8 @@ import {
 	PHARMACIST_ENUM,
 	OK_STATUS_CODE,
 	ERROR_STATUS_CODE,
+	ZERO_INDEX_ARR,
+	ONE_ELEMENT_IN_ARR,
 } from '../utils/Constants.js';
 import { isValidMongoId } from '../utils/Validation.js';
 
@@ -33,12 +35,12 @@ export const pharmacistRequests = (app) => {
 			res.send(req.body);
 		} catch (err) {
 			if (err.code == DUPLICATE_KEY_ERROR_CODE) {
-				const duplicateKeyAttrb = Object.keys(err.keyPattern)[0];
+				const duplicateKeyAttrb = Object.keys(err.keyPattern)[ZERO_INDEX_ARR];
 				const keyAttrb = duplicateKeyAttrb.split('.');
 				res.status(BAD_REQUEST_CODE_400).send({
 					errCode: DUPLICATE_KEY_ERROR_CODE,
 					errMessage: `that ${
-						keyAttrb[keyAttrb.length - 1]
+						keyAttrb[keyAttrb.length - ONE_ELEMENT_IN_ARR]
 					} is already registered`,
 				});
 			} else res.status(BAD_REQUEST_CODE_400).send({ errMessage: err.message });
