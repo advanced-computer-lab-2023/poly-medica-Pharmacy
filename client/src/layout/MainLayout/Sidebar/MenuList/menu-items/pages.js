@@ -1,6 +1,6 @@
 // assets
 import { IconKey, IconVaccineBottle } from '@tabler/icons';
-
+import LocalPharmacyIcon from '@mui/icons-material/LocalPharmacy';
 // constant
 const icons = {
 	IconKey,
@@ -44,6 +44,14 @@ const pages = {
 			type: 'item', 
 			icon: icons.IconVaccineBottle, 
 			url: '/pages/medicines', 
+			target: false 
+		},
+		{
+			id: 'pharmacistsInfo',
+			title: 'Pharmacists Info',
+			type: 'item', 
+			icon: LocalPharmacyIcon, 
+			url: '/pages/PharmacistsInfo', 
 			target: false 
 		}
 	]
