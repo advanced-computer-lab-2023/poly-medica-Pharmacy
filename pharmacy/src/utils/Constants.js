@@ -7,6 +7,7 @@ export const CONFLICT_STATUS_CODE = 409;
 export const ERROR_STATUS_CODE = 500;
 
 export const PATIENTS_BASE_URL = 'http://localhost:8002';
+export const AUTH_BASE_URL = 'http://localhost:8005';
 
 export const ADMIN_PROJECTION = '-password';
 export const PHARMACIST_PROJECTION = '-userData.password';

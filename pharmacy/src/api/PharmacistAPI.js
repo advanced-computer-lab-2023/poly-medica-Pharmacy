@@ -7,9 +7,8 @@ import {
 	ERROR_STATUS_CODE,
 	NOT_FOUND_STATUS_CODE,
 	OK_STATUS_CODE,
-	PHARMACIST_ENUM,
 	CREATED_STATUS_CODE,
-	UNAUTHORIZED_STATUS_CODE,
+	AUTH_BASE_URL,
 } from '../utils/Constants.js';
 
 export const pharmacist = (app) => {
@@ -38,31 +37,6 @@ export const pharmacist = (app) => {
 			}
 		} catch (err) {
 			res.status(ERROR_STATUS_CODE).json({ err: err.message });
-		}
-	});
-
-	app.post('/add-pharmacist-req', async (req, res) => {
-		try {
-			const pharmacistUser = await service.addReqPharmacist(req);
-			req.body = {
-				userId: pharmacistUser._id,
-				email: pharmacistUser.userData.email,
-				password: pharmacistUser.userData.password,
-				userName: pharmacistUser.userData.userName,
-				type: PHARMACIST_ENUM,
-			};
-			res.send(req.body);
-		} catch (err) {
-			if (err.code == DUPLICATE_KEY_ERROR_CODE) {
-				const duplicateKeyAttrb = Object.keys(err.keyPattern)[0];
-				const keyAttrb = duplicateKeyAttrb.split('.');
-				res.status(BAD_REQUEST_CODE_400).send({
-					errCode: DUPLICATE_KEY_ERROR_CODE,
-					errMessage: `that ${
-						keyAttrb[keyAttrb.length - 1]
-					} is already registered`,
-				});
-			} else res.status(BAD_REQUEST_CODE_400).send({ errMessage: err.message });
 		}
 	});
 
@@ -95,7 +69,7 @@ export const pharmacist = (app) => {
 
 	app.post('/pharmacists', async (req, res) => {
 		try {
-			const newPharmacist = await service.createPharmacist(req.body);
+			const newPharmacist = await service.addPharmacist(req);
 			res
 				.status(CREATED_STATUS_CODE)
 				.json({ message: 'pharmacist created!', newPharmacist });
@@ -106,23 +80,17 @@ export const pharmacist = (app) => {
 
 	app.delete('/pharmacists/:id', async (req, res) => {
 		try {
-			const role = 'ADMIN'; // to be adjusted later on with the role of the logged in user
-			if (role == 'ADMIN') {
-				const id = req.params.id;
-				const deletedPharmacist = await service.deletePharmacist(id);
-				if (deletedPharmacist) {
-					res
-						.status(OK_STATUS_CODE)
-						.json({ message: 'pharmacist deleted!', deletedPharmacist });
-				} else {
-					res
-						.status(NOT_FOUND_STATUS_CODE)
-						.json({ message: 'pharmacist not found!' });
-				}
+			const id = req.params.id;
+			const deletedPharmacist = await service.deletePharmacist(id);
+			if (deletedPharmacist) {
+				axios.delete(`${AUTH_BASE_URL}/users/${id}`);
+				res
+					.status(OK_STATUS_CODE)
+					.json({ message: 'pharmacist deleted!', deletedPharmacist });
 			} else {
 				res
-					.status(UNAUTHORIZED_STATUS_CODE)
-					.json({ message: 'You are not authorized to delete a pharmacist!' });
+					.status(NOT_FOUND_STATUS_CODE)
+					.json({ message: 'pharmacist not found!' });
 			}
 		} catch (err) {
 			res.status(ERROR_STATUS_CODE).json({ err: err.message });

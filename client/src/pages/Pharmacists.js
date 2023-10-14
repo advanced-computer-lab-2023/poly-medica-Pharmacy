@@ -33,8 +33,8 @@ const Pharmacists = () => {
 			});
 	}, []);
 
-	const handleRemovePharmacist = (doctorId) => {
-		setPharmacistToDelete(doctorId);
+	const handleRemovePharmacist = (pharmacistId) => {
+		setPharmacistToDelete(pharmacistId);
 		setConfirmDeleteDialogOpen(true);
 	};
 
@@ -56,6 +56,14 @@ const Pharmacists = () => {
 			.finally(() => {
 				setPharmacistToDelete(null);
 				setConfirmDeleteDialogOpen(false);
+			});
+
+		fetch(`http://localhost:8005/users/${pharmacistToDelete}`, {
+			method: 'DELETE',
+		})
+			.then((response) => response.json())
+			.catch((error) => {
+				console.error('Error deleting pharmacist:', error);
 			});
 	};
 

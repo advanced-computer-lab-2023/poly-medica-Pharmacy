@@ -21,8 +21,8 @@ const Pharmacist = mongoose.Schema({
 	//.....
 });
 
-Pharmacist.statics.addUser = async function (userData, speciality, hourlyRate, affiliation, educationalBackground){
-	const newRecord = new this({ userData, speciality, hourlyRate, affiliation, educationalBackground });
+Pharmacist.statics.addUser = async function (userData, hourlyRate, affiliation, educationalBackground){
+	const newRecord = new this({ userData, hourlyRate, affiliation, educationalBackground });
 	const user = await newRecord.save();
 	return user;
 };

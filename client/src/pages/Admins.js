@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useUserContext } from 'hooks/useUserContext.js';
 import {
 	Table,
 	TableBody,
@@ -24,12 +25,15 @@ const Admins = () => {
 	const [confirmDeleteDialogOpen, setConfirmDeleteDialogOpen] = useState(false);
 	const [adminToDelete, setAdminToDelete] = useState(null);
 	const [errorMessage, setErrorMessage] = useState('');
+	const { user } = useUserContext();
 
 	useEffect(() => {
 		fetch('http://localhost:8003/admins')
 			.then((response) => response.json())
 			.then((data) => {
-				setAdmins(data.admins);
+				setAdmins(
+					data.admins.filter((admin) => admin.userName !== user.userName),
+				);
 				setIsLoading(false);
 			})
 			.catch((error) => {
@@ -54,7 +58,7 @@ const Admins = () => {
 			return;
 		}
 
-		fetch(`http://localhost:8003/admins/${adminToDelete}`, {
+		fetch(`http://localhost:8004/admins/${adminToDelete}`, {
 			method: 'DELETE',
 		})
 			.then((response) => response.json())
@@ -99,7 +103,7 @@ const Admins = () => {
 		}
 
 		// Make a POST request to add a new admin
-		fetch('http://localhost:8003/admins', {
+		fetch('http://localhost:8005/admins', {
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json',
@@ -108,8 +112,7 @@ const Admins = () => {
 		})
 			.then((response) => response.json())
 			.then((data) => {
-				const status = data.status;
-				if (status === 409) {
+				if (data.message === 'that username is already registered') {
 					setErrorMessage(
 						`Username '${newAdminUsername}' already exists. Please choose a different username.`,
 					);

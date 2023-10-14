@@ -6,9 +6,8 @@ import {
 	NOT_FOUND_STATUS_CODE,
 	UNAUTHORIZED_STATUS_CODE,
 	OK_STATUS_CODE,
-	CREATED_STATUS_CODE,
+	AUTH_BASE_URL,
 	PATIENTS_BASE_URL,
-	CONFLICT_STATUS_CODE,
 	ADMIN_ENUM,
 	DUPLICATE_KEY_ERROR_CODE,
 	BAD_REQUEST_CODE_400,
@@ -26,14 +25,13 @@ export const admin = (app) => {
 		}
 	});
 
-	app.post('/add-admin', async (req, res) => {
+	app.post('/admins', async (req, res) => {
 		try {
 			const adminUser = await service.addAdmin(req);
 			req.body = {
 				userId: adminUser._id,
-				email: adminUser.userData.email,
-				password: adminUser.userData.password,
-				userName: adminUser.userData.userName,
+				password: adminUser.password,
+				userName: adminUser.userName,
 				type: ADMIN_ENUM,
 			};
 			res.send(req.body);
@@ -51,55 +49,29 @@ export const admin = (app) => {
 		}
 	});
 
-	app.post('/admins', async (req, res) => {
-		try {
-			const admin = await service.findAdminByUserName(req.body.userName);
-			if (admin) {
-				return res.status(CONFLICT_STATUS_CODE).json({
-					message: 'admin already exists',
-					status: CONFLICT_STATUS_CODE,
-				});
-			}
-			const newAdmin = await service.createAdmin(req.body);
-			return res.status(CREATED_STATUS_CODE).json({
-				message: 'admin created!',
-				newAdmin,
-				status: CREATED_STATUS_CODE,
-			});
-		} catch (err) {
-			throw Error(err);
-		}
-	});
-
 	app.delete('/admins/:id', async (req, res) => {
 		try {
-			const role = 'ADMIN'; // to be adjusted later on with the role of the logged in user
-			if (role == 'ADMIN') {
-				const id = req.params.id;
-				if (!isValidMongoId(id))
-					return res.status(ERROR_STATUS_CODE).json({ message: 'Invalid ID' });
-				const isMainAdmin = await service.checkMainAdmin(id);
-				if (isMainAdmin) {
-					res
-						.status(ERROR_STATUS_CODE)
-						.json({ message: 'you can not delete main admin' });
-				} else {
-					const deletedAdmin = await service.deleteAdmin(id);
-
-					if (deletedAdmin) {
-						res
-							.status(OK_STATUS_CODE)
-							.json({ message: 'admin deleted!', deletedAdmin });
-					} else {
-						res
-							.status(NOT_FOUND_STATUS_CODE)
-							.json({ message: 'admin not found!' });
-					}
-				}
-			} else {
+			const id = req.params.id;
+			if (!isValidMongoId(id))
+				return res.status(ERROR_STATUS_CODE).json({ message: 'Invalid ID' });
+			const isMainAdmin = await service.checkMainAdmin(id);
+			if (isMainAdmin) {
 				res
-					.status(UNAUTHORIZED_STATUS_CODE)
-					.json({ message: 'You are not authorized to delete an admin!' });
+					.status(ERROR_STATUS_CODE)
+					.json({ message: 'you can not delete main admin' });
+			} else {
+				const deletedAdmin = await service.deleteAdmin(id);
+
+				if (deletedAdmin) {
+					axios.delete(`${AUTH_BASE_URL}/users/${id}`);
+					res
+						.status(OK_STATUS_CODE)
+						.json({ message: 'admin deleted!', deletedAdmin });
+				} else {
+					res
+						.status(NOT_FOUND_STATUS_CODE)
+						.json({ message: 'admin not found!' });
+				}
 			}
 		} catch (err) {
 			res.status(ERROR_STATUS_CODE).json({ err: err.message });

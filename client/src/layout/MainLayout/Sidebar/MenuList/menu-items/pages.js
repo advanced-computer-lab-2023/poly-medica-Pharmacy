@@ -4,6 +4,7 @@ import {
 	IconVaccineBottle,
 	IconEmergencyBed,
 	IconMedicineSyrup,
+	IconRegistered,
 } from '@tabler/icons';
 import AdminPanelSettingsOutlinedIcon from '@mui/icons-material/AdminPanelSettingsOutlined';
 import LocalPharmacyIcon from '@mui/icons-material/LocalPharmacy';
@@ -15,6 +16,7 @@ const icons = {
 	IconEmergencyBed,
 	IconMedicineSyrup,
 	AdminPanelSettingsOutlinedIcon,
+	IconRegistered,
 };
 // ==============================|| EXTRA PAGES MENU ITEMS ||============================== //
 
@@ -86,6 +88,13 @@ const pages = {
 			icon: icons.IconMedicineSyrup,
 			url: '/pages/pharmacists',
 			target: false,
+		},
+		{
+			id: 'pharmacist-requests',
+			title: 'Pharmacist Requests',
+			type: 'item',
+			icon: icons.IconRegistered,
+			url: '/pages/pharmacist-requests',
 		},
 	],
 };

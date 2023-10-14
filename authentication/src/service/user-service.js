@@ -27,7 +27,8 @@ class UserService {
     }
 
     async deleteUser(userId){
-        await this.repository.deleteUser(userId);
+        const user = await this.repository.deleteUser(userId);
+        return user;
     }
 }
 

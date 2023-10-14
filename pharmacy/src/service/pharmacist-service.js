@@ -25,6 +25,22 @@ class PharmacistService {
 		return pharmacistUser;
 	}
 
+	async deletePharmacist(id) {
+		const pharmacist = await this.repository.deletePharmacist(id);
+		return pharmacist;
+	}
+
+	async deletePharmacistRequest(id) {
+		const pharmacistRequest = await this.repository.deletePharmacistRequest(id);
+		return pharmacistRequest;
+	}
+
+	async findAllPharmacistRequests() {
+		const pharmacistRequests =
+			await this.repository.findAllPharmacistRequests();
+		return pharmacistRequests;
+	}
+
 	async checkPharmacistReqUser(req) {
 		await this.repository.checkPharmacistReqUser(req);
 	}
