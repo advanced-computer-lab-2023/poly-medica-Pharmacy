@@ -29,7 +29,6 @@ class MedicineRepository {
 		const picturePath = getImage(MEDICINE_FOLDER_NAME, pictureName);
 		return picturePath;
 	}
-
 }
 
 export default MedicineRepository;

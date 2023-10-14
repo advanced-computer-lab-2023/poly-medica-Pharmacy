@@ -1,24 +1,30 @@
 import mongoose from 'mongoose';
-import UserSchema from './UserSchema.js';
 import bcrypt from 'bcrypt';
 
 const Admin = mongoose.Schema({
-	userData: {
-		type: UserSchema,
-		required: true
+	userName: {
+		type: String,
+		required: true,
+		unique: true,
+	},
+	password: {
+		type: String,
+		required: [true],
 	},
 	mainAdmin: {
-		type: Boolean
+		type: Boolean,
+		default: false,
 	},
-	//....
 });
 
-Admin.statics.addUser = async function (userData, mainAdmin){
-    const salt = await bcrypt.genSalt();
-    userData.password = await bcrypt.hash(userData.password, salt);
-    const newRecord = new this({userData, mainAdmin});
-    let user = await newRecord.save();
-    return user;
+Admin.statics.addUser = async function (userName, password, mainAdmin) {
+	console.log(userName, password, mainAdmin);
+
+	const salt = await bcrypt.genSalt();
+	password = await bcrypt.hash(password, salt);
+	const newRecord = new this({ userName, password, mainAdmin });
+	const user = await newRecord.save();
+	return user;
 };
 
 const AdminModel = mongoose.model('Admin', Admin);
