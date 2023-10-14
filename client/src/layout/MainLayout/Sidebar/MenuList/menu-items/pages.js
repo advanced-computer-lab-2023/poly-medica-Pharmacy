@@ -1,3 +1,4 @@
+
 // assets
 import { IconKey, IconVaccineBottle } from '@tabler/icons';
 import PersonIcon from '@mui/icons-material/Person';
@@ -52,7 +53,10 @@ const pages = {
 			title: 'Patient Info',
 			type: 'item', 
 			icon: PersonIcon, 
-			url: '/pages/PatientInfo', 
+			url: '/pages/PatientInfo',
+      target :false
+    },
+    {
 			id: 'pharmacistsInfo',
 			title: 'Pharmacists Info',
 			type: 'item', 

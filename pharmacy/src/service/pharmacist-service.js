@@ -1,18 +1,48 @@
 import PharmacyRepository from '../database/repository/pharamcist-repository.js';
 
-class PharmacistService{
-	constructor(){
+class PharmacistService {
+	constructor() {
 		this.repository = new PharmacyRepository();
 	}
 
-	async getPharmacist(id){
+	async getPharmacist(id) {
 		const pharmacist = await this.repository.findPharmacist(id);
 		return pharmacist;
 	}
 
-	async getAllPharmacists(){
+	async getAllPharmacists() {
 		const pharmacist = await this.repository.findAllPharmacists();
 		return pharmacist;
+	}
+
+	async addPharmacist(req) {
+		const pharmacistUser = await this.repository.addPharmacist(req);
+		return pharmacistUser;
+	}
+
+	async addReqPharmacist(req) {
+		const pharmacistUser = await this.repository.addPharmacistReq(req);
+		return pharmacistUser;
+	}
+
+	async deletePharmacist(id) {
+		const pharmacist = await this.repository.deletePharmacist(id);
+		return pharmacist;
+	}
+
+	async deletePharmacistRequest(id) {
+		const pharmacistRequest = await this.repository.deletePharmacistRequest(id);
+		return pharmacistRequest;
+	}
+
+	async findAllPharmacistRequests() {
+		const pharmacistRequests =
+			await this.repository.findAllPharmacistRequests();
+		return pharmacistRequests;
+	}
+
+	async checkPharmacistReqUser(req) {
+		await this.repository.checkPharmacistReqUser(req);
 	}
 }
 
