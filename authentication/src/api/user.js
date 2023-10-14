@@ -106,7 +106,7 @@ export const user = (app) => {
 				maxAge: ONE_DAY_MAX_AGE_IN_MILLEMIINUTS,
 			});
 			res.send({
-				id: logedinUser._id,
+				id: logedinUser.userId,
 				name: logedinUser.userName,
 				type: logedinUser.type,
 				token: token,
