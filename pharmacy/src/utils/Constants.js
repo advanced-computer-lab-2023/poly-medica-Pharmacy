@@ -1,3 +1,4 @@
+
 export const PORT = 8003;
 export const OK_STATUS_CODE = 200;
 export const CREATED_STATUS_CODE = 201;
@@ -23,3 +24,4 @@ export const OK_REQUEST_CODE_200 = 200;
 export const ADMIN_ENUM = 'admin';
 
 export const MEDICINE_FOLDER_NAME = 'medicines';
+
