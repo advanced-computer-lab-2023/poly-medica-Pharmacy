@@ -18,6 +18,12 @@ class AdminRepository {
 		return admins;
 	}
 
+	async addAdmin(req) {
+		const { userName, password, mainAdmin } = req.body;
+		const user = await AdminModel.addUser(userName, password, mainAdmin);
+		return user;
+	}
+
 	async createAdmin(admin) {
 		const newAdmin = await AdminModel.create(admin);
 		return newAdmin;

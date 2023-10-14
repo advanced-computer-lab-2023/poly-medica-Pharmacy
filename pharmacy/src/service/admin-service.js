@@ -20,6 +20,11 @@ class AdminService {
 		return admins;
 	}
 
+	async addAdmin(req) {
+		const adminUser = await this.repository.addAdmin(req);
+		return adminUser;
+	}
+
 	async createAdmin(admin) {
 		const newAdmin = await this.repository.createAdmin(admin);
 		return newAdmin;

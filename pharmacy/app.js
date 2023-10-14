@@ -1,16 +1,26 @@
 import express from 'express';
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
-import { PORT } from './src/utils/Constants.js';
-import { pharmacist } from './src/api/PharmacistAPI.js';
-import { medicine } from './src/api/MedicineAPI.js';
-import { admin } from './src/api/AdminAPI.js';
+import { PORT } from './utils/Constants.js'; 
 import cors from 'cors';
+import { pharmacist } from './api/PharmacistAPI.js';
+import { medicine } from './api/MedicineAPI.js';
+import { AdminAPI } from './api/AdminAPI.js';
+import morgan from 'morgan';
+import cookieParser from 'cookie-parser';
+import bodyParser from 'body-parser';
+import { checkUser } from './middleware/authMiddleware.js';
 
 dotenv.config();
 const app = express();
 
-const mongoURL = process.env.MONGO_URI;
+app.use(morgan('dev'));
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(cookieParser())
+
+
+const mongoURL = process.env.MONGO_URI || "mongodb://localhost:27017/pharmacy";
 
 const connect = async () => {
 	try {
@@ -24,18 +34,13 @@ const connect = async () => {
 await connect();
 
 app.use(express.json());
-app.use(
-	cors({
-		origin: [
-			'http://localhost:3000',
-			'http://localhost:3001',
-			'http://localhost:3002',
-		],
-		credentials: true,
-	}),
-);
+app.use(cors({
+	origin: ['http://localhost:3000','http://localhost:3001', 'http://localhost:3002'],
+	credentials: true
+}));
 
-admin(app);
+app.use('*', checkUser);
+AdminAPI(app);
 pharmacist(app);
 medicine(app);
 

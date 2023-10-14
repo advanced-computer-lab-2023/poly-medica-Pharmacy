@@ -5,23 +5,28 @@ class PharmacistService {
 		this.repository = new PharmacyRepository();
 	}
 
-	async getAllPharmacists() {
-		const pharmacists = await this.repository.getAllPharmacists();
-		return pharmacists;
-	}
-	async getPharmacistById(id) {
-		const pharmacist = await this.repository.getPharmacistById(id);
+	async getPharmacist(id) {
+		const pharmacist = await this.repository.findPharmacist(id);
 		return pharmacist;
 	}
 
-	async createPharmacist(pharmacist) {
-		const newPharmacist = await this.repository.createPharmacist(pharmacist);
-		return newPharmacist;
+	async getAllPharmacists() {
+		const pharmacist = await this.repository.findAllPharmacists();
+		return pharmacist;
 	}
 
-	async deletePharmacist(id) {
-		const deletedPharmacist = await this.repository.deletePharmacist(id);
-		return deletedPharmacist;
+	async addPharmacist(req) {
+		const pharmacistUser = await this.repository.addPharmacist(req);
+		return pharmacistUser;
+	}
+
+	async addReqPharmacist(req) {
+		const pharmacistUser = await this.repository.addPharmacistReq(req);
+		return pharmacistUser;
+	}
+
+	async checkPharmacistReqUser(req) {
+		await this.repository.checkPharmacistReqUser(req);
 	}
 }
 

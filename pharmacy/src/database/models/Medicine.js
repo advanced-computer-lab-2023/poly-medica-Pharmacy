@@ -22,7 +22,8 @@ const Medicine = mongoose.Schema({
 	},
 	sales: {
 		type: Number, 
-		required: true
+		required: true,
+		default: 0
 	},
 	medicinalUse: {
 		type: String,

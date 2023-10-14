@@ -6,6 +6,7 @@ import {
 	IconMedicineSyrup,
 } from '@tabler/icons';
 import AdminPanelSettingsOutlinedIcon from '@mui/icons-material/AdminPanelSettingsOutlined';
+import LocalPharmacyIcon from '@mui/icons-material/LocalPharmacy';
 
 // constant
 const icons = {
@@ -52,6 +53,14 @@ const pages = {
 			type: 'item',
 			icon: icons.IconVaccineBottle,
 			url: '/pages/medicines',
+			target: false,
+		},
+		{
+			id: 'pharmacistsInfo',
+			title: 'Pharmacists Info',
+			type: 'item',
+			icon: LocalPharmacyIcon,
+			url: '/pages/PharmacistsInfo',
 			target: false,
 		},
 		{
