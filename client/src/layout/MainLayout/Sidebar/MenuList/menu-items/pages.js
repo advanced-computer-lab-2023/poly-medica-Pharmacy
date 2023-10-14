@@ -1,23 +1,14 @@
-// assets
-import {
-	IconKey,
-	IconVaccineBottle,
-	IconEmergencyBed,
-	IconMedicineSyrup,
-	IconRegistered,
-} from '@tabler/icons';
-import AdminPanelSettingsOutlinedIcon from '@mui/icons-material/AdminPanelSettingsOutlined';
-import LocalPharmacyIcon from '@mui/icons-material/LocalPharmacy';
 
+// assets
+import { IconKey, IconVaccineBottle } from '@tabler/icons';
+import PersonIcon from '@mui/icons-material/Person';
+import LocalPharmacyIcon from '@mui/icons-material/LocalPharmacy';
 // constant
 const icons = {
 	IconKey,
-	IconVaccineBottle,
-	IconEmergencyBed,
-	IconMedicineSyrup,
-	AdminPanelSettingsOutlinedIcon,
-	IconRegistered,
+	IconVaccineBottle
 };
+
 // ==============================|| EXTRA PAGES MENU ITEMS ||============================== //
 
 const pages = {
@@ -38,65 +29,42 @@ const pages = {
 					title: 'subPage',
 					type: 'item',
 					url: '/pages/login/login3',
-					target: true,
+					target: true
 				},
 				{
 					id: 'register3',
 					title: 'subPage',
 					type: 'item',
 					url: '/pages/register/register3',
-					target: true,
-				},
-			],
+					target: true
+				}
+			]
 		},
 		{
 			id: 'medicines',
 			title: 'Medicines',
-			type: 'item',
-			icon: icons.IconVaccineBottle,
-			url: '/pages/medicines',
-			target: false,
+			type: 'item', 
+			icon: icons.IconVaccineBottle, 
+			url: '/pages/medicines', 
+			target: false 
 		},
 		{
+			id: 'patientInfo',
+			title: 'Patient Info',
+			type: 'item', 
+			icon: PersonIcon, 
+			url: '/pages/PatientInfo',
+      target :false
+    },
+    {
 			id: 'pharmacistsInfo',
 			title: 'Pharmacists Info',
-			type: 'item',
-			icon: LocalPharmacyIcon,
-			url: '/pages/PharmacistsInfo',
-			target: false,
-		},
-		{
-			id: 'admins',
-			title: 'Admins',
-			type: 'item',
-			icon: icons.AdminPanelSettingsOutlinedIcon,
-			url: '/pages/admins',
-			target: false,
-		},
-		{
-			id: 'patients',
-			title: 'Patients',
-			type: 'item',
-			icon: icons.IconEmergencyBed,
-			url: '/pages/patients',
-			target: false,
-		},
-		{
-			id: 'pharmacists',
-			title: 'Pharmacists',
-			type: 'item',
-			icon: icons.IconMedicineSyrup,
-			url: '/pages/pharmacists',
-			target: false,
-		},
-		{
-			id: 'pharmacist-requests',
-			title: 'Pharmacist Requests',
-			type: 'item',
-			icon: icons.IconRegistered,
-			url: '/pages/pharmacist-requests',
-		},
-	],
+			type: 'item', 
+			icon: LocalPharmacyIcon, 
+			url: '/pages/PharmacistsInfo', 
+			target: false 
+		}
+	]
 };
 
 export default pages;
