@@ -14,16 +14,16 @@ class PharmacyRepository {
 	}
 
 	async addPharmacistReq(req){
-        const { userData, speciality, hourlyRate, affiliation, educationalBackground } = req.body;
-        const user = await PharmacistReqModel.addUser(userData, speciality, hourlyRate, affiliation, educationalBackground);
-        return user;
-    }
+		const { userData, speciality, hourlyRate, affiliation, educationalBackground } = req.body;
+		const user = await PharmacistReqModel.addUser(userData, speciality, hourlyRate, affiliation, educationalBackground);
+		return user;
+	}
 
 	async addPharmacist(req){
-        const { userData, speciality, hourlyRate, affiliation, educationalBackground } = req.body;
-        const user = await PharmacistModel.addUser(userData, speciality, hourlyRate, affiliation, educationalBackground);
-        return user;
-    }
+		const { userData, speciality, hourlyRate, affiliation, educationalBackground } = req.body;
+		const user = await PharmacistModel.addUser(userData, speciality, hourlyRate, affiliation, educationalBackground);
+		return user;
+	}
 
 	async checkPharmacistReqUser(req){
 		const { email, userName } = req.body;

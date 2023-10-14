@@ -17,10 +17,10 @@ const app = express();
 app.use(morgan('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use(cookieParser())
+app.use(cookieParser());
 
 
-const mongoURL = process.env.MONGO_URI || "mongodb://localhost:27017/pharmacy";
+const mongoURL = process.env.MONGO_URI || 'mongodb://localhost:27017/pharmacy';
 
 const connect = async () => {
 	try {

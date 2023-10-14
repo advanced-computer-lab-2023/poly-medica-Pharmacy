@@ -21,7 +21,7 @@ Admin.statics.addUser = async function ({ userName, password, mainAdmin }) {
 	const salt = await bcrypt.genSalt();
 	password = await bcrypt.hash(password, salt);
 	const newRecord = new this({ userName, password, mainAdmin });
-	let user = await newRecord.save();
+	const user = await newRecord.save();
 	return user;
 };
 
