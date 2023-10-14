@@ -31,6 +31,7 @@ class UserRepository {
 
 	async deleteUser(userId) {
 		const user = await User.deleteOne({ userId: userId });
+		console.log(user);
 		return user;
 	}
 

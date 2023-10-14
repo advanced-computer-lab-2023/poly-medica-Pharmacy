@@ -55,30 +55,6 @@ const DoctorRequests = () => {
 				console.error('Error accepting pharmacist request:', error);
 			});
 
-		pharmacistReq.type = 'pharmacist';
-		// Add the pharmacist to the users table
-		fetch('http://localhost:8005/pharmacists', {
-			method: 'POST',
-			headers: { 'Content-Type': 'application/json' },
-			body: JSON.stringify({
-				userId: pharmacistReq._id,
-				email: pharmacistReq.userData.email,
-				password: pharmacistReq.userData.password,
-				userName: pharmacistReq.userData.userName,
-				type: pharmacistReq.type,
-			}),
-		})
-			.then((response) => response.json())
-			.then(() => {
-				setPharmacistRequests((prevPharmacistRequests) =>
-					prevPharmacistRequests.filter(
-						(pharmacistRequest) => pharmacistRequest._id !== pharmacistReq._id,
-					),
-				);
-			})
-			.catch((error) => {
-				console.error('Error accepting pharmacist request:', error);
-			});
 	};
 
 	const handleReject = (pharmacistReq) => {

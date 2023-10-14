@@ -119,9 +119,11 @@ export const user = (app) => {
 	app.delete('/users/:id', async (req, res) => {
 		try {
 			const userId = req.params.id;
+			console.log(userId);
 			await user.deleteUser(userId);
 			res.status(OK_REQUEST_CODE_200).end();
 		} catch (err) {
+			console.log(err.message);
 			res
 				.status(SERVER_ERR_REQUEST_CODE_500)
 				.send({ errMessage: "coudn't delete the user" });

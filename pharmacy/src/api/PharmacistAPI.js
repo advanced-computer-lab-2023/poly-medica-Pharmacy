@@ -9,6 +9,7 @@ import {
 	OK_STATUS_CODE,
 	CREATED_STATUS_CODE,
 	AUTH_BASE_URL,
+	PHARMACIST_ENUM,
 } from '../utils/Constants.js';
 
 export const pharmacist = (app) => {
@@ -70,6 +71,14 @@ export const pharmacist = (app) => {
 	app.post('/pharmacists', async (req, res) => {
 		try {
 			const newPharmacist = await service.addPharmacist(req);
+			await axios.post(`${AUTH_BASE_URL}/pharmacists`,{
+				userId: newPharmacist._id,
+				email: newPharmacist.userData.email,
+				password: newPharmacist.userData.password,
+				userName: newPharmacist.userData.userName,
+				type: PHARMACIST_ENUM,
+			});
+		
 			res
 				.status(CREATED_STATUS_CODE)
 				.json({ message: 'pharmacist created!', newPharmacist });
@@ -81,9 +90,10 @@ export const pharmacist = (app) => {
 	app.delete('/pharmacists/:id', async (req, res) => {
 		try {
 			const id = req.params.id;
+			console.log(id);
 			const deletedPharmacist = await service.deletePharmacist(id);
 			if (deletedPharmacist) {
-				axios.delete(`${AUTH_BASE_URL}/users/${id}`);
+				await axios.delete(`${AUTH_BASE_URL}/users/${id}`);
 				res
 					.status(OK_STATUS_CODE)
 					.json({ message: 'pharmacist deleted!', deletedPharmacist });
