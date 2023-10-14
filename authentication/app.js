@@ -22,7 +22,8 @@ app.use(cors({
     credentials: true,
 }));
 
-const mongoURL = process.env.MONGO_URI;
+const mongoURL = process.env.MONGO_URI || "mongodb://localhost:27017/pharmacy";
+console.log(mongoURL);
 
 const connect = async () => {
     try {

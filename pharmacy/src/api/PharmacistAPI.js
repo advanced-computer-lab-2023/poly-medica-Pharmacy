@@ -47,4 +47,13 @@ export const pharmacist = (app) => {
 			} else res.status(BAD_REQUEST_CODE_400).send({errMessage: err.message});
 		}
 	});
+
+	app.post('/check-pharmacist-req', async (req, res) => {
+		try{
+			await service.checkPharmacistReqUser(req);
+			res.status(OK_STATUS_CODE).end();
+		} catch(err){
+			res.status(BAD_REQUEST_CODE_400).send({ errCode:DUPLICATE_KEY_ERROR_CODE, errMessage: err.message });
+		}
+	})
 };

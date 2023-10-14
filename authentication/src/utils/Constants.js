@@ -16,11 +16,15 @@ export const BAD_REQUEST_CODE_400 = 400;
 
 export const OK_REQUEST_CODE_200 = 200;
 
+export const SERVER_ERR_REQUEST_CODE_500 = 500;
+
 export const PATIENT_SIGNUP_URL = "http://localhost:8002/signup"
 
 export const ADMIN_SIGNUP_URL = "http://localhost:8003/add-admin"
 
 export const PHARMACIST_SIGNUP_URL = "http://localhost:8003/add-pharmacist-req"
+
+export const PHARMACIST_BASE_URL = "http://localhost:8003/"
 
 export const DUB_EMAIL_ERROR_MESSAGE = `that email is already registered`
 

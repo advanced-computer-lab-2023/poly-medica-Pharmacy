@@ -7,7 +7,6 @@ import { pharmacist } from './api/PharmacistAPI.js';
 import { medicine } from './api/MedicineAPI.js';
 import { AdminAPI } from './api/AdminAPI.js';
 import morgan from 'morgan';
-import cors from 'cors'
 import cookieParser from 'cookie-parser';
 import bodyParser from 'body-parser';
 import { checkUser } from './middleware/authMiddleware.js';
@@ -19,10 +18,6 @@ app.use(morgan('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser())
-app.use(cors({
-    origin: 'http://localhost:3000',
-    credentials: true,
-}));
 
 
 const mongoURL = process.env.MONGO_URI || "mongodb://localhost:27017/pharmacy";

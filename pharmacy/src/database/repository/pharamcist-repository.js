@@ -24,6 +24,22 @@ class PharmacyRepository {
         const user = await PharmacistModel.addUser(userData, speciality, hourlyRate, affiliation, educationalBackground);
         return user;
     }
+
+	async checkPharmacistReqUser(req){
+		const { email, userName } = req.body;
+		if(email){
+			const checkUserEmail = await PharmacistReqModel.findOne({ 'userData.email': email });
+			if(checkUserEmail){
+				throw new Error('that email is already registered');
+			}
+		}
+		
+		const checkUserUserName = await PharmacistReqModel.findOne({ 'userData.userName': userName });
+		if(checkUserUserName){
+			throw new Error('that username is already registered');
+		}
+
+	}
 }
 
 export default PharmacyRepository;

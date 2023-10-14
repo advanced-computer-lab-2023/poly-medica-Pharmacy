@@ -8,8 +8,8 @@ class UserRepository{
         return user;
     }
     async loginUser(req){
-        const { email, password } = req.body;
-        const user = await User.findOne({email: email})
+        const { userName, password } = req.body;
+        const user = await User.findOne({userName: userName}).lean();
         if(user){
         if(password){
             const auth = await bcrypt.compare(password, user.password);
@@ -19,6 +19,12 @@ class UserRepository{
             }throw Error("incorrect Password")
         } throw Error("incorrect Email")
     }
+
+    async deleteUser(userId){
+        await User.deleteOne({ userId: userId});
+    }
+
+
     async findUserByEmail(email){
         let user = await User.findOne({email: email}).lean();
         return user;
