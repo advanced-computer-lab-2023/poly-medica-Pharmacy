@@ -106,9 +106,8 @@ export const user = (app) => {
 			});
 			res.send({
 				id: logedinUser.userId,
-				name: logedinUser.userName,
+				userName: logedinUser.userName,
 				type: logedinUser.type,
-				token: token,
 			});
 		} catch (err) {
 			res.status(BAD_REQUEST_CODE_400).send({ message: err.message });
