@@ -14,6 +14,20 @@ class PharmacistService{
 		const pharmacist = await this.repository.findAllPharmacists();
 		return pharmacist;
 	}
+
+	async addPharmacist(req){
+        const pharmacistUser = await this.repository.addPharmacist(req);
+        return pharmacistUser;
+    }
+
+    async addReqPharmacist(req){
+        const pharmacistUser = await this.repository.addPharmacistReq(req);
+        return pharmacistUser;
+    }
+
+	async checkPharmacistReqUser(req){
+		await this.repository.checkPharmacistReqUser(req);
+	}
 }
 
 export default PharmacistService;

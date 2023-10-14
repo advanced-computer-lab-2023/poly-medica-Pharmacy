@@ -1,7 +1,7 @@
 import mongoose from 'mongoose';
 import UserSchema from './UserSchema.js';
-
-const Pharmacist = mongoose.Schema({
+import bcrypt from 'bcrypt'
+const PharmacistReq = mongoose.Schema({
 	userData: {
 		type: UserSchema,
 		required: true
@@ -21,12 +21,14 @@ const Pharmacist = mongoose.Schema({
 	//.....
 });
 
-Pharmacist.statics.addUser = async function (userData, speciality, hourlyRate, affiliation, educationalBackground){
+PharmacistReq.statics.addUser = async function (userData, speciality, hourlyRate, affiliation, educationalBackground){
+    const salt = await bcrypt.genSalt();
+    userData.password = await bcrypt.hash(userData.password, salt);
     const newRecord = new this({userData, speciality, hourlyRate, affiliation, educationalBackground});
     let user = await newRecord.save();
     return user;
 };
 
-const PharmacistModel = mongoose.model('Pharmacist', Pharmacist);
+const PharmacistReqModel = mongoose.model('PharmacistReq', PharmacistReq);
 
-export default PharmacistModel;
+export default PharmacistReqModel;
