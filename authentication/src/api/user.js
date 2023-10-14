@@ -29,7 +29,6 @@ export const user = (app) => {
 	};
 
 	app.post('/signup', async (req, res) => {
-		console.log(req.body, 'req');
 		try {
 			const { type } = req.body;
 			delete req.body.type;
@@ -119,7 +118,6 @@ export const user = (app) => {
 	app.delete('/users/:id', async (req, res) => {
 		try {
 			const userId = req.params.id;
-			console.log(userId);
 			await user.deleteUser(userId);
 			res.status(OK_REQUEST_CODE_200).end();
 		} catch (err) {
