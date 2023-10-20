@@ -3,7 +3,7 @@ import Swal from 'sweetalert2';
 
 
 const instance = axios.create({
-  baseURL: 'http://localhost:8005',
+  baseURL: 'http://localhost:8004',
   withCredentials: true 
 });
 
@@ -18,11 +18,10 @@ instance.interceptors.response.use(
             title: 'Unauthorized',
             text: 'You are unauthorized to access this resource.',
           }).then(() => {
-            window.location.href = '/pages/login/login3';
+            window.location.href = '/login/login3';
           });
     }
     return error;
-    // return Promise.reject(error);
   }
 );
 

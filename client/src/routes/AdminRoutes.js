@@ -23,14 +23,16 @@ const UtilsShadow = Loadable(lazy(() => import('pages/utilities/Shadow')));
 // sample page routing
 const SamplePage = Loadable(lazy(() => import('pages/sample-page')));
 
+//TODO: take the profile page from the clinic
+
 // ==============================|| MAIN ROUTING ||============================== //
 
-const MainRoutes = {
-	path: '/',
-	element: <MainLayout />,
+const AdminRoutes = {
+	path: '/admin',
+	element: <MainLayout userType={'admin'}/>,
 	children: [
 		{
-			path: '/',
+			path: 'admin',
 			element: <DashboardDefault />
 		},
 		{
@@ -110,4 +112,4 @@ const MainRoutes = {
 	]
 };
 
-export default MainRoutes;
+export default AdminRoutes;

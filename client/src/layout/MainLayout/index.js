@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from 'react-redux';
-import { Outlet } from 'react-router-dom';
+import { Outlet, useNavigate } from 'react-router-dom';
 
 // material-ui
 import { styled, useTheme } from '@mui/material/styles';
@@ -14,6 +14,8 @@ import Sidebar from './Sidebar';
 import { drawerWidth } from 'store/constant';
 import { SET_MENU } from 'store/actions';
 import { SearchProvider } from 'contexts/SearchContext';
+import { useUserContext } from 'hooks/useUserContext';
+import { useEffect } from 'react';
 
 // assets
 // import { IconChevronRight } from '@tabler/icons';
@@ -54,11 +56,18 @@ const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })(({
 
 // ==============================|| MAIN LAYOUT ||============================== //
 
-const MainLayout = () => {
+const MainLayout = ({ userType }) => {
 	const theme = useTheme();
 	const matchDownMd = useMediaQuery(theme.breakpoints.down('md'));
 	// Handle left drawer
 	const leftDrawerOpened = useSelector((state) => state.customization.opened);
+	const { user } = useUserContext();
+	const navigate = useNavigate();
+	useEffect(() => {
+		if(!user || user.type != userType){
+			navigate(`/${user.type}`);
+		}
+	},[]);
 	const dispatch = useDispatch();
 	const handleLeftDrawerToggle = () => {
 		dispatch({ type: SET_MENU, opened: !leftDrawerOpened });
@@ -85,12 +94,12 @@ const MainLayout = () => {
 			</AppBar>
 
 			{/* drawer */}
-			<Sidebar drawerOpen={!matchDownMd ? leftDrawerOpened : !leftDrawerOpened} drawerToggle={handleLeftDrawerToggle} />
+			{user && user.type == userType && <Sidebar drawerOpen={!matchDownMd ? leftDrawerOpened : !leftDrawerOpened} drawerToggle={handleLeftDrawerToggle} />}
 
-			{/* main content */}
+					{/* main content */}
 			<Main theme={theme} open={leftDrawerOpened}>
-        
-				<Outlet />
+					{(!user || user.type != userType) && <h1>not autherized!!</h1>}
+					{user && user.type == userType && <Outlet />}
 			</Main>
 			{/* <Customization /> */}
 		</Box>

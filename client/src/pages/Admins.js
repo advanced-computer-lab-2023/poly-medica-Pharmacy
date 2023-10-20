@@ -58,7 +58,7 @@ const Admins = () => {
 			return;
 		}
 
-		fetch(`http://localhost:8004/admins/${adminToDelete}`, {
+		fetch(`http://localhost:8003/admins/${adminToDelete}`, {
 			method: 'DELETE',
 		})
 			.then((response) => response.json())
@@ -103,7 +103,7 @@ const Admins = () => {
 		}
 
 		// Make a POST request to add a new admin
-		fetch('http://localhost:8005/admins', {
+		fetch('http://localhost:8004/admins/pharmacy', {
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json',

@@ -61,7 +61,7 @@ const ProfileSection = () => {
 	const handleLogout = async () => {
 		await axiosInstanceAuthService.get('/remove-cookie').then( () => {
 			dispatch({ auth: false, payload: null });
-			navigate('pages/login/login3');
+			navigate('/login/login3');
 		}).catch(() => {
 			Swal.fire({
 				icon: 'error',

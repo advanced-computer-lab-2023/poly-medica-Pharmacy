@@ -58,7 +58,7 @@ const Pharmacists = () => {
 				setConfirmDeleteDialogOpen(false);
 			});
 
-		fetch(`http://localhost:8005/users/${pharmacistToDelete}`, {
+		fetch(`http://localhost:8004/users/${pharmacistToDelete}`, {
 			method: 'DELETE',
 		})
 			.then((response) => response.json())
