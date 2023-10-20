@@ -25,10 +25,11 @@ const App = () => {
 	const { dispatch, user } = useUserContext();
 	const navigate = useNavigate();
 	const location = useLocation();
-	const [loading, setIsLoading] = useState(false);
+	const [loading, setIsLoading] = useState(true);
 	useEffect(() => {
 		setIsLoading(true);
-		axios.get('http://localhost:8005/check-user', {  withCredentials:true }).then(async userCheck => {
+		axios.get('http://localhost:8004/check-user', {  withCredentials:true }).then(async userCheck => {
+			console.log({ userCheck });
 			if(!user) {
 				await dispatch({ auth: true, payload: userCheck.data });
 				setIsLoading(false);
