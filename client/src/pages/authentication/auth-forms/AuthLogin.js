@@ -20,12 +20,12 @@ import Loader from 'ui-component/Loader';
 import axios from 'axios';
 
 
-// ============================|| FIREBASE - LOGIN ||============================ //
+// ============================|| LOGIN ||============================ //
 
 const FirebaseLogin = () => {
 	const [isSubmitting, setIsSubmitting] = useState(false);
 	const [password, setPassword] = useState("");
-	const [userName, setUserName] = useState(""); // TODO: change this to userName <= here
+	const [userName, setUserName] = useState("");
 	const { user, dispatch } = useUserContext();
 	const [isLoading, setIsLoading] = useState(true);
 	const navigate = useNavigate();
@@ -33,11 +33,11 @@ const FirebaseLogin = () => {
 	useEffect(() => {
 		setIsLoading(true);
 		if(user){
-			navigate('/');
+			navigate(`/${user.type}`);
 		}else {
-			axios.get('http://localhost:8005/check-user', { withCredentials: true }).then(user => {
-				dispatch({ auth: true, payload: user.data });
-				navigate('/');
+			axios.get('http://localhost:8004/check-user', { withCredentials: true }).then(async userData => {
+				await dispatch({ auth: true, payload: userData.data });
+				navigate(`/${userData.data.type}`);
 			}).catch( () => {
 				setIsLoading(false);
 			});	
@@ -53,7 +53,7 @@ const FirebaseLogin = () => {
 		const data = response.data;		
 		if(response.status === 200){
 			dispatch({ auth: true, payload:data });
-			navigate('/');
+			navigate(`/${data.type}`);
 			setIsSubmitting(false);
 		} else{
 			Swal.fire({

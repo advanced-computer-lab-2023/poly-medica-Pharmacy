@@ -77,6 +77,7 @@ export const user = (app) => {
 			}
 			res.status(OK_REQUEST_CODE_200).end();
 		} catch (err) {
+			console.log(err);
 			if (err.response) {
 				if (err.response.data.errCode == DUPLICATE_KEY_ERROR_CODE) {
 					res

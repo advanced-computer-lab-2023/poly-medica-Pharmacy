@@ -25,34 +25,11 @@ const pages = {
 	type: 'group',
 	children: [
 		{
-			id: 'authentication',
-			title: 'page',
-			type: 'collapse',
-			icon: icons.IconKey,
-
-			children: [
-				{
-					id: 'login3',
-					title: 'subPage',
-					type: 'item',
-					url: '/pages/login/login3',
-					target: true
-				},
-				{
-					id: 'register3',
-					title: 'subPage',
-					type: 'item',
-					url: '/pages/register/register3',
-					target: true
-				}
-			]
-		},
-		{
 			id: 'medicines',
 			title: 'Medicines',
 			type: 'item',
 			icon: icons.IconVaccineBottle,
-			url: '/pages/medicines',
+			url: '/pharmacist/pages/medicines',
 			target: false
 		},
 		{
@@ -60,7 +37,7 @@ const pages = {
 			title: 'Patient Info',
 			type: 'item',
 			icon: PersonIcon,
-			url: '/pages/PatientInfo',
+			url: '/pharmacist/pages/PatientInfo',
 			target: false
 		},
 		{
@@ -68,7 +45,7 @@ const pages = {
 			title: 'Pharmacists Info',
 			type: 'item',
 			icon: LocalPharmacyIcon,
-			url: '/pages/PharmacistsInfo',
+			url: '/pharmacist/pages/PharmacistsInfo',
 			target: false
 		},
 		{
@@ -76,7 +53,7 @@ const pages = {
 			title: 'Admins',
 			type: 'item',
 			icon: icons.AdminPanelSettingsOutlinedIcon,
-			url: '/pages/admins',
+			url: '/pharmacist/pages/admins',
 			target: false,
 		},
 		{
@@ -84,7 +61,7 @@ const pages = {
 			title: 'Patients',
 			type: 'item',
 			icon: icons.IconEmergencyBed,
-			url: '/pages/patients',
+			url: '/pharmacist/pages/patients',
 			target: false,
 		},
 		{
@@ -92,7 +69,7 @@ const pages = {
 			title: 'Pharmacists',
 			type: 'item',
 			icon: icons.IconMedicineSyrup,
-			url: '/pages/pharmacists',
+			url: '/pharmacist/pages/pharmacists',
 			target: false,
 		},
 		{
@@ -100,7 +77,7 @@ const pages = {
 			title: 'Pharmacist Requests',
 			type: 'item',
 			icon: icons.IconRegistered,
-			url: '/pages/pharmacist-requests',
+			url: '/pharmacist/pages/pharmacist-requests',
 		},
 
 	]
