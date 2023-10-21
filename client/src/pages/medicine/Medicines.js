@@ -8,11 +8,13 @@ import MedicineDetails from './MedicineDetails';
 import AddMedicine from './AddMedicine';
 import EditMedicine from './EditMedicine';
 import { useSearch } from 'contexts/SearchContext';
+import { useFilter } from 'contexts/FilterContext';
 
 const Medicines = () => {
 	const [medicines, setMedicines] = useState([]);
 	const [originalMedicines, setOriginalMedicines] = useState([]);
 	const { searchQuery } = useSearch();
+	const { filterData, updateFilter } = useFilter();
 	const [selectedMedicine, setSelectedMedicine] = useState(null);
 	const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
 	const [newMedicine, setNewMedicine] = useState({
@@ -26,12 +28,20 @@ const Medicines = () => {
 	const [image, setImage] = useState(null);
 	const [selectedEditMedicine, setSelectedEditMedicine] = useState(null);
 	const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
-
+	const medicinalUses = [];
 	useEffect(() => {
 		pharmacyAxios.get('/medicines')
 			.then((response) => {
 				setMedicines(response.data.medicines);
 				setOriginalMedicines(response.data.medicines);
+				for (let i = 0; i < response.data.medicines.length; i++) {
+					const medicine = response.data.medicines[i];
+					if (!medicinalUses.includes(medicine.medicinalUse)) medicinalUses.push(medicine.medicinalUse);
+				}
+				updateFilter([{
+                    attribute: 'Medicinal Use',
+                    values: medicinalUses
+                }]);
 			})
 			.catch(error => {
 				console.log(error);
@@ -40,10 +50,11 @@ const Medicines = () => {
 
 	useEffect(() => {
 		const filteredMedicines = originalMedicines.filter((medicine) =>
-			medicine.name.toLowerCase().includes(searchQuery.toLowerCase())
+			medicine.name.toLowerCase().includes(searchQuery.toLowerCase()) &&
+			(!filterData[0].selectedValue || medicine.medicinalUse === filterData[0].selectedValue)
 		);
 		setMedicines(filteredMedicines);
-	}, [searchQuery, originalMedicines]);
+	}, [searchQuery, originalMedicines, filterData]);
 
 	const handleDialogClose = () => {
 		setSelectedMedicine(null);

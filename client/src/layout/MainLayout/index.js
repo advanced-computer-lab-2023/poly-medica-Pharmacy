@@ -14,6 +14,7 @@ import Sidebar from './Sidebar';
 import { drawerWidth } from 'store/constant';
 import { SET_MENU } from 'store/actions';
 import { SearchProvider } from 'contexts/SearchContext';
+import { FilterProvider } from 'contexts/FilterContext';
 
 // assets
 // import { IconChevronRight } from '@tabler/icons';
@@ -65,6 +66,7 @@ const MainLayout = () => {
 	};
 
 	return (
+		<FilterProvider>
 		<SearchProvider>
 		<Box sx={{ display: 'flex' }}>
 			<CssBaseline />
@@ -95,6 +97,7 @@ const MainLayout = () => {
 			{/* <Customization /> */}
 		</Box>
 		</SearchProvider>
+		</FilterProvider>
 	);
 };
 
