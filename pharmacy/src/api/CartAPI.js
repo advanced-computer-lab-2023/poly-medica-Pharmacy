@@ -3,14 +3,23 @@ import {
 	ERROR_STATUS_CODE,
 	NOT_FOUND_STATUS_CODE,
 	OK_STATUS_CODE,
+	PHAP
 } from '../utils/Constants.js';
+
+import { isValidMongoId } from '../utils/Validation.js';
 
 export const cart = (app) => {
 	const service = new CartService();
-	const userId = '6534395d7a9849cea9066267';
 
 	app.post('/cart/', async (req, res) => {
 		try {
+			const userId = req.body.userId;
+			if (!isValidMongoId(userId)) {
+				return res
+					.status(NOT_FOUND_STATUS_CODE)
+					.json({ err: 'Invalid user id!' });
+			}
+
 			const cart = await service.createCart(userId);
 			res.status(OK_STATUS_CODE).json({ cart });
 		} catch (err) {
@@ -28,9 +37,28 @@ export const cart = (app) => {
 		}
 	});
 
+	app.get('/cart/medicines/', async (req, res) => {
+		try {
+			const userId = req.body.userId;
+			const medicineIds = await service.getCartMedicines(userId);
+			const 
+			let medicines = {};
+			
+
+			res.status(OK_STATUS_CODE).json({ medicines });
+		} catch (err) {
+			res.status(ERROR_STATUS_CODE).json({ err: err.message });
+		}
+	});
+
 	app.patch('/cart/medicines/:id', async (req, res) => {
 		try {
 			const { id } = req.params;
+			if (!isValidMongoId(id)) {
+				return res
+					.status(NOT_FOUND_STATUS_CODE)
+					.json({ err: 'Invalid medicine id!' });
+			}
 			const { quantity } = req.body;
 			const cart = await service.updateMedicineInCart(id, quantity);
 			if (!cart) {
@@ -47,6 +75,11 @@ export const cart = (app) => {
 	app.delete('/cart/medicines/:id', async (req, res) => {
 		try {
 			const { id } = req.params;
+			if (!isValidMongoId(id)) {
+				return res
+					.status(NOT_FOUND_STATUS_CODE)
+					.json({ err: 'Invalid medicine id!' });
+			}
 			const deletedMedicine = await service.deleteMedicineFromCart(id);
 			if (!deletedMedicine) {
 				return res
@@ -61,14 +94,23 @@ export const cart = (app) => {
 		}
 	});
 
-	app.get('/cart/', async (req, res) => {
+	app.get('/cart/:userId', async (req, res) => {
 		try {
+			const { userId } = req.params;
+			if (!isValidMongoId(userId)) {
+				return res
+					.status(NOT_FOUND_STATUS_CODE)
+					.json({ err: 'Invalid user id!' });
+			}
 			const cart = await service.getCart(userId);
 			if (!cart) {
-				return res.status(ERROR_STATUS_CODE).json({ err: 'cart not found' });
+				return res
+					.status(NOT_FOUND_STATUS_CODE)
+					.json({ err: 'cart not found' });
 			}
 			res.status(OK_STATUS_CODE).json({ cart });
 		} catch (err) {
+			console.log(err.message, 'err in cart api');
 			res.status(ERROR_STATUS_CODE).json({ err: err.message });
 		}
 	});

@@ -11,22 +11,32 @@ class CartService {
 	}
 
 	async addMedicineToCart(userId, medicineId) {
-		const cart = this.repository.addMedicineToCart(userId, medicineId);
+		const cart = await this.repository.addMedicineToCart(userId, medicineId);
 		return cart;
 	}
 
+	async getCartMedicines(userId) {
+		const medicines = await this.repository.getCartMedicines(userId);
+		return medicines;
+	}
+
+	async getMedicines(medicineIds) {
+		const medicines = await this.repository.getMedicines(medicineIds);
+		return medicines;
+	}
+
 	async updateMedicineInCart(id, quantity) {
-		const cart = this.repository.updateMedicineInCart(id, quantity);
+		const cart = await this.repository.updateMedicineInCart(id, quantity);
 		return cart;
 	}
 
 	async deleteMedicineFromCart(id) {
-		const medicine = this.repository.deleteMedicineFromCart(id);
+		const medicine = await this.repository.deleteMedicineFromCart(id);
 		return medicine;
 	}
 
 	async getCart(userId) {
-		const cart = this.repository.getCart(userId);
+		const cart = await this.repository.getCart(userId);
 		return cart;
 	}
 }

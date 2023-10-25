@@ -8,7 +8,7 @@ const Cart = mongoose.Schema({
 	},
 	medicines: [
 		{
-			medicineId: {
+			medicine: {
 				type: mongoose.Schema.Types.ObjectId,
 				ref: 'Medicine',
 				required: true,
@@ -20,6 +20,26 @@ const Cart = mongoose.Schema({
 		},
 	],
 });
+
+Cart.statics.signup = async function (
+	userId,
+	email,
+	password,
+	userName,
+	type,
+	state,
+) {
+	const userRecord = new this({
+		userId: new mongoose.Types.ObjectId(userId),
+		email,
+		password,
+		userName,
+		type,
+		state,
+	});
+	const result = await userRecord.save();
+	return result;
+};
 
 const CartModel = mongoose.model('Cart', Cart);
 

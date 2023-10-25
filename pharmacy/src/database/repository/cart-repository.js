@@ -1,24 +1,34 @@
 import CartModel from '../models/Cart.js';
+import mongoose from 'mongoose';
 
 class CartRepository {
 	async createCart(userId) {
-		const cart = await CartModel.create({ userId });
+		const cart = await CartModel.create({
+			userId: new mongoose.Types.ObjectId(userId),
+		});
 		return cart;
 	}
 
 	async addMedicineToCart(userId, medicineId) {
 		const cart = await CartModel.findOneAndUpdate(
-			{ userId: userId },
+			{ userId: new mongoose.Types.ObjectId(userId) },
 			{
 				$push: {
 					medicines: {
-						medicineId: medicineId,
+						medicineId: new mongoose.Types.ObjectId(medicineId),
 					},
 				},
 			},
 			{ new: true },
 		);
 		return cart;
+	}
+
+	async getCartMedicines(userId) {
+		const cart = await CartModel.findOne({
+			userId: new mongoose.Types.ObjectId(userId),
+		});
+		return cart.medicines;
 	}
 
 	async updateMedicineInCart(id, quantity) {
@@ -35,7 +45,9 @@ class CartRepository {
 	}
 
 	async getCart(userId) {
-		const cart = await CartModel.findOne({ userId: userId });
+		const cart = await CartModel.findOne({
+			userId: new mongoose.Types.ObjectId(userId),
+		});
 		return cart;
 	}
 
