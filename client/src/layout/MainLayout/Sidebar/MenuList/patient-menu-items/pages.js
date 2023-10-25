@@ -1,8 +1,12 @@
-
 // assets
-import { IconKey, IconVaccineBottle, IconEmergencyBed,
+import {
+	IconKey,
+	IconVaccineBottle,
+	IconEmergencyBed,
 	IconMedicineSyrup,
-	IconRegistered, } from '@tabler/icons';
+	IconRegistered,
+} from '@tabler/icons';
+import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
 import PersonIcon from '@mui/icons-material/Person';
 import LocalPharmacyIcon from '@mui/icons-material/LocalPharmacy';
 import AdminPanelSettingsOutlinedIcon from '@mui/icons-material/AdminPanelSettingsOutlined';
@@ -14,6 +18,7 @@ const icons = {
 	IconMedicineSyrup,
 	AdminPanelSettingsOutlinedIcon,
 	IconRegistered,
+	ShoppingCartOutlinedIcon,
 };
 
 // ==============================|| EXTRA PAGES MENU ITEMS ||============================== //
@@ -30,7 +35,15 @@ const pages = {
 			type: 'item',
 			icon: icons.IconVaccineBottle,
 			url: '/patient/pages/medicines',
-			target: false
+			target: false,
+		},
+		{
+			id: 'cart',
+			title: 'Cart',
+			type: 'item',
+			icon: ShoppingCartOutlinedIcon,
+			url: '/patient/pages/cart',
+			target: false,
 		},
 		{
 			id: 'patientInfo',
@@ -38,7 +51,7 @@ const pages = {
 			type: 'item',
 			icon: PersonIcon,
 			url: '/patient/pages/PatientInfo',
-			target: false
+			target: false,
 		},
 		{
 			id: 'pharmacistsInfo',
@@ -46,7 +59,7 @@ const pages = {
 			type: 'item',
 			icon: LocalPharmacyIcon,
 			url: '/patient/pages/PharmacistsInfo',
-			target: false
+			target: false,
 		},
 		{
 			id: 'admins',
@@ -79,8 +92,7 @@ const pages = {
 			icon: icons.IconRegistered,
 			url: '/patient/pages/pharmacist-requests',
 		},
-
-	]
+	],
 };
 
 export default pages;

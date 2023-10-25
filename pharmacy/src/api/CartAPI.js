@@ -36,9 +36,9 @@ export const cart = (app) => {
 		}
 	});
 
-	app.get('/cart/medicines/', async (req, res) => {
+	app.get('/cart/:userId/medicines/', async (req, res) => {
 		try {
-			const userId = req.body.userId;
+			const { userId } = req.params;
 			const medicines = await service.getCartMedicines(userId);
 			res.status(OK_STATUS_CODE).json({ medicines });
 		} catch (err) {
