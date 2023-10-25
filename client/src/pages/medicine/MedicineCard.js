@@ -60,7 +60,7 @@ const MedicineCard = ({
 					<IconButton
 						color='primary'
 						aria-label='add to shopping cart'
-						onClick={() => handleAddToCart(medicine._id)}
+						onClick={() => handleAddToCart(medicine)}
 						variant='contained'
 					>
 						<AddShoppingCartIcon />

@@ -3,7 +3,6 @@ import {
 	ERROR_STATUS_CODE,
 	NOT_FOUND_STATUS_CODE,
 	OK_STATUS_CODE,
-	PHAP
 } from '../utils/Constants.js';
 
 import { isValidMongoId } from '../utils/Validation.js';
@@ -29,8 +28,8 @@ export const cart = (app) => {
 
 	app.post('/cart/medicines', async (req, res) => {
 		try {
-			const { userId, medicineId } = req.body;
-			const cart = await service.addMedicineToCart(userId, medicineId);
+			const { userId, medicine, quantity } = req.body;
+			const cart = await service.addMedicineToCart(userId, medicine, quantity);
 			res.status(OK_STATUS_CODE).json({ cart });
 		} catch (err) {
 			res.status(ERROR_STATUS_CODE).json({ err: err.message });
@@ -40,11 +39,7 @@ export const cart = (app) => {
 	app.get('/cart/medicines/', async (req, res) => {
 		try {
 			const userId = req.body.userId;
-			const medicineIds = await service.getCartMedicines(userId);
-			const 
-			let medicines = {};
-			
-
+			const medicines = await service.getCartMedicines(userId);
 			res.status(OK_STATUS_CODE).json({ medicines });
 		} catch (err) {
 			res.status(ERROR_STATUS_CODE).json({ err: err.message });

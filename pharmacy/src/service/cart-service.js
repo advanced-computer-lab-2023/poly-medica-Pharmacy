@@ -10,8 +10,12 @@ class CartService {
 		return cart;
 	}
 
-	async addMedicineToCart(userId, medicineId) {
-		const cart = await this.repository.addMedicineToCart(userId, medicineId);
+	async addMedicineToCart(userId, medicine, quantity) {
+		const cart = await this.repository.addMedicineToCart(
+			userId,
+			medicine,
+			quantity,
+		);
 		return cart;
 	}
 

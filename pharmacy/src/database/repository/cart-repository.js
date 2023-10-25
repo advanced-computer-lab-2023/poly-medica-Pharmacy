@@ -9,13 +9,14 @@ class CartRepository {
 		return cart;
 	}
 
-	async addMedicineToCart(userId, medicineId) {
+	async addMedicineToCart(userId, medicine, quantity) {
 		const cart = await CartModel.findOneAndUpdate(
 			{ userId: new mongoose.Types.ObjectId(userId) },
 			{
 				$push: {
 					medicines: {
-						medicineId: new mongoose.Types.ObjectId(medicineId),
+						medicine: medicine,
+						quantity: quantity,
 					},
 				},
 			},
@@ -33,7 +34,7 @@ class CartRepository {
 
 	async updateMedicineInCart(id, quantity) {
 		const cart = await CartModel.findOneAndUpdate(
-			{ 'medicines.medicineId': id },
+			{ 'medicines.medicine._id': id },
 			{
 				$set: {
 					'medicines.$.quantity': quantity,
@@ -53,11 +54,11 @@ class CartRepository {
 
 	async deleteMedicineFromCart(id) {
 		const medicine = await CartModel.findOneAndUpdate(
-			{ 'medicines.medicineId': id },
+			{ 'medicines.medicine._id': id },
 			{
 				$pull: {
 					medicines: {
-						medicineId: id,
+						'medicine._id': id,
 					},
 				},
 			},
