@@ -9,9 +9,42 @@ const Cart = mongoose.Schema({
 	medicines: [
 		{
 			medicine: {
-				type: mongoose.Schema.Types.ObjectId,
-				ref: 'Medicine',
-				required: true,
+				_id: {
+					type: mongoose.Schema.Types.ObjectId,
+					required: true,
+				},
+				name: {
+					type: String,
+					required: true,
+				},
+				price: {
+					type: Number,
+					required: true,
+				},
+				description: {
+					type: String,
+					required: true,
+				},
+				pictureName: {
+					type: String,
+				},
+				quantity: {
+					type: Number,
+					required: true,
+				},
+				sales: {
+					type: Number,
+					required: true,
+					default: 0,
+				},
+				medicinalUse: {
+					type: String,
+					required: true,
+				},
+				activeIngerdients: {
+					type: String,
+					required: true,
+				},
 			},
 			quantity: {
 				type: Number,
@@ -20,26 +53,6 @@ const Cart = mongoose.Schema({
 		},
 	],
 });
-
-Cart.statics.signup = async function (
-	userId,
-	email,
-	password,
-	userName,
-	type,
-	state,
-) {
-	const userRecord = new this({
-		userId: new mongoose.Types.ObjectId(userId),
-		email,
-		password,
-		userName,
-		type,
-		state,
-	});
-	const result = await userRecord.save();
-	return result;
-};
 
 const CartModel = mongoose.model('Cart', Cart);
 
