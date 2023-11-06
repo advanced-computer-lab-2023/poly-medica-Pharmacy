@@ -10,13 +10,14 @@ class CartService {
 		return cart;
 	}
 
-	async addMedicineToCart(userId, medicine, quantity) {
-		const cart = await this.repository.addMedicineToCart(
-			userId,
-			medicine,
-			quantity,
-		);
+	async addMedicineToCart(userId, medicine) {
+		const cart = await this.repository.addMedicineToCart(userId, medicine);
 		return cart;
+	}
+
+	async getMedicine(userId, medicineId) {
+		const medicine = await this.repository.getMedicine(userId, medicineId);
+		return medicine;
 	}
 
 	async getCartMedicines(userId) {
@@ -29,14 +30,22 @@ class CartService {
 		return medicines;
 	}
 
-	async updateMedicineInCart(id, quantity) {
-		const cart = await this.repository.updateMedicineInCart(id, quantity);
+	async updateMedicineInCart(userId, medicineId, quantity) {
+		const cart = await this.repository.updateMedicineInCart(
+			userId,
+			medicineId,
+			quantity,
+		);
 		return cart;
 	}
 
-	async deleteMedicineFromCart(id) {
-		const medicine = await this.repository.deleteMedicineFromCart(id);
-		return medicine;
+	
+	async deleteMedicineFromCart(userId, medicineId) {
+		const cart = await this.repository.deleteMedicineFromCart(
+			userId,
+			medicineId,
+		);
+		return cart;
 	}
 
 	async getCart(userId) {

@@ -7,6 +7,7 @@ const MedicinesList = ({
 	setSelectedMedicine,
 	handleEditButtonClick,
 	handleAddToCart,
+	userType,
 }) => {
 	return (
 		<List>
@@ -19,6 +20,7 @@ const MedicinesList = ({
 								handleEditButtonClick={handleEditButtonClick}
 								setSelectedMedicine={setSelectedMedicine}
 								handleAddToCart={handleAddToCart}
+								userType={userType}
 							></MedicineCard>
 						</div>
 					</div>

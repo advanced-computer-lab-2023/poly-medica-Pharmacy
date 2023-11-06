@@ -135,14 +135,31 @@ const Medicines = () => {
 		}
 	};
 
-	const handleAddToCart = (medicine) => {
-		pharmacyAxios
-			.post('/cart/medicines', { userId, medicine, quantity: 1 })
+	const handleAddToCart = async (medicine) => {
+		await pharmacyAxios
+			.post(`/cart/medicines/${medicine._id}`, { userId })
 			.then((response) => {
-				console.log(response);
+				pharmacyAxios
+					.patch(`/cart/medicines/${medicine._id}`, {
+						userId,
+						quantity: response.data.medicine.quantity + 1,
+					})
+					.then((response) => {
+						console.log(response);
+					});
 			})
 			.catch((error) => {
-				console.log(error);
+				if (error.response.status === 404) {
+					console.log('MERO 3');
+					pharmacyAxios
+						.post('/cart/medicines', { userId, medicine, quantity: 1 })
+						.then((response) => {
+							console.log(response);
+						})
+						.catch((error) => {
+							console.log(error);
+						});
+				}
 			});
 	};
 
@@ -153,6 +170,7 @@ const Medicines = () => {
 				setSelectedMedicine={setSelectedMedicine}
 				handleEditButtonClick={handleEditButtonClick}
 				handleAddToCart={handleAddToCart}
+				userType={userType}
 			/>
 			{userType === 'pharmacist' && (
 				<Fab

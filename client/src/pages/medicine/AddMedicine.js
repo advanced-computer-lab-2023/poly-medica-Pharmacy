@@ -17,11 +17,7 @@ const AddMedicine = ({
 	handleImageUpload,
 	handleAddMedicine,
 	newMedicine,
-	userType,
 }) => {
-	console.log(userType, 'userType');
-	if (userType !== 'pharmacist') return null;
-
 	return (
 		<Dialog open={isAddDialogOpen} onClose={handleAddDialogClose}>
 			<DialogTitle>Add New Medicine</DialogTitle>

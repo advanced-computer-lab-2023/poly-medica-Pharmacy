@@ -28,8 +28,8 @@ export const cart = (app) => {
 
 	app.post('/cart/medicines', async (req, res) => {
 		try {
-			const { userId, medicine, quantity } = req.body;
-			const cart = await service.addMedicineToCart(userId, medicine, quantity);
+			const { userId, medicine } = req.body;
+			const cart = await service.addMedicineToCart(userId, medicine);
 			res.status(OK_STATUS_CODE).json({ cart });
 		} catch (err) {
 			res.status(ERROR_STATUS_CODE).json({ err: err.message });
@@ -39,6 +39,11 @@ export const cart = (app) => {
 	app.get('/cart/:userId/medicines/', async (req, res) => {
 		try {
 			const { userId } = req.params;
+			if (!isValidMongoId(userId)) {
+				return res
+					.status(NOT_FOUND_STATUS_CODE)
+					.json({ err: 'Invalid user id!' });
+			}
 			const medicines = await service.getCartMedicines(userId);
 			res.status(OK_STATUS_CODE).json({ medicines });
 		} catch (err) {
@@ -46,16 +51,58 @@ export const cart = (app) => {
 		}
 	});
 
-	app.patch('/cart/medicines/:id', async (req, res) => {
+	app.post('/cart/medicines/:medicineId', async (req, res) => {
 		try {
-			const { id } = req.params;
-			if (!isValidMongoId(id)) {
+			const { userId } = req.body;
+			const { medicineId } = req.params;
+			console.log('medicineId', medicineId);
+			console.log('userId', userId);
+			if (!isValidMongoId(medicineId)) {
 				return res
 					.status(NOT_FOUND_STATUS_CODE)
 					.json({ err: 'Invalid medicine id!' });
 			}
+			if (!isValidMongoId(userId)) {
+				return res
+					.status(NOT_FOUND_STATUS_CODE)
+					.json({ err: 'Invalid user id!' });
+			}
+			const medicine = await service.getMedicine(userId, medicineId);
+			console.log('medicine', medicine);
+			if (!medicine) {
+				return res
+					.status(NOT_FOUND_STATUS_CODE)
+					.json({ err: 'Medicine not found!' });
+			}
+			res.status(OK_STATUS_CODE).json({ medicine });
+		} catch (err) {
+			res.status(ERROR_STATUS_CODE).json({ err: err.message });
+		}
+	});
+
+	app.patch('/cart/medicines/:medicineId', async (req, res) => {
+		try {
+			const { medicineId } = req.params;
+			const { userId } = req.body;
+			if (!isValidMongoId(medicineId)) {
+				return res
+					.status(NOT_FOUND_STATUS_CODE)
+					.json({ err: 'Invalid medicine id!' });
+			}
+			if (!isValidMongoId(userId)) {
+				return res
+					.status(NOT_FOUND_STATUS_CODE)
+					.json({ err: 'Invalid user id!' });
+			}
 			const { quantity } = req.body;
-			const cart = await service.updateMedicineInCart(id, quantity);
+			console.log('medicineId', medicineId);
+			console.log('userId', userId);
+			console.log('quantity', quantity);
+			const cart = await service.updateMedicineInCart(
+				userId,
+				medicineId,
+				quantity,
+			);
 			if (!cart) {
 				return res
 					.status(NOT_FOUND_STATUS_CODE)
@@ -67,20 +114,29 @@ export const cart = (app) => {
 		}
 	});
 
-	app.delete('/cart/medicines/:id', async (req, res) => {
+	app.delete('/cart/users/:userId/medicines/:medicineId', async (req, res) => {
 		try {
-			const { id } = req.params;
-			if (!isValidMongoId(id)) {
+			const { userId, medicineId } = req.params;
+			if (!isValidMongoId(medicineId)) {
 				return res
 					.status(NOT_FOUND_STATUS_CODE)
 					.json({ err: 'Invalid medicine id!' });
 			}
-			const deletedMedicine = await service.deleteMedicineFromCart(id);
-			if (!deletedMedicine) {
+			if (!isValidMongoId(userId)) {
+				return res
+					.status(NOT_FOUND_STATUS_CODE)
+					.json({ err: 'Invalid user id!' });
+			}
+
+			const medicines = await service.getCartMedicines(userId);
+			console.log('medicinesLength', medicines.length);
+			const cart = await service.deleteMedicineFromCart(userId, medicineId);
+			if (cart.medicines.length + 1 !== medicines.length) {
 				return res
 					.status(NOT_FOUND_STATUS_CODE)
 					.json({ err: 'Medicine is not in the cart!' });
 			}
+
 			res
 				.status(OK_STATUS_CODE)
 				.json({ message: 'Medicine deleted from cart!' });
@@ -110,10 +166,25 @@ export const cart = (app) => {
 		}
 	});
 
-	app.delete('/cart/medicines/:id', async (req, res) => {
+	app.delete('/cart/medicines/:medicineId', async (req, res) => {
 		try {
-			const id = req.params.id;
-			const cart = await service.deleteMedicineFromCart(id);
+			console.log('delete medicine');
+			const { medicineId } = req.params;
+			const { userId } = req.body;
+			console.log('medicineId in delete medicine', medicineId);
+			console.log('userId', userId);
+			if (!isValidMongoId(medicineId)) {
+				return res
+					.status(NOT_FOUND_STATUS_CODE)
+					.json({ err: 'Invalid medicine id!' });
+			}
+			if (!isValidMongoId(userId)) {
+				return res
+					.status(NOT_FOUND_STATUS_CODE)
+					.json({ err: 'Invalid user id!' });
+			}
+
+			const cart = await service.deleteMedicineFromCart(userId, medicineId);
 			res.status(OK_STATUS_CODE).json({ cart });
 		} catch (err) {
 			res.status(ERROR_STATUS_CODE).json({ err: err.message });

@@ -9,20 +9,26 @@ class CartRepository {
 		return cart;
 	}
 
-	async addMedicineToCart(userId, medicine, quantity) {
+	async addMedicineToCart(userId, medicine) {
 		const cart = await CartModel.findOneAndUpdate(
 			{ userId: new mongoose.Types.ObjectId(userId) },
 			{
 				$push: {
 					medicines: {
 						medicine: medicine,
-						quantity: quantity,
 					},
 				},
 			},
 			{ new: true },
 		);
 		return cart;
+	}
+
+	async getMedicine(userId, medicineId) {
+		const cart = await CartModel.findOne({
+			userId: new mongoose.Types.ObjectId(userId),
+		});
+		return cart.medicines.find((item) => item.medicine._id == medicineId);
 	}
 
 	async getCartMedicines(userId) {
@@ -32,9 +38,12 @@ class CartRepository {
 		return cart.medicines;
 	}
 
-	async updateMedicineInCart(id, quantity) {
+	async updateMedicineInCart(userId, medicineId, quantity) {
 		const cart = await CartModel.findOneAndUpdate(
-			{ 'medicines.medicine._id': id },
+			{
+				userId: new mongoose.Types.ObjectId(userId),
+				'medicines.medicine._id': medicineId,
+			},
 			{
 				$set: {
 					'medicines.$.quantity': quantity,
@@ -52,20 +61,18 @@ class CartRepository {
 		return cart;
 	}
 
-	async deleteMedicineFromCart(id) {
-		const medicine = await CartModel.findOneAndUpdate(
-			{ 'medicines.medicine._id': id },
-			{
-				$pull: {
-					medicines: {
-						'medicine._id': id,
-					},
-				},
-			},
-			{ new: true },
-		);
+	async deleteMedicineFromCart(userId, medicineId) {
+		const cart = await CartModel.findOne({
+			userId: new mongoose.Types.ObjectId(userId),
+		});
 
-		return medicine;
+		const updatedMedicines = cart.medicines.filter(
+			(item) => item.medicine._id != medicineId,
+		);
+		cart.medicines = updatedMedicines;
+		await cart.save();
+
+		return cart;
 	}
 }
 
