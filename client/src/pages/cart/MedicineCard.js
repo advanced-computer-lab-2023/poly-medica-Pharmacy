@@ -11,19 +11,7 @@ import {
 import DangerousIcon from '@mui/icons-material/Dangerous';
 import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
-import { createTheme } from '@mui/material/styles';
-
-const { palette } = createTheme();
-const { augmentColor } = palette;
-const createColor = (mainColor) => augmentColor({ color: { main: mainColor } });
-
-const theme = createTheme({
-	palette: {
-		red: createColor('#5DBA40'),
-	},
-});
-
-console.log(theme.palette.red);
+import { PHARMACY_BASE_URL } from 'utils/Constants';
 
 const CartMedicineCard = ({
 	medicine,
@@ -31,7 +19,7 @@ const CartMedicineCard = ({
 	onRemove,
 	onUpdateQuantity,
 }) => {
-	const { name, price, image } = medicine;
+	const { name, price } = medicine;
 	const [localQuantity, setLocalQuantity] = useState(quantity);
 	const [totalPrice, setTotalPrice] = useState(price * quantity);
 	const [removeAlert, setRemoveAlert] = useState(false);
@@ -59,11 +47,29 @@ const CartMedicineCard = ({
 	return (
 		<Card>
 			<CardContent>
-				<Grid container spacing={2}>
-					<Grid item xs={2}>
-						<img src={image} alt={name} style={{ maxWidth: '100%' }} />
+				<Grid
+					container
+					spacing={1}
+					sx={{
+						display: 'flex',
+						justifyContent: 'center',
+						alignItems: 'center',
+						height: '100%',
+						width: '100%',
+					}}
+					mt={0}
+				>
+					<Grid item xs={1}>
+						<img
+							src={`${PHARMACY_BASE_URL}/medicines/${medicine._id}/pictures`}
+							alt={name}
+							style={{
+								width: '80px',
+								height: '80px',
+							}}
+						/>
 					</Grid>
-					<Grid item xs={3}>
+					<Grid item xs={4}>
 						<Typography variant='h6' component='div'>
 							{name}
 						</Typography>

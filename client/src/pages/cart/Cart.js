@@ -63,7 +63,6 @@ const Cart = () => {
 						display: 'flex',
 						flexDirection: 'column',
 						gap: '0.5rem',
-						height: '400px',
 						width: '80%',
 						margin: 'auto',
 					}}
@@ -112,9 +111,17 @@ const Cart = () => {
 						</Grid>
 						<Grid item xs={6}>
 							<Button
-								variant='contained'
 								color='primary'
 								onClick={() => history.push('/checkout')}
+								sx={{
+									border: '1px solid #3f51b5',
+									borderRadius: '25px',
+									'&:hover': {
+										backgroundColor: '#4D4C7D',
+										color: '#fff',
+									},
+									padding: '0.5rem 1rem',
+								}}
 							>
 								Proceed to checkout
 							</Button>
