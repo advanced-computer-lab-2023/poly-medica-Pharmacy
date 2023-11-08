@@ -18,6 +18,10 @@ const PharmacistReq = mongoose.Schema({
 		type: String,
 		required: true
 	},
+	documentsNames: {
+		type: [String],
+		required: true
+	},
 	//.....
 });
 

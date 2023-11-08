@@ -1,4 +1,5 @@
 import PharmacistService from '../service/pharmacist-service.js';
+import upload from '../config/MulterConfig.js';
 import {
 	BAD_REQUEST_CODE_400,
 	DUPLICATE_KEY_ERROR_CODE,
@@ -7,6 +8,7 @@ import {
 	ERROR_STATUS_CODE,
 	ZERO_INDEX_ARR,
 	ONE_ELEMENT_IN_ARR,
+	PHARMACIST_FOLDER_NAME,
 } from '../utils/Constants.js';
 import { isValidMongoId } from '../utils/Validation.js';
 
@@ -22,30 +24,37 @@ export const pharmacistRequests = (app) => {
 		}
 	});
 
-	app.post('/add-pharmacist-req', async (req, res) => {
-		try {
-			const pharmacistUser = await service.addReqPharmacist(req);
-			req.body = {
-				userId: pharmacistUser._id,
-				email: pharmacistUser.userData.email,
-				password: pharmacistUser.userData.password,
-				userName: pharmacistUser.userData.userName,
-				type: PHARMACIST_ENUM,
-			};
-			res.send(req.body);
-		} catch (err) {
-			if (err.code == DUPLICATE_KEY_ERROR_CODE) {
-				const duplicateKeyAttrb = Object.keys(err.keyPattern)[ZERO_INDEX_ARR];
-				const keyAttrb = duplicateKeyAttrb.split('.');
-				res.status(BAD_REQUEST_CODE_400).send({
-					errCode: DUPLICATE_KEY_ERROR_CODE,
-					errMessage: `that ${
-						keyAttrb[keyAttrb.length - ONE_ELEMENT_IN_ARR]
-					} is already registered`,
-				});
-			} else res.status(BAD_REQUEST_CODE_400).send({ errMessage: err.message });
-		}
-	});
+	app.post(
+		'/add-pharmacist-req',
+		upload(PHARMACIST_FOLDER_NAME).array('fileUpload'),
+		async (req, res) => {
+			try {
+				console.log('In add-pharmacist-req');
+				console.log('req.body', req.body);
+				const pharmacistUser = await service.addReqPharmacist(req);
+				req.body = {
+					userId: pharmacistUser._id,
+					email: pharmacistUser.userData.email,
+					password: pharmacistUser.userData.password,
+					userName: pharmacistUser.userData.userName,
+					type: PHARMACIST_ENUM,
+				};
+				res.send(req.body);
+			} catch (err) {
+				if (err.code == DUPLICATE_KEY_ERROR_CODE) {
+					const duplicateKeyAttrb = Object.keys(err.keyPattern)[ZERO_INDEX_ARR];
+					const keyAttrb = duplicateKeyAttrb.split('.');
+					res.status(BAD_REQUEST_CODE_400).send({
+						errCode: DUPLICATE_KEY_ERROR_CODE,
+						errMessage: `that ${
+							keyAttrb[keyAttrb.length - ONE_ELEMENT_IN_ARR]
+						} is already registered`,
+					});
+				} else
+					res.status(BAD_REQUEST_CODE_400).send({ errMessage: err.message });
+			}
+		},
+	);
 
 	app.delete('/pharmacist-requests/:id', async (req, res) => {
 		try {
