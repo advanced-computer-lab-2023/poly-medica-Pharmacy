@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Fab } from '@mui/material';
+import { Fab, Grid, Alert } from '@mui/material';
 import MainCard from '../../ui-component/cards/MainCard';
 import { pharmacyAxios } from '../../utils/AxiosConfig';
 import { Add as AddIcon } from '@mui/icons-material';
@@ -33,6 +33,7 @@ const Medicines = () => {
 	const [image, setImage] = useState(null);
 	const [selectedEditMedicine, setSelectedEditMedicine] = useState(null);
 	const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
+	const [addToCartAlert, setAddToCartAlert] = useState(false);
 
 	useEffect(() => {
 		pharmacyAxios
@@ -135,31 +136,18 @@ const Medicines = () => {
 		}
 	};
 
-	const handleAddToCart = async (medicine) => {
-		await pharmacyAxios
-			.post(`/cart/medicines/${medicine._id}`, { userId })
+	const handleAddToCart = (medicine) => {
+		pharmacyAxios
+			.post('/cart/medicines', { userId, medicine, quantity: 1 })
 			.then((response) => {
-				pharmacyAxios
-					.patch(`/cart/medicines/${medicine._id}`, {
-						userId,
-						quantity: response.data.medicine.quantity + 1,
-					})
-					.then((response) => {
-						console.log(response);
-					});
+				console.log(response.data);
+				setAddToCartAlert(true);
+				setTimeout(() => {
+					setAddToCartAlert(false);
+				}, 1000);
 			})
 			.catch((error) => {
-				if (error.response.status === 404) {
-					console.log('MERO 3');
-					pharmacyAxios
-						.post('/cart/medicines', { userId, medicine, quantity: 1 })
-						.then((response) => {
-							console.log(response);
-						})
-						.catch((error) => {
-							console.log(error);
-						});
-				}
+				console.log(error);
 			});
 	};
 
@@ -170,8 +158,24 @@ const Medicines = () => {
 				setSelectedMedicine={setSelectedMedicine}
 				handleEditButtonClick={handleEditButtonClick}
 				handleAddToCart={handleAddToCart}
+				userId={userId}
 				userType={userType}
 			/>
+			{addToCartAlert && (
+				<Grid
+					item
+					sx={{
+						position: 'fixed',
+						bottom: 16,
+						right: 30,
+						zIndex: 9999,
+					}}
+				>
+					<Alert variant='filled' severity='success'>
+						Medicine added to cart!
+					</Alert>
+				</Grid>
+			)}
 			{userType === 'pharmacist' && (
 				<Fab
 					color='secondary'

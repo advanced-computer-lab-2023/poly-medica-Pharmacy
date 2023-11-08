@@ -5,8 +5,9 @@ import {
 	Typography,
 	Button,
 	IconButton,
-	Grid,
 	Alert,
+	Grid,
+	CircularProgress,
 } from '@mui/material';
 import DangerousIcon from '@mui/icons-material/Dangerous';
 import AddIcon from '@mui/icons-material/Add';
@@ -22,13 +23,21 @@ const CartMedicineCard = ({
 	const { name, price } = medicine;
 	const [localQuantity, setLocalQuantity] = useState(quantity);
 	const [totalPrice, setTotalPrice] = useState(price * quantity);
+	const [deleteLoading, setDeleteLoading] = useState(false);
 	const [removeAlert, setRemoveAlert] = useState(false);
+	const [quantityAlert, setQuantityAlert] = useState(false);
 
 	const handleUpdateQuantity = (newQuantity) => {
 		// Ensure the new quantity is within valid bounds (e.g., not negative)
 		if (newQuantity === 0) {
 			handleRemoveMedicine();
-		} else {
+		} else if (newQuantity <= medicine.quantity) {
+			if (newQuantity === medicine.quantity) {
+				setQuantityAlert(true);
+				setTimeout(() => {
+					setQuantityAlert(false);
+				}, 2000);
+			}
 			onUpdateQuantity(medicine._id, newQuantity);
 			setLocalQuantity(newQuantity);
 			setTotalPrice(price * newQuantity);
@@ -36,12 +45,9 @@ const CartMedicineCard = ({
 	};
 
 	const handleRemoveMedicine = () => {
-		setTimeout(() => {
-			setRemoveAlert(false);
-		}, 1000);
-
-		onRemove(medicine._id);
+		setDeleteLoading(true);
 		setRemoveAlert(true);
+		onRemove(medicine._id);
 	};
 
 	return (
@@ -91,34 +97,53 @@ const CartMedicineCard = ({
 						<IconButton
 							color='primary'
 							size='small'
+							disabled={localQuantity === medicine.quantity}
 							onClick={() => handleUpdateQuantity(localQuantity + 1)}
 						>
 							<AddIcon />
 						</IconButton>
 					</Grid>
 					<Grid item xs={1}>
-						<Button color='error' onClick={() => handleRemoveMedicine()}>
-							<DangerousIcon />
-						</Button>
+						{!deleteLoading && (
+							<Button color='error' onClick={() => handleRemoveMedicine()}>
+								<DangerousIcon size='small' />
+							</Button>
+						)}
+						{deleteLoading && <CircularProgress />}
 					</Grid>
 				</Grid>
-			</CardContent>
+				{removeAlert && (
+					<Grid
+						item
+						sx={{
+							position: 'fixed',
+							bottom: 16,
+							right: 30,
+							zIndex: 9999,
+						}}
+					>
+						<Alert variant='filled' severity='info'>
+							Medicine is being removed from your cart . . .
+						</Alert>
+					</Grid>
+				)}
 
-			{removeAlert && (
-				<Grid
-					item
-					sx={{
-						position: 'fixed',
-						bottom: 16,
-						right: 30,
-						zIndex: 9999,
-					}}
-				>
-					<Alert variant='filled' severity='success'>
-						Medicine removed from cart
-					</Alert>
-				</Grid>
-			)}
+				{quantityAlert && (
+					<Grid
+						item
+						sx={{
+							position: 'fixed',
+							bottom: 16,
+							right: 30,
+							zIndex: 9999,
+						}}
+					>
+						<Alert variant='filled' severity='error'>
+							You reached the maximum quantity of this medicine!
+						</Alert>
+					</Grid>
+				)}
+			</CardContent>
 		</Card>
 	);
 };

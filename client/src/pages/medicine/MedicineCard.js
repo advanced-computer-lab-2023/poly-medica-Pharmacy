@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react';
 import {
 	IconButton,
 	ListItem,
@@ -5,26 +6,39 @@ import {
 	ListItemText,
 	Divider,
 	Button,
+	CircularProgress,
 } from '@mui/material';
 import { Edit as EditIcon } from '@mui/icons-material';
 import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
 import { PHARMACY_BASE_URL } from 'utils/Constants';
+import { pharmacyAxios } from '../../utils/AxiosConfig';
 
 const MedicineCard = ({
+	userId,
 	medicine,
 	setSelectedMedicine,
 	handleEditButtonClick,
 	userType,
 	handleAddToCart,
 }) => {
-	// const [addAlert, setAddAlert] = useState(false);
+	const [addToCartStatus, setAddToCartStatus] = useState(true);
+	const [isLoading, setIsLoading] = useState(true);
 
-	// const handleAddAlert = () => {
-	// 	setTimeout(() => {
-	// 		setAddAlert(false);
-	// 	}, 1000);
-	// 	setAddAlert(true);
-	// };
+	useEffect(() => {
+		pharmacyAxios
+			.post(`/cart/medicines/${medicine._id}`, { userId })
+			.then((response) => {
+				console.log(response.data);
+				if (response.data.medicine) {
+					setAddToCartStatus(false);
+				}
+				setIsLoading(false);
+			})
+			.catch((error) => {
+				console.log(error);
+				setIsLoading(false);
+			});
+	}, []);
 
 	return (
 		<div>
@@ -78,16 +92,26 @@ const MedicineCard = ({
 						alignItems: 'center',
 					}}
 				>
-					<Button onClick={() => handleAddToCart(medicine)}>
-						Add to cart
-						<IconButton
-							color='primary'
-							aria-label='add to shopping cart'
-							variant='contained'
+					{isLoading ? (
+						<CircularProgress />
+					) : (
+						<Button
+							disabled={!addToCartStatus}
+							onClick={() => {
+								setAddToCartStatus(false);
+								handleAddToCart(medicine);
+							}}
 						>
-							<AddShoppingCartIcon />
-						</IconButton>
-					</Button>
+							<IconButton
+								color='primary'
+								aria-label='add to shopping cart'
+								variant='contained'
+								disabled={!addToCartStatus}
+							>
+								<AddShoppingCartIcon />
+							</IconButton>
+						</Button>
+					)}
 				</ListItem>
 			)}
 			<Divider />
