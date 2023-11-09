@@ -19,7 +19,7 @@ const LazyPharmacistRequests = Loadable(
 const LazyPatients = Loadable(lazy(() => import('pages/Patients')));
 const LazyAdmins = Loadable(lazy(() => import('pages/Admins')));
 const LazyPharmacists = Loadable(lazy(() => import('pages/Pharmacists')));
-
+const LazyPayment = Loadable(lazy(() => import('pages/payment/Payment')));
 const LazyOrders = Loadable(lazy(() => import('pages/orders/Orders')));
 const LazyCheckout = Loadable(lazy(() => import('pages/checkout/Checkout')));
 const LazyAddress = Loadable(lazy(() => import('pages/address/Address')));
@@ -70,6 +70,10 @@ const PatientRoutes = {
                 {
                     path: 'pharmacist-requests',
                     element: <LazyPharmacistRequests />,
+                },
+                {
+                    path: 'payment',
+                    element: <LazyPayment />,
                 },
                 {
                     path: 'patients',

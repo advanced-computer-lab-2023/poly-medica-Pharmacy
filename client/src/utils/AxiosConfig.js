@@ -18,3 +18,8 @@ export const pharmacyAxios = axios.create({
 	baseURL: PHARMACY_BASE_URL,
 	withCredentials: true,
 });
+
+export const paymentAxios = axios.create({
+    baseURL: paymentBaseUrl,
+    withCredentials: true,
+});
