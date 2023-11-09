@@ -10,6 +10,7 @@ import { ZERO_INDEX } from 'utils/Constants';
 import { Button, Typography } from '@mui/material';
 import PaymentOptions from 'pages/payment/PaymentOptions';
 import { successfulPayment } from '../../utils/PaymentUtils';
+import Swal from 'sweetalert2';
 
 const Checkout = () => {
     const [items, setItems] = useState([]);
@@ -57,9 +58,14 @@ const Checkout = () => {
 
     const handleChange = (event) => {
         setValue(event.target.value);
-    }
+    };
 
     const handlePayment = () => {
+        let amountInWallet;
+        patientAxios.get('/wallet').then((response) => {
+            amountInWallet = (response.data.amountInWallet);
+        });
+        const amountToPay = totalCost;
         if (value === 'credit-card') {
             navigate('/patient/pages/payment', { state: { items: { patientId: userId, details: items, amount: totalCost }, amountToPay: totalCost }, replace: true });
         } else {
@@ -95,7 +101,7 @@ const Checkout = () => {
                 });
             }
         }
-    }
+    };
 
     return (
         <MainCard title='Checkout' sx={{ width: '90%', margin: '0 auto' }}>
