@@ -81,6 +81,7 @@ const DoctorRequests = () => {
 			.catch((error) => {
 				console.error('Error rejecting pharmacist request:', error);
 			});
+
 	};
 
 	return (

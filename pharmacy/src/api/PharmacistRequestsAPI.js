@@ -101,8 +101,8 @@ export const pharmacistRequests = (app) => {
 					});
 			}
 
-			const pharamcistRequest = await service.deletePharmacistRequest(id);
-			if (pharamcistRequest) {
+			const pharmacistRequest = await service.deletePharmacistRequest(id);
+			if (pharmacistRequest) {
 				res
 					.status(OK_STATUS_CODE)
 					.json({ message: 'pharmacist request deleted' });

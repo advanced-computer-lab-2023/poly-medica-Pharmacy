@@ -6,7 +6,7 @@ class PharmacistService {
 	}
 
 	async getPharmacist(id) {
-		const pharmacist = await this.repository.findPharmacist(id);
+		const pharmacist = await this.repository.findOnePharmacist(id);
 		return pharmacist;
 	}
 

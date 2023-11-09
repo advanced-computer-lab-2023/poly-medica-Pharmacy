@@ -55,7 +55,7 @@ export const pharmacist = (app) => {
 	app.get('/pharmacists/:id', async (req, res) => {
 		try {
 			const id = req.params.id;
-			const pharmacist = await service.getPharmacistById(id);
+			const pharmacist = await service.getPharmacist(id);
 			if (pharmacist) {
 				res.status(OK_STATUS_CODE).json({ pharmacist });
 			} else {
@@ -92,9 +92,10 @@ export const pharmacist = (app) => {
 			const { id } = req.params;
 
 			await service
-				.getPharmacistById(id)
+				.getPharmacist(id)
 				.then((pharmacist) => {
 					if (!pharmacist) {
+						console.log('pharmacist not found');
 						return res
 							.status(ERROR_STATUS_CODE)
 							.json({ message: 'pharmacist not found' });
@@ -104,10 +105,12 @@ export const pharmacist = (app) => {
 					});
 				})
 				.catch((err) => {
+					console.log('Here 1111', err.message);
 					return res.status(ERROR_STATUS_CODE).json({ message: err.message });
 				});
 
 			const deletedPharmacist = await service.deletePharmacist(id);
+			console.log('deletedPharmacist', deletedPharmacist);
 			if (deletedPharmacist) {
 				await axios.delete(`${AUTH_BASE_URL}/users/${id}`);
 				res
