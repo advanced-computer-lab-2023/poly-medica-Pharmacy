@@ -18,11 +18,15 @@ const Pharmacist = mongoose.Schema({
 		type: String,
 		required: true
 	},
+	documentsNames: {
+		type: [String],
+		required: true
+	},
 	//.....
 });
 
-Pharmacist.statics.addUser = async function (userData, hourlyRate, affiliation, educationalBackground){
-	const newRecord = new this({ userData, hourlyRate, affiliation, educationalBackground });
+Pharmacist.statics.addUser = async function (userData, hourlyRate, affiliation, educationalBackground, documentsNames){
+	const newRecord = new this({ userData, hourlyRate, affiliation, educationalBackground, documentsNames });
 	const user = await newRecord.save();
 	return user;
 };

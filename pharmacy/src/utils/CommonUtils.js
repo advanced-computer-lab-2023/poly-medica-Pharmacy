@@ -10,7 +10,7 @@ export const getImage = (folder, imageName) => {
 		const imagePath = path.join(__dirname, 'upload', folder, imageName);
 		return imagePath;
 	} catch (error) {
-		console.log('error in getImage: ',error.message);
+		console.log('error in getImage: ', error.message);
 	}
 };
 
@@ -20,5 +20,24 @@ export const deleteImage = (folder, imageName) => {
 		fs.unlinkSync(imagePathToDelete);
 	} catch (err) {
 		console.log('error in deleting task');
+	}
+};
+
+export const getFile = (folder, fileName) => {
+	try {
+		const filePath = path.join(__dirname, 'upload', folder, fileName);
+		return filePath;
+	} catch (error) {
+		console.log('error in getFile: ', error.message);
+	}
+};
+
+export const deleteFile = (folder, fileName) => {
+	try {
+		const filePathToDelete = path.join(__dirname, 'upload', folder, fileName);
+		console.log('filePathToDelete', filePathToDelete);
+		fs.unlinkSync(filePathToDelete);
+	} catch (err) {
+		throw new Error('error in deleting file');
 	}
 };

@@ -17,6 +17,7 @@ import AnimateButton from 'ui-component/extended/AnimateButton';
 import { DatePicker } from '@mui/x-date-pickers';
 import { strengthColor, strengthIndicator } from 'utils/password-strength';
 import Swal from 'sweetalert2';
+import { pharmacyAxios } from 'utils/AxiosConfig';
 
 // ===========================|| FIREBASE - REGISTER ||=========================== //
 
@@ -101,35 +102,48 @@ const FirebaseRegister = ({ type }) => {
 
 		formData.append('sendData', JSON.stringify(sendData));
 
-		const response = await axiosInstanceAuthSer.post('/signup/pharmacy', {
-			headers: {
-				'Content-Type': 'multipart/form-data',
-			},
-			data: formData,
-		});
-		if (response.status === 200) {
-			Swal.fire({
-				icon: 'success',
-				title: 'Sign-up Success!',
-				text: 'You request have been successfully send',
-			});
-			setIsSubmitting(false);
-			setPassword('');
-			setUserName('');
-			setName('');
-			setEmail('');
-			setEducationalBackground('');
-			setHourlyRating(0);
-			setIsSubmitting(false);
-			setSelectedDate(new Date());
-			setSpeciality('');
-			setAffiliation('');
-			setUploadedFiles([]);
+		const signupResponse = await axiosInstanceAuthSer.post(
+			'/signup/pharmacy',
+			sendData,
+		);
+
+		if (signupResponse.status === 200) {
+			const pharmacistRequestResponse = await pharmacyAxios.post(
+				'/add-pharmacist-req',
+				formData,
+			);
+
+			if (pharmacistRequestResponse.status === 200) {
+				Swal.fire({
+					icon: 'success',
+					title: 'Sign-up Success!',
+					text: 'You request have been successfully send',
+				});
+				setIsSubmitting(false);
+				setPassword('');
+				setUserName('');
+				setName('');
+				setEmail('');
+				setEducationalBackground('');
+				setHourlyRating(0);
+				setIsSubmitting(false);
+				setSelectedDate(new Date());
+				setSpeciality('');
+				setAffiliation('');
+				setUploadedFiles([]);
+			} else {
+				Swal.fire({
+					icon: 'error',
+					title: 'Oops...',
+					text: pharmacistRequestResponse.response.data.message,
+				});
+				setIsSubmitting(false);
+			}
 		} else {
 			Swal.fire({
 				icon: 'error',
 				title: 'Oops...',
-				text: response.response.data.message,
+				text: signupResponse.response.data.message,
 			});
 			setIsSubmitting(false);
 		}

@@ -71,14 +71,14 @@ export const pharmacist = (app) => {
 	app.post('/pharmacists', async (req, res) => {
 		try {
 			const newPharmacist = await service.addPharmacist(req);
-			await axios.post(`${AUTH_BASE_URL}/pharmacists`,{
+			await axios.post(`${AUTH_BASE_URL}/pharmacists`, {
 				userId: newPharmacist._id,
 				email: newPharmacist.userData.email,
 				password: newPharmacist.userData.password,
 				userName: newPharmacist.userData.userName,
 				type: PHARMACIST_ENUM,
 			});
-		
+
 			res
 				.status(CREATED_STATUS_CODE)
 				.json({ message: 'pharmacist created!', newPharmacist });
@@ -89,8 +89,24 @@ export const pharmacist = (app) => {
 
 	app.delete('/pharmacists/:id', async (req, res) => {
 		try {
-			const id = req.params.id;
-			console.log(id);
+			const { id } = req.params;
+
+			await service
+				.getPharmacistById(id)
+				.then((pharmacist) => {
+					if (!pharmacist) {
+						return res
+							.status(ERROR_STATUS_CODE)
+							.json({ message: 'pharmacist not found' });
+					}
+					pharmacist.documentsNames.forEach((fileName) => {
+						service.deleteFile(fileName);
+					});
+				})
+				.catch((err) => {
+					return res.status(ERROR_STATUS_CODE).json({ message: err.message });
+				});
+
 			const deletedPharmacist = await service.deletePharmacist(id);
 			if (deletedPharmacist) {
 				await axios.delete(`${AUTH_BASE_URL}/users/${id}`);

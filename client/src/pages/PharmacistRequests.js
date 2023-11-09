@@ -22,9 +22,14 @@ const DoctorRequests = () => {
 
 	const handleAccept = (pharmacistReq) => {
 		// Delete the pharmacist request from the database
-		fetch(`http://localhost:8003/pharmacist-requests/${pharmacistReq._id}`, {
-			method: 'DELETE',
-		})
+		fetch(
+			`http://localhost:8003/pharmacist-requests/${
+				pharmacistReq._id
+			}?accept=${true}`,
+			{
+				method: 'DELETE',
+			},
+		)
 			.then((response) => response.json())
 			.then(() => {
 				setPharmacistRequests((prevPharmacistRequests) =>
@@ -54,13 +59,17 @@ const DoctorRequests = () => {
 			.catch((error) => {
 				console.error('Error accepting pharmacist request:', error);
 			});
-
 	};
 
 	const handleReject = (pharmacistReq) => {
-		fetch(`http://localhost:8003/pharmacist-requests/${pharmacistReq._id}`, {
-			method: 'DELETE',
-		})
+		fetch(
+			`http://localhost:8003/pharmacist-requests/${
+				pharmacistReq._id
+			}?accept=${false}`,
+			{
+				method: 'DELETE',
+			},
+		)
 			.then((response) => response.json())
 			.then(() => {
 				setPharmacistRequests((prevPharmacistRequests) =>

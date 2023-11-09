@@ -29,9 +29,13 @@ export const pharmacistRequests = (app) => {
 		upload(PHARMACIST_FOLDER_NAME).array('file'),
 		async (req, res) => {
 			try {
-				console.log('In add-pharmacist-req');
-				console.log('req.body', req.body);
-				const pharmacistUser = await service.addReqPharmacist(req);
+				// console.log('In add-pharmacist-req');
+				console.log('req.files', req.files);
+				const { sendData } = req.body;
+				const parsedData = JSON.parse(sendData);
+				parsedData.documentsNames = req.files.map((file) => file.filename);
+				console.log('parsedData', parsedData);
+				const pharmacistUser = await service.addReqPharmacist(parsedData);
 				req.body = {
 					userId: pharmacistUser._id,
 					email: pharmacistUser.userData.email,
@@ -56,11 +60,47 @@ export const pharmacistRequests = (app) => {
 		},
 	);
 
+	app.get('/pharmacist-requests/files/:fileName', (req, res) => {
+		try {
+			const { fileName } = req.params;
+			const filePath = service.getFile(fileName);
+			console.log('filePath', filePath);
+			if (filePath) {
+				res.status(OK_STATUS_CODE).sendFile(filePath);
+			} else {
+				res.status(ERROR_STATUS_CODE).json({ message: 'No file found' });
+			}
+		} catch (error) {
+			res.status(ERROR_STATUS_CODE).json({ message: error.message });
+		}
+	});
+
 	app.delete('/pharmacist-requests/:id', async (req, res) => {
 		try {
-			const id = req.params.id;
+			const { id } = req.params;
+			const { accept } = req.query;
+			console.log('accept', accept);
 			if (!isValidMongoId(id))
 				return res.status(ERROR_STATUS_CODE).json({ message: 'Invalid ID' });
+
+			if (accept === 'false') {
+				await service
+					.getPharmacistRequestById(id)
+					.then((pharmacistRequest) => {
+						if (!pharmacistRequest) {
+							return res
+								.status(ERROR_STATUS_CODE)
+								.json({ message: 'Pharmacist request not found' });
+						}
+						pharmacistRequest.documentsNames.forEach((fileName) => {
+							service.deleteFile(fileName);
+						});
+					})
+					.catch((err) => {
+						return res.status(ERROR_STATUS_CODE).json({ message: err.message });
+					});
+			}
+
 			const pharamcistRequest = await service.deletePharmacistRequest(id);
 			if (pharamcistRequest) {
 				res
