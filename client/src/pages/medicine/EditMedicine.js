@@ -15,10 +15,7 @@ const EditMedicine = ({
 	setSelectedEditMedicine,
 	handleSaveEdit,
 	selectedEditMedicine,
-	userType,
 }) => {
-	if (userType !== 'pharmacist') return null;
-
 	return (
 		<Dialog open={isEditDialogOpen} onClose={() => setIsEditDialogOpen(false)}>
 			<DialogTitle>Edit Medicine</DialogTitle>

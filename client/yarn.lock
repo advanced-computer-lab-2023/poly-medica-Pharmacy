@@ -3067,10 +3067,10 @@
   "resolved" "https://registry.npmjs.org/axe-core/-/axe-core-4.6.2.tgz"
   "version" "4.6.2"
 
-"axios@^1.5.1":
-  "integrity" "sha512-Q28iYCWzNHjAm+yEAot5QaAMxhMghWLFVf7rRdwhUI+c2jix2DUXjAHXVi+s1ibs3mjPO/cCgbA++3BjD0vP/A=="
-  "resolved" "https://registry.npmjs.org/axios/-/axios-1.5.1.tgz"
-  "version" "1.5.1"
+"axios@^1.0.0":
+  "integrity" "sha512-SsHsGFN1qNPFT5QhSoSD37SHDfGyLSW5AESmyLk2JeCMHv5g0I9g0Hz/zQHx2KNe0jGXh2q2hAm7OdkXm360CA=="
+  "resolved" "https://registry.npmjs.org/axios/-/axios-1.0.0.tgz"
+  "version" "1.0.0"
   dependencies:
     "follow-redirects" "^1.15.0"
     "form-data" "^4.0.0"

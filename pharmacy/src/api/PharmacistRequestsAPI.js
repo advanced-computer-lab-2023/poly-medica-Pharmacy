@@ -26,7 +26,7 @@ export const pharmacistRequests = (app) => {
 
 	app.post(
 		'/add-pharmacist-req',
-		upload(PHARMACIST_FOLDER_NAME).array('fileUpload'),
+		upload(PHARMACIST_FOLDER_NAME).array('file'),
 		async (req, res) => {
 			try {
 				console.log('In add-pharmacist-req');

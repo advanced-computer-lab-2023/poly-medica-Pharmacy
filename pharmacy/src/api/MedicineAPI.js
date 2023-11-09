@@ -80,6 +80,7 @@ export const medicine = (app) => {
 		upload(MEDICINE_FOLDER_NAME).single('image'),
 		async (req, res) => {
 			try {
+				console.log('In add-medicine', req.body);
 				const { newMedicine } = req.body;
 				const parsedMedicine = JSON.parse(newMedicine);
 				parsedMedicine.pictureName = req.file.filename;

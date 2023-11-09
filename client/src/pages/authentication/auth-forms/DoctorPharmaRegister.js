@@ -94,21 +94,19 @@ const FirebaseRegister = ({ type }) => {
 		};
 
 		const formData = new FormData();
-		// uploadedFiles.forEach((file) => {
-		// 	formData.append('file', file);
-		// });
+		uploadedFiles.forEach((file) => {
+			console.log('file', file);
+			formData.append('file', file);
+		});
 
 		formData.append('sendData', JSON.stringify(sendData));
 
-		const response = await axiosInstanceAuthSer.post(
-			'/signup/pharmacy',
-			formData,
-			{
-				headers: {
-					'Content-Type': 'application/x-www-form-urlencoded',
-				},
+		const response = await axiosInstanceAuthSer.post('/signup/pharmacy', {
+			headers: {
+				'Content-Type': 'multipart/form-data',
 			},
-		);
+			data: formData,
+		});
 		if (response.status === 200) {
 			Swal.fire({
 				icon: 'success',
@@ -126,6 +124,7 @@ const FirebaseRegister = ({ type }) => {
 			setSelectedDate(new Date());
 			setSpeciality('');
 			setAffiliation('');
+			setUploadedFiles([]);
 		} else {
 			Swal.fire({
 				icon: 'error',
@@ -296,7 +295,7 @@ const FirebaseRegister = ({ type }) => {
 						id='fileUpload'
 						mutiple
 						type='file'
-						name='fileUpload'
+						name='file'
 						onChange={handleFileEvent}
 						sx={{ display: 'none' }}
 					/>

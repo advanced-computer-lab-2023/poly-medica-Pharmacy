@@ -10,6 +10,7 @@ import {
 import { PHARMACY_BASE_URL } from 'utils/Constants';
 
 const MedicineDetails = ({ selectedMedicine, handleDialogClose, userType }) => {
+	console.log('user type in medicine details', userType);
 	return (
 		<Dialog
 			open={selectedMedicine}

@@ -194,6 +194,7 @@ const Medicines = () => {
 			<MedicineDetails
 				selectedMedicine={selectedMedicine}
 				handleDialogClose={handleDialogClose}
+				userType={userType}
 			/>
 			{userType === 'pharmacist' && (
 				<div>
