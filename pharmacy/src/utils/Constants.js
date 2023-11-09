@@ -7,7 +7,7 @@ export const CONFLICT_STATUS_CODE = 409;
 export const ERROR_STATUS_CODE = 500;
 
 export const PATIENTS_BASE_URL = 'http://localhost:8002';
-export const AUTH_BASE_URL = 'http://localhost:8005';
+export const AUTH_BASE_URL = 'http://localhost:8004';
 
 export const ADMIN_PROJECTION = '-password';
 export const PHARMACIST_PROJECTION = '-userData.password';
@@ -22,7 +22,7 @@ export const OK_REQUEST_CODE_200 = 200;
 
 export const UNAUTH_REQ_CODE_401 = 401;
 
-export const ADMIN_ENUM = 'admin';
+export const ADMIN_ENUM = 'pharmacy admin';
 
 export const MEDICINE_FOLDER_NAME = 'medicines';
 

@@ -9,12 +9,13 @@ import Routes from 'routes';
 // defaultTheme
 import themes from 'themes';
 import axios from 'axios';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useUserContext } from 'hooks/useUserContext';
 import { useNavigate,useLocation } from 'react-router-dom';
 import Swal from 'sweetalert2';
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
+import Loader from 'ui-component/Loader';
 
 
 // ==============================|| APP ||============================== //
@@ -24,23 +25,31 @@ const App = () => {
 	const { dispatch, user } = useUserContext();
 	const navigate = useNavigate();
 	const location = useLocation();
+	const [loading, setIsLoading] = useState(true);
 	useEffect(() => {
-		axios.get('http://localhost:8005/check-user', {  withCredentials:true }).then(userCheck => {
-			if(!user)
-				dispatch({ auth: true, payload: userCheck.data });
-			if(location.pathname == "/pages/login/login3" || location.pathname == "/pages/register/register3"){
-				navigate('/');
+		setIsLoading(true);
+		axios.get('http://localhost:8004/check-user', {  withCredentials:true }).then(async userCheck => {
+			console.log({ userCheck });
+			if(!user) {
+				await dispatch({ auth: true, payload: userCheck.data });
+				setIsLoading(false);
 			}
-		}).catch( () => {
-			if(location.pathname != "/pages/login/login3" && location.pathname != "/pages/register/register3"){
+			if(location.pathname == "/login/login3" || location.pathname == "/login/register/register3"){
+				navigate(`/${userCheck.data.type}`);
+				setIsLoading(false);
+			}
+		}).catch( async () => {
+			if(location.pathname != "/login/login3" && location.pathname != "/login/register/register3"){
 				Swal.fire({
 				icon: 'error',
 				title: 'Oops...',
 				text: "you are not autherized, please login",
 			});
-			navigate('/pages/login/login3');
+			navigate('/login/login3');
+			setIsLoading(false);
 		}
-			dispatch({ auth: false, payload: null });
+			await dispatch({ auth: false, payload: null });
+			setIsLoading(false);
 		});
 	
 	}, []);
@@ -49,7 +58,8 @@ const App = () => {
 			<ThemeProvider theme={themes(customization)}>
 				<CssBaseline />
 				<LocalizationProvider dateAdapter={AdapterDateFns}>
-				<Routes />
+				{loading && <Loader />}
+				{!loading && <Routes />}
 				</LocalizationProvider>
 			</ThemeProvider>
 	);

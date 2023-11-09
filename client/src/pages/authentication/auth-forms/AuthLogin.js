@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import {
 	Box,
 	Button,
@@ -15,45 +15,27 @@ import axiosInstanceAuthSer from 'utils/api/axiosInstanceAuthSer';
 // project imports
 import AnimateButton from 'ui-component/extended/AnimateButton';
 import Swal from 'sweetalert2';
-import Loader from 'ui-component/Loader';
-// import Cookies from 'js-cookie';
-import axios from 'axios';
 
 
-// ============================|| FIREBASE - LOGIN ||============================ //
+
+// ============================|| LOGIN ||============================ //
 
 const FirebaseLogin = () => {
 	const [isSubmitting, setIsSubmitting] = useState(false);
 	const [password, setPassword] = useState("");
-	const [userName, setUserName] = useState(""); // TODO: change this to userName <= here
-	const { user, dispatch } = useUserContext();
-	const [isLoading, setIsLoading] = useState(true);
+	const [userName, setUserName] = useState("");
+	const { dispatch } = useUserContext();
 	const navigate = useNavigate();
-
-	useEffect(() => {
-		setIsLoading(true);
-		if(user){
-			navigate('/');
-		}else {
-			axios.get('http://localhost:8005/check-user', { withCredentials: true }).then(user => {
-				dispatch({ auth: true, payload: user.data });
-				navigate('/');
-			}).catch( () => {
-				setIsLoading(false);
-			});	
-		}		
-	}, []);
-
 
 	const handleSubmit = async (e) => {
 		e.preventDefault();
 		setIsSubmitting(true);
 		const postData = { 'userName': userName, 'password': password };
-		const response = await axiosInstanceAuthSer.post('/login', postData);
+		const response = await axiosInstanceAuthSer.post('/login/pharmacy', postData);
 		const data = response.data;		
 		if(response.status === 200){
 			dispatch({ auth: true, payload:data });
-			navigate('/');
+			navigate(`/${data.type}`);
 			setIsSubmitting(false);
 		} else{
 			Swal.fire({
@@ -66,9 +48,6 @@ const FirebaseLogin = () => {
 	};
 
 	return (
-		<>
-		{isLoading && <Loader/>}
-		{ !isLoading &&
 		<>
 			<Grid container direction="column" justifyContent="center" spacing={2}>
 				<Grid item xs={12} container alignItems="center" justifyContent="center">
@@ -110,8 +89,6 @@ const FirebaseLogin = () => {
 							</AnimateButton>
 						</Box>
 					</form>
-		</>
-		}
 		</>
 	);
 };
