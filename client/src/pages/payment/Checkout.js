@@ -20,6 +20,7 @@ export default function CheckoutForm({ item }) {
   const queryParams = new URLSearchParams(location.search);
   const navigate = useNavigate();
 
+
   useEffect(() => {
     if (!stripe) {
       return;

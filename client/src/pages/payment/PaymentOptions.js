@@ -1,10 +1,13 @@
 import React, { useState } from 'react';
 import { Radio, FormControlLabel  , RadioGroup, FormLabel, FormControl } from '@mui/material';
 import { patientAxios } from 'utils/AxiosConfig.js';
+import { useUserContext } from 'hooks/useUserContext';
 
 const PaymentOptions = ({ handleChange, value }) => {
     const [amountInWallet, setAmountInWallet] = useState(0);
-    patientAxios.get('/wallet').then((response) => {
+    const { user } = useUserContext();
+    const userId = user.id;
+    patientAxios.get('/wallet/' + userId ).then((response) => {
         setAmountInWallet(response.data.amountInWallet);
     });
 

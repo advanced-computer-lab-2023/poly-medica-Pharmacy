@@ -12,6 +12,7 @@ import PaymentOptions from 'pages/payment/PaymentOptions';
 import { successfulPayment } from '../../utils/PaymentUtils';
 import Swal from 'sweetalert2';
 
+
 const Checkout = () => {
     const [items, setItems] = useState([]);
     const [primaryAddress, setPrimaryAddress] = useState(null);
@@ -62,7 +63,7 @@ const Checkout = () => {
 
     const handlePayment = () => {
         let amountInWallet;
-        patientAxios.get('/wallet').then((response) => {
+        patientAxios.get('/wallet/' + userId).then((response) => {
             amountInWallet = (response.data.amountInWallet);
         });
         const amountToPay = totalCost;
@@ -70,7 +71,7 @@ const Checkout = () => {
             navigate('/patient/pages/payment', { state: { items: { patientId: userId, details: items, amount: totalCost }, amountToPay: totalCost }, replace: true });
         } else if (value === 'wallet') {
             if (amountInWallet >= amountToPay) {
-                paymentAxios.post('/payment/wallet', { amountToPayByWallet: amountToPay })
+                paymentAxios.post('/payment/wallet', { amountToPayByWallet: amountToPay , userId: userId})
                     .then(
                         Swal.fire('success', 'Payment Succeeded', 'success').then(() => {
                             const callBackUrl = successfulPayment({ patientId: userId, details: items, amount: totalCost });
@@ -93,7 +94,7 @@ const Checkout = () => {
                 }).then((result) => {
                     if (result.isConfirmed) {
                         const amountToPayByWallet = amountToPay - amountInWallet;
-                        paymentAxios.post('/payment/wallet', { amountToPayByWallet })
+                        paymentAxios.post('/payment/wallet', { amountToPayByWallet , userId: userId})
                             .catch((error) => {
                                 console.log('Error in payment with the wallet', error);
                             });
@@ -141,7 +142,7 @@ const Checkout = () => {
                 <PaymentOptions handleChange={handleChange} value={value} />
 
             </SubCard>
-            <Container sx={{ justifyContent: 'flex-end' , display: 'flex', marginTop : 2 }}>
+            <Container sx={{ justifyContent: 'flex-end', display: 'flex', marginTop: 2 }}>
                 <Button onClick={handlePayment} variant="contained" color="secondary"> Place Order </Button>
             </Container>
         </MainCard>
