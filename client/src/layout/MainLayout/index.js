@@ -69,11 +69,11 @@ const MainLayout = ({ userType }) => {
 		if(!user || user.type != userType){
 			navigate(`/${user.type}`);
 		} else if(userType == 'patient') {
-			pharmacyAxios.get(`/cart/${userId}`).then(() => { 
+			pharmacyAxios.get(`/cart/users/${userId}`).then(() => { 
 				console.log('cart already created!');
 			}).catch((error) => {
 				if(error.response.status == 404){
-					pharmacyAxios.post('/cart', { userId }).then(() => {
+					pharmacyAxios.post('/cart/users', { userId }).then(() => {
 						console.log('cart created!');
 					}).catch((error) => {
 						console.log(error);

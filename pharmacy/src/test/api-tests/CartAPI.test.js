@@ -275,6 +275,7 @@ describe('PATCH /cart/users/:userId/medicine/:medicineId?quantity=x', () => {
 	it('should return 200 when updating medicine quantity', async () => {
 		const userId = '60f1b2b4b8b8b1b2b4b8b8b1';
 		const medicine = new MedicineModel(generateMedicine());
+		medicine.quantity = 10;
 		await medicine.save();
 		await CartModel(generateCart(userId, [])).save();
 		await addMedicineToCart(userId, medicine);
@@ -284,6 +285,37 @@ describe('PATCH /cart/users/:userId/medicine/:medicineId?quantity=x', () => {
 		expect(response.status).toBe(OK_STATUS_CODE);
 		expect(response.body.cart).toBeDefined();
 		expect(response.body.cart.medicines[0].quantity).toBe(2);
+	});
+
+	it('should return 500 when updating medicine with zero quantity', async () => {
+		const userId = '60f1b2b4b8b8b1b2b4b8b8b1';
+		const medicine = new MedicineModel(generateMedicine());
+		await medicine.save();
+		await CartModel(generateCart(userId, [])).save();
+		await addMedicineToCart(userId, medicine);
+		const response = await updateMedicineQuantity(medicine._id, userId, 0);
+		expect(response.status).toBe(ERROR_STATUS_CODE);
+	});
+
+	it('should return 500 when updating medicine with negative quantity', async () => {
+		const userId = '60f1b2b4b8b8b1b2b4b8b8b1';
+		const medicine = new MedicineModel(generateMedicine());
+		await medicine.save();
+		await CartModel(generateCart(userId, [])).save();
+		await addMedicineToCart(userId, medicine);
+		const response = await updateMedicineQuantity(medicine._id, userId, -2);
+		expect(response.status).toBe(ERROR_STATUS_CODE);
+	});
+
+	it('should return 500 when updating medicine with quantity greater than available quantity', async () => {
+		const userId = '60f1b2b4b8b8b1b2b4b8b8b1';
+		const medicine = new MedicineModel(generateMedicine());
+		medicine.quantity = 10;
+		await medicine.save();
+		await CartModel(generateCart(userId, [])).save();
+		await addMedicineToCart(userId, medicine);
+		const response = await updateMedicineQuantity(medicine._id, userId, 100);
+		expect(response.status).toBe(ERROR_STATUS_CODE);
 	});
 
 	it('should return 500 when updating medicine quantity with invalid user id', async () => {

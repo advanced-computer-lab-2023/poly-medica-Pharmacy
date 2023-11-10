@@ -48,7 +48,7 @@ const Cart = () => {
 
 	const updateMedicineQuantity = (id, quantity) => {
 		pharmacyAxios
-			.patch(`/cart/users/${userId}/medicines/${id}`, { quantity })
+			.patch(`/cart/users/${userId}/medicines/${id}?quantity=${quantity}`)
 			.then((response) => {
 				console.log(response.data);
 			})

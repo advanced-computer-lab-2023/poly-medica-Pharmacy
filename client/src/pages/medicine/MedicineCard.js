@@ -26,17 +26,16 @@ const MedicineCard = ({
 
 	useEffect(() => {
 		pharmacyAxios
-			.post(`/cart/medicines/${medicine._id}`, { userId })
+			.get(`/cart/users/${userId}/medicines/${medicine._id}`)
 			.then((response) => {
 				console.log(response.data);
-				if (response.data.medicine) {
-					setAddToCartStatus(false);
-				}
+				setAddToCartStatus(false);
 				setIsLoading(false);
 			})
 			.catch((error) => {
-				console.log(error);
+				setAddToCartStatus(true);
 				setIsLoading(false);
+				console.log(error);
 			});
 	}, []);
 

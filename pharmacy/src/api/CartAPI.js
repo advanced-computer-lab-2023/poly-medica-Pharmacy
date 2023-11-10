@@ -118,6 +118,7 @@ export const cart = (app) => {
 		try {
 			const { userId, medicineId } = req.params;
 			const { quantity } = req.query;
+
 			if (!isValidMongoId(medicineId)) {
 				return res
 					.status(ERROR_STATUS_CODE)
@@ -132,6 +133,17 @@ export const cart = (app) => {
 				return res
 					.status(NOT_FOUND_STATUS_CODE)
 					.json({ err: 'Medicine not found!' });
+			}
+
+			if (quantity <= 0) {
+				return res
+					.status(ERROR_STATUS_CODE)
+					.json({ err: 'Quantity cannot be less that or equal to zero!' });
+			}
+			if (quantity > medicine.medicine.quantity) {
+				return res
+					.status(ERROR_STATUS_CODE)
+					.json({ err: 'Quantity cannot be more than the available amount!' });
 			}
 
 			const cart = await service.updateMedicineInCart(
