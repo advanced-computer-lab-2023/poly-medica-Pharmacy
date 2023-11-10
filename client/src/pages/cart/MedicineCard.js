@@ -28,7 +28,6 @@ const CartMedicineCard = ({
 	const [quantityAlert, setQuantityAlert] = useState(false);
 
 	const handleUpdateQuantity = (newQuantity) => {
-		// Ensure the new quantity is within valid bounds (e.g., not negative)
 		if (newQuantity === 0) {
 			handleRemoveMedicine();
 		} else if (newQuantity <= medicine.quantity) {

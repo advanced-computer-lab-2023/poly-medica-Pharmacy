@@ -57,8 +57,13 @@ class PharmacyRepository {
 	}
 
 	async addPharmacist(req) {
-		const { userData, hourlyRate, affiliation, educationalBackground, documentsNames } =
-			req.body;
+		const {
+			userData,
+			hourlyRate,
+			affiliation,
+			educationalBackground,
+			documentsNames,
+		} = req.body;
 		const user = await PharmacistModel.addUser(
 			userData,
 			hourlyRate,

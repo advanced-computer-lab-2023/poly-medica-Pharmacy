@@ -10,7 +10,7 @@ class CartRepository {
 	}
 
 	async addMedicineToCart(userId, medicine) {
-		const cart = await CartModel.findOneAndUpdate(
+		await CartModel.findOneAndUpdate(
 			{ userId: new mongoose.Types.ObjectId(userId) },
 			{
 				$push: {
@@ -21,7 +21,8 @@ class CartRepository {
 			},
 			{ new: true },
 		);
-		return cart;
+
+		return await this.getCart(userId);
 	}
 
 	async getMedicine(userId, medicineId) {
@@ -32,9 +33,7 @@ class CartRepository {
 	}
 
 	async getCartMedicines(userId) {
-		const cart = await CartModel.findOne({
-			userId: new mongoose.Types.ObjectId(userId),
-		});
+		const cart = this.getCart(userId);
 		return cart.medicines;
 	}
 

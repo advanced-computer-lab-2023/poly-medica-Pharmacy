@@ -138,7 +138,7 @@ const Medicines = () => {
 
 	const handleAddToCart = (medicine) => {
 		pharmacyAxios
-			.post('/cart/medicines', { userId, medicine, quantity: 1 })
+			.post(`/cart/${userId}/medicines`, { medicine })
 			.then((response) => {
 				console.log(response.data);
 				setAddToCartAlert(true);
