@@ -15,8 +15,8 @@ class MedicineService {
 		return medicine;
 	}
 
-	async updateMedicine(updatedMedicine) {
-		const updated = await this.repository.updateMedicine(updatedMedicine);
+	async updateMedicine (oldMedicine, updatedMedicine) {
+		const updated = await this.repository.updateMedicine(oldMedicine, updatedMedicine);
 		return updated;
 	}
 

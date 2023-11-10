@@ -1,11 +1,11 @@
 
-import { IconButton, ListItem, ListItemAvatar, ListItemText } from '@mui/material';
+import { IconButton, ListItemAvatar, ListItemButton, ListItemText } from '@mui/material';
 import { Edit as EditIcon } from '@mui/icons-material';
 import { PHARMACY_BASE_URL } from 'utils/Constants';
 
 const MedicineCard = ({ medicine, setSelectedMedicine, handleEditButtonClick }) => {
     return (
-        <ListItem button onClick={() => setSelectedMedicine(medicine)}>
+        <ListItemButton onClick={() => setSelectedMedicine(medicine)}>
             <ListItemAvatar sx={{ paddingRight: '2%' }}>
                 <img src={`${PHARMACY_BASE_URL}/medicines/${medicine._id}/pictures`} alt={medicine.name} width="80" height="80" />
             </ListItemAvatar>
@@ -27,7 +27,7 @@ const MedicineCard = ({ medicine, setSelectedMedicine, handleEditButtonClick }) 
             >
                 <EditIcon />
             </IconButton>
-        </ListItem>
+        </ListItemButton>
     );
 };
 

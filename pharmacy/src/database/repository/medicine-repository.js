@@ -19,8 +19,9 @@ class MedicineRepository {
 		return savedMedicine;
 	}
 
-	async updateMedicine(updatedMedicine) {
-		const updated = await updatedMedicine.save();
+	async updateMedicine(oldMedicine, updatedMedicine) {
+		Object.assign(oldMedicine, updatedMedicine);
+		const updated = await oldMedicine.save();
 		return updated;
 	}
 

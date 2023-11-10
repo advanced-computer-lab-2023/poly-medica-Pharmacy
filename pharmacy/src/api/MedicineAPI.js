@@ -42,8 +42,7 @@ export const medicine = (app) => {
 			if (!oldMedicine) {
 				res.status(NOT_FOUND_STATUS_CODE).json({ message: 'No medicine found' });
 			} else {
-				Object.assign(oldMedicine, updatedMedicine);
-				const updated = service.updateMedicine(oldMedicine);
+				const updated = await service.updateMedicine(oldMedicine, updatedMedicine);
 				res.status(OK_STATUS_CODE).json(updated);
 			}
 
@@ -55,8 +54,10 @@ export const medicine = (app) => {
 	app.post('/medicines', upload(MEDICINE_FOLDER_NAME).single('image'), async (req, res) => {
 		try {
 			const { newMedicine } = req.body;
+			console.log('req body ============== ', req.body);
 			const parsedMedicine = JSON.parse(newMedicine);
-			parsedMedicine.pictureName = req.file.filename;
+			console.log('parsed medicine = ',parsedMedicine);
+			parsedMedicine.pictureName = req.file?req.file.filename:'';
 
 			const addedMedicine = await service.addMedicine(parsedMedicine);
 
@@ -66,6 +67,7 @@ export const medicine = (app) => {
 			}
 		} catch (err) {
 			res.status(ERROR_STATUS_CODE).json({ message: err.message });
+			console.log('err = ',err.message);
 		}
 	});
 };
