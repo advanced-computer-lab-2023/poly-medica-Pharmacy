@@ -70,7 +70,6 @@ const DoctorRequests = () => {
 				method: 'DELETE',
 			},
 		)
-			.then((response) => response.json())
 			.then(() => {
 				setPharmacistRequests((prevPharmacistRequests) =>
 					prevPharmacistRequests.filter(
@@ -81,7 +80,6 @@ const DoctorRequests = () => {
 			.catch((error) => {
 				console.error('Error rejecting pharmacist request:', error);
 			});
-
 	};
 
 	return (

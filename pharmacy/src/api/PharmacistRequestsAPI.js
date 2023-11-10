@@ -79,7 +79,6 @@ export const pharmacistRequests = (app) => {
 		try {
 			const { id } = req.params;
 			const { accept } = req.query;
-			console.log('accept', accept);
 			if (!isValidMongoId(id))
 				return res.status(ERROR_STATUS_CODE).json({ message: 'Invalid ID' });
 
@@ -108,7 +107,7 @@ export const pharmacistRequests = (app) => {
 					.json({ message: 'pharmacist request deleted' });
 			} else {
 				res.status(ERROR_STATUS_CODE).json({
-					message: 'doctor not found',
+					message: 'pharmacist not found',
 				});
 			}
 		} catch (error) {

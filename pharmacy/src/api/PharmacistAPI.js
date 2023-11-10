@@ -11,6 +11,7 @@ import {
 	AUTH_BASE_URL,
 	PHARMACIST_ENUM,
 } from '../utils/Constants.js';
+import { isValidMongoId } from '../utils/Validation.js';
 
 export const pharmacist = (app) => {
 	const service = new PharmacistService();
@@ -90,7 +91,8 @@ export const pharmacist = (app) => {
 	app.delete('/pharmacists/:id', async (req, res) => {
 		try {
 			const { id } = req.params;
-
+			if (!isValidMongoId(id))
+				return res.status(ERROR_STATUS_CODE).json({ message: 'Invalid ID' });
 			await service
 				.getPharmacist(id)
 				.then((pharmacist) => {
@@ -110,7 +112,6 @@ export const pharmacist = (app) => {
 				});
 
 			const deletedPharmacist = await service.deletePharmacist(id);
-			console.log('deletedPharmacist', deletedPharmacist);
 			if (deletedPharmacist) {
 				await axios.delete(`${AUTH_BASE_URL}/users/${id}`);
 				res
