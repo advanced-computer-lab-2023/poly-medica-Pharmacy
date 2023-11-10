@@ -12,7 +12,7 @@ export const cart = (app) => {
 
 	app.post('/cart/users', async (req, res) => {
 		try {
-			const userId = req.body.userId;
+			const { userId } = req.body;
 			if (!isValidMongoId(userId)) {
 				return res.status(ERROR_STATUS_CODE).json({ err: 'Invalid user id!' });
 			}
@@ -82,10 +82,42 @@ export const cart = (app) => {
 		}
 	});
 
+	app.get('/cart/users/:userId/medicines/:medicineId', async (req, res) => {
+		try {
+			const { userId, medicineId } = req.params;
+			if (!isValidMongoId(medicineId)) {
+				return res
+					.status(ERROR_STATUS_CODE)
+					.json({ err: 'Invalid medicine id!' });
+			}
+			if (!isValidMongoId(userId)) {
+				return res.status(ERROR_STATUS_CODE).json({ err: 'Invalid user id!' });
+			}
+
+			const cart = await service.getCart(userId);
+			if (!cart) {
+				return res
+					.status(NOT_FOUND_STATUS_CODE)
+					.json({ err: 'Cart not found!' });
+			}
+
+			const medicine = await service.getMedicine(userId, medicineId);
+			if (!medicine) {
+				return res
+					.status(NOT_FOUND_STATUS_CODE)
+					.json({ err: 'Medicine not found!' });
+			}
+
+			res.status(OK_STATUS_CODE).json({ medicine });
+		} catch (err) {
+			res.status(ERROR_STATUS_CODE).json({ err: err.message });
+		}
+	});
+
 	app.patch('/cart/users/:userId/medicines/:medicineId', async (req, res) => {
 		try {
 			const { userId, medicineId } = req.params;
-			const { quantity } = req.body;
+			const { quantity } = req.query;
 			if (!isValidMongoId(medicineId)) {
 				return res
 					.status(ERROR_STATUS_CODE)
@@ -130,7 +162,7 @@ export const cart = (app) => {
 				return res.status(ERROR_STATUS_CODE).json({ err: 'Invalid user id!' });
 			}
 
-			const cart = await service.deleteMedicineFromCart(userId, medicineId);
+			const cart = await service.getCart(userId);
 			if (!cart) {
 				return res
 					.status(NOT_FOUND_STATUS_CODE)
@@ -144,7 +176,12 @@ export const cart = (app) => {
 					.json({ err: 'Medicine is not in the cart!' });
 			}
 
-			res.status(OK_STATUS_CODE).json({ cart });
+			const updatedCart = await service.deleteMedicineFromCart(
+				userId,
+				medicineId,
+			);
+
+			res.status(OK_STATUS_CODE).json({ updatedCart });
 		} catch (err) {
 			res.status(ERROR_STATUS_CODE).json({ err: err.message });
 		}

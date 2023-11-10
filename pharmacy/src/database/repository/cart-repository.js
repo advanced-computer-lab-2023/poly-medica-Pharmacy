@@ -63,14 +63,11 @@ class CartRepository {
 	async deleteMedicineFromCart(userId, medicineId) {
 		const cart = await this.getCart(userId);
 		if (cart) {
-			for (let i = 0; i < cart.medicines.length; i++) {
-				if (cart.medicines[i].medicine._id == medicineId) {
-					cart.medicines.splice(i, 1);
-					break;
-				}
-			}
+			cart.medicines = cart.medicines.filter(
+				(item) => item.medicine._id != medicineId,
+			);
+			await cart.save();
 		}
-
 		return cart;
 	}
 }

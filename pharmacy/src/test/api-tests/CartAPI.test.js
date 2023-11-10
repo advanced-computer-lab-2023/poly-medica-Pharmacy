@@ -25,7 +25,7 @@ jest.setTimeout(80 * SECONDS);
 
 jest.mock('axios');
 
-describe('Post /cart/users', () => {
+describe('POST /cart/users', () => {
 	const addCart = async (userId) => {
 		return await request(app).post('/cart/users').send({ userId });
 	};
@@ -87,7 +87,7 @@ describe('GET /cart/users/:userId', () => {
 	});
 });
 
-describe('Post /cart/users/:userId/medicines', () => {
+describe('POST /cart/users/:userId/medicines', () => {
 	const addMedicineToCart = async (userId, medicine) => {
 		return await request(app)
 			.post(`/cart/users/${userId}/medicines`)
@@ -138,7 +138,7 @@ describe('Post /cart/users/:userId/medicines', () => {
 	});
 });
 
-describe('Get /cart/users/:userId/medicines', () => {
+describe('GET /cart/users/:userId/medicines', () => {
 	const addMedicineToCart = async (userId, medicine) => {
 		return await request(app)
 			.post(`/cart/users/${userId}/medicines`)
@@ -187,16 +187,85 @@ describe('Get /cart/users/:userId/medicines', () => {
 	});
 });
 
-describe('Patch /cart/users/:userId/medicine/:medicineId', () => {
+describe('GET /cart/users/:userId/medicines/:medicineId', () => {
+	const addMedicineToCart = async (userId, medicine) => {
+		return await request(app)
+			.post(`/cart/users/${userId}/medicines`)
+			.send({ medicine });
+	};
+
+	const getMedicineFromCart = async (userId, medicineId) => {
+		return await request(app).get(
+			`/cart/users/${userId}/medicines/${medicineId}`,
+		);
+	};
+
+	beforeEach(async () => {
+		await connectDBTest();
+	});
+
+	it('should return 404 when getting a medicine from a none existing cart', async () => {
+		const medicineId = '60f1b2b4b8b8b1b2b4b8b8b1';
+		const userId = '60f1b2b4b8b8b1b2b4b8b8b1';
+
+		const response = await getMedicineFromCart(userId, medicineId);
+		expect(response.status).toBe(NOT_FOUND_STATUS_CODE);
+		expect(response.body.medicine).toBeUndefined();
+	});
+
+	it('should return 200 when getting a medicine from cart', async () => {
+		const userId = '60f1b2b4b8b8b1b2b4b8b8b1';
+		await CartModel(generateCart(userId, [])).save();
+
+		const medicine = new MedicineModel(generateMedicine());
+		await medicine.save();
+		await addMedicineToCart(userId, medicine);
+
+		const response = await getMedicineFromCart(userId, medicine._id);
+		expect(response.status).toBe(OK_STATUS_CODE);
+		expect(response.body.medicine).toBeDefined();
+	});
+
+	it('should return 500 when getting a medicine from cart with invalid user id', async () => {
+		const medicineId = '60f1b2b4b8b82b4b8b8b1';
+		const userId = '60f1b2b4b8b82b4b8b8b1';
+
+		const response = await getMedicineFromCart(userId, medicineId);
+		expect(response.status).toBe(ERROR_STATUS_CODE);
+	});
+
+	it('should return 500 when getting a medicine from cart with invalid medicine id', async () => {
+		const medicineId = '60f1b2bb82b4b8b8b1';
+		const userId = '60f1b2b4b8b8b1b2b4b8b8b1';
+
+		const response = await getMedicineFromCart(userId, medicineId);
+		expect(response.status).toBe(ERROR_STATUS_CODE);
+	});
+
+	it('should return 404 when getting a none existing medicine from cart', async () => {
+		const medicineId = '60f1b2b4b8b8b1b2b4b8b8b1';
+		const userId = '60f1b2b4b8b8b1b2b4b8b8b1';
+
+		const response = await getMedicineFromCart(userId, medicineId);
+		expect(response.status).toBe(NOT_FOUND_STATUS_CODE);
+		expect(response.body.medicine).toBeUndefined();
+	});
+
+	afterEach(async () => {
+		await disconnectDBTest();
+	});
+});
+
+describe('PATCH /cart/users/:userId/medicine/:medicineId?quantity=x', () => {
 	const addMedicineToCart = async (userId, medicine) => {
 		return await request(app)
 			.post(`/cart/users/${userId}/medicines`)
 			.send({ medicine });
 	};
 	const updateMedicineQuantity = async (medicineId, userId, quantity) => {
-		return await request(app)
-			.patch(`/cart/users/${userId}/medicines/${medicineId}`)
-			.send({ quantity });
+		return await request(app).patch(
+			`/cart/users/${userId}/medicines/${medicineId}?quantity=${quantity}`,
+		);
 	};
 
 	beforeEach(async () => {
@@ -279,8 +348,8 @@ describe('DELETE /cart/user/:userId/medicines/:medicineId', () => {
 		await addMedicineToCart(userId, medicine2);
 		const response = await deleteMedicineFromCart(userId, medicine1._id);
 		expect(response.status).toBe(OK_STATUS_CODE);
-		expect(response.body.cart).toBeDefined();
-		expect(response.body.cart.medicines.length).toBe(1);
+		expect(response.body.updatedCart).toBeDefined();
+		expect(response.body.updatedCart.medicines.length).toBe(1);
 	});
 
 	it('should return 500 when deleting medicine from cart with invalid user id', async () => {
