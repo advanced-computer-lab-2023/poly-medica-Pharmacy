@@ -6,9 +6,10 @@ import {
     TableBody,
     TableRow,
     Typography,
-    Button,
+    IconButton,
 } from '@mui/material';
-// import HomeIcon from '@mui/icons-material/Home';
+import EditIcon from '@mui/icons-material/Edit';
+import DeleteIcon from '@mui/icons-material/Delete';
 
 const AddressCard = ({
     address,
@@ -72,11 +73,12 @@ const AddressCard = ({
                                 }}>
                                 {includeEdit && (
                                     <>
-                                        <Button
+                                        <IconButton
+                                            edge='end'
+                                            aria-label='edit'
                                             color='secondary'
                                             sx={{
-                                                borderRightStyle: 'groove',
-                                                borderRightWidth: 1,
+                                                marginRight: '2px'
                                             }}
                                             onClick={() => {
                                                 const tmpAddress = JSON.parse(
@@ -85,9 +87,11 @@ const AddressCard = ({
                                                 setSelectedAddress(tmpAddress);
                                                 handleEditDialogOpen();
                                             }}>
-                                            Edit
-                                        </Button>
-                                        <Button
+                                            <EditIcon />
+                                        </IconButton>
+                                        <IconButton
+                                            edge='end'
+                                            aria-label='edit'
                                             color='error'
                                             onClick={() => {
                                                 const tmpAddress = JSON.parse(
@@ -96,8 +100,8 @@ const AddressCard = ({
                                                 setSelectedAddress(tmpAddress);
                                                 handleDelete(tmpAddress);
                                             }}>
-                                            Delete
-                                        </Button>
+                                            <DeleteIcon />
+                                        </IconButton>
                                     </>
                                 )}
                             </TableCell>

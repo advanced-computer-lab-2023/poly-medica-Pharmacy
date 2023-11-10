@@ -13,14 +13,25 @@ const Orders = () => {
     const { user } = useUserContext();
     const userId = user.id;
     useEffect(() => {
-        patientAxios
-            .get(`/order/${userId}`)
-            .then((response) => {
-                setOrders(response.data);
-            })
-            .catch((error) => {
-                console.log(error);
-            });
+        if (user.type === 'patient') {
+            patientAxios
+                .get(`/order/${userId}`)
+                .then((response) => {
+                    setOrders(response.data);
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
+        } else {
+            patientAxios
+                .get(`/order-pending/`)
+                .then((response) => {
+                    setOrders(response.data);
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
+        }
     }, []);
 
     const handleDialogClose = () => {
@@ -47,6 +58,25 @@ const Orders = () => {
         handleDialogClose();
     };
 
+    const handleAcceptOrRejectOrder = (status) => {
+        selectedOrder.status = status;
+        patientAxios
+            .patch(`/order/${selectedOrder._id}`, { order: selectedOrder })
+            .then((response) => {
+                const order = response.data;
+                setOrders((prevOrders) => {
+                    const updateOrders = prevOrders.filter((ord) => {
+                        if (ord._id != order._id) return ord;
+                    });
+                    return updateOrders;
+                });
+            })
+            .catch((err) => {
+                console.log(err);
+            });
+        handleDialogClose();
+    };
+
     return (
         <MainCard title='Orders'>
             <OrdersList orders={orders} setSelectedOrder={setSelectedOrder} />
@@ -54,6 +84,7 @@ const Orders = () => {
                 selectedOrder={selectedOrder}
                 handleDialogClose={handleDialogClose}
                 handleCancleOrder={handleCancleOrder}
+                handleAcceptOrRejectOrder={handleAcceptOrRejectOrder}
             />
         </MainCard>
     );
