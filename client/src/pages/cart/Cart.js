@@ -18,7 +18,7 @@ const Cart = () => {
 
 	useEffect(() => {
 		pharmacyAxios
-			.get(`/cart/${userId}/medicines`)
+			.get(`/cart/users/${userId}/medicines`)
 			.then((response) => {
 				console.log(response.data);
 				setCartItems(response.data.medicines);
@@ -48,7 +48,7 @@ const Cart = () => {
 
 	const updateMedicineQuantity = (id, quantity) => {
 		pharmacyAxios
-			.patch(`/cart/medicines/${id}`, { userId, quantity })
+			.patch(`/cart/users/${userId}/medicines/${id}`, { quantity })
 			.then((response) => {
 				console.log(response.data);
 			})

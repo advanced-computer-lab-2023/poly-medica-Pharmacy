@@ -27,9 +27,9 @@ jest.setTimeout(80 * SECONDS);
 
 jest.mock('axios');
 
-describe('Post /cart', () => {
+describe('Post /cart/users', () => {
 	const addCart = async (userId) => {
-		return await request(app).post('/cart').send({ userId });
+		return await request(app).post('/cart/users').send({ userId });
 	};
 
 	beforeEach(async () => {
@@ -53,9 +53,9 @@ describe('Post /cart', () => {
 	});
 });
 
-describe('GET /cart/:userId', () => {
+describe('GET /cart/users/:userId', () => {
 	const getCart = async (userId) => {
-		return await request(app).get(`/cart/${userId}`);
+		return await request(app).get(`/cart/users/${userId}`);
 	};
 
 	beforeEach(async () => {
@@ -89,10 +89,10 @@ describe('GET /cart/:userId', () => {
 	});
 });
 
-describe('Post /cart/:userId/medicines', () => {
+describe('Post /cart/users/:userId/medicines', () => {
 	const addMedicineToCart = async (userId, medicine) => {
 		return await request(app)
-			.post(`/cart/${userId}/medicines`)
+			.post(`/cart/users/${userId}/medicines`)
 			.send({ medicine });
 	};
 
@@ -140,15 +140,15 @@ describe('Post /cart/:userId/medicines', () => {
 	});
 });
 
-describe('Get /cart/:userId/medicines', () => {
+describe('Get /cart/users/:userId/medicines', () => {
 	const addMedicineToCart = async (userId, medicine) => {
 		return await request(app)
-			.post(`/cart/${userId}/medicines`)
+			.post(`/cart/users/${userId}/medicines`)
 			.send({ medicine });
 	};
 
 	const getMedicinesFromCart = async (userId) => {
-		return await request(app).get(`/cart/${userId}/medicines`);
+		return await request(app).get(`/cart/users/${userId}/medicines`);
 	};
 
 	beforeEach(async () => {
@@ -189,16 +189,16 @@ describe('Get /cart/:userId/medicines', () => {
 	});
 });
 
-describe('Patch /cart/medicine/:medicineId', () => {
+describe('Patch /cart/users/:userId/medicine/:medicineId', () => {
 	const addMedicineToCart = async (userId, medicine) => {
 		return await request(app)
-			.post(`/cart/${userId}/medicines`)
+			.post(`/cart/users/${userId}/medicines`)
 			.send({ medicine });
 	};
 	const updateMedicineQuantity = async (medicineId, userId, quantity) => {
 		return await request(app)
-			.patch(`/cart/medicines/${medicineId}`)
-			.send({ userId, quantity });
+			.patch(`/cart/users/${userId}/medicines/${medicineId}`)
+			.send({ quantity });
 	};
 
 	beforeEach(async () => {
@@ -245,3 +245,4 @@ describe('Patch /cart/medicine/:medicineId', () => {
 		await disconnectDBTest();
 	});
 });
+

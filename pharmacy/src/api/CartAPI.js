@@ -10,7 +10,7 @@ import { isValidMongoId } from '../utils/Validation.js';
 export const cart = (app) => {
 	const service = new CartService();
 
-	app.post('/cart', async (req, res) => {
+	app.post('/cart/users', async (req, res) => {
 		try {
 			const userId = req.body.userId;
 			if (!isValidMongoId(userId)) {
@@ -24,7 +24,7 @@ export const cart = (app) => {
 		}
 	});
 
-	app.get('/cart/:userId', async (req, res) => {
+	app.get('/cart/users/:userId', async (req, res) => {
 		try {
 			const { userId } = req.params;
 			if (!isValidMongoId(userId)) {
@@ -43,7 +43,7 @@ export const cart = (app) => {
 		}
 	});
 
-	app.post('/cart/:userId/medicines', async (req, res) => {
+	app.post('/cart/users/:userId/medicines', async (req, res) => {
 		try {
 			const { medicine } = req.body;
 			const { userId } = req.params;
@@ -62,7 +62,7 @@ export const cart = (app) => {
 		}
 	});
 
-	app.get('/cart/:userId/medicines/', async (req, res) => {
+	app.get('/cart/users/:userId/medicines/', async (req, res) => {
 		try {
 			const { userId } = req.params;
 			if (!isValidMongoId(userId)) {
@@ -81,10 +81,10 @@ export const cart = (app) => {
 		}
 	});
 
-	app.patch('/cart/medicines/:medicineId', async (req, res) => {
+	app.patch('/cart/users/:userId/medicines/:medicineId', async (req, res) => {
 		try {
-			const { medicineId } = req.params;
-			const { userId, quantity } = req.body;
+			const { userId, medicineId } = req.params;
+			const { quantity } = req.body;
 			if (!isValidMongoId(medicineId)) {
 				return res
 					.status(ERROR_STATUS_CODE)
