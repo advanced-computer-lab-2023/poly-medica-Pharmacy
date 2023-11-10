@@ -7,6 +7,7 @@ import {
     DialogActions,
     Button,
 } from '@mui/material';
+import { useUserContext } from 'hooks/useUserContext.js';
 
 import { PENDING_STATUS } from 'utils/Constants';
 
@@ -18,13 +19,15 @@ const OrdersDetails = ({
     selectedOrder,
     handleDialogClose,
     handleCancleOrder,
+    handleAcceptOrRejectOrder,
 }) => {
+    const { user } = useUserContext();
     return (
         <Dialog
             open={selectedOrder}
             onClose={handleDialogClose}
             PaperProps={{
-                sx: { minWidth: window.outerWidth > 800 ? 800 : 500 },
+                sx: { minWidth: window.outerWidth > 800 ? 800 : 400 },
             }}>
             {selectedOrder && (
                 <>
@@ -52,7 +55,8 @@ const OrdersDetails = ({
                         />
                     </DialogContent>
                     <DialogActions>
-                        {selectedOrder &&
+                        {user.type === 'patient' &&
+                            selectedOrder &&
                             selectedOrder.status === PENDING_STATUS && (
                                 <Button
                                     variant='contained'
@@ -62,6 +66,28 @@ const OrdersDetails = ({
                                     Cancle Order
                                 </Button>
                             )}
+                        {user.type !== 'patient' && selectedOrder && (
+                            <>
+                                <Button
+                                    variant='contained'
+                                    sx={{ margin: 2 }}
+                                    onClick={() => {
+                                        handleAcceptOrRejectOrder('rejected');
+                                    }}
+                                    color='secondary'>
+                                    Reject
+                                </Button>
+                                <Button
+                                    variant='contained'
+                                    sx={{ margin: 2 }}
+                                    onClick={() => {
+                                        handleAcceptOrRejectOrder('accepted');
+                                    }}
+                                    color='primary'>
+                                    Accept
+                                </Button>
+                            </>
+                        )}
                     </DialogActions>
                 </>
             )}

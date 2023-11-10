@@ -47,7 +47,7 @@ const Checkout = () => {
             .get('/address/' + userId)
             .then((response) => {
                 const data = response.data.deliveryAddresses;
-                if (data) {
+                if (data.length) {
                     setPrimaryAddress(data[ZERO_INDEX]);
                 }
             })
