@@ -7,7 +7,7 @@ import SubCard from 'ui-component/cards/SubCard';
 import OrderTable from 'pages/orders/OrderTable';
 import AddressCard from 'pages/address/AddressCard';
 import { ZERO_INDEX } from 'utils/Constants';
-import { Button, Typography } from '@mui/material';
+import { Container, Button, Typography } from '@mui/material';
 import PaymentOptions from 'pages/payment/PaymentOptions';
 import { successfulPayment } from '../../utils/PaymentUtils';
 import Swal from 'sweetalert2';
@@ -68,12 +68,14 @@ const Checkout = () => {
         const amountToPay = totalCost;
         if (value === 'credit-card') {
             navigate('/patient/pages/payment', { state: { items: { patientId: userId, details: items, amount: totalCost }, amountToPay: totalCost }, replace: true });
-        } else {
+        } else if (value === 'wallet') {
             if (amountInWallet >= amountToPay) {
                 paymentAxios.post('/payment/wallet', { amountToPayByWallet: amountToPay })
                     .then(
-                        Swal.fire('success', 'Payment Succeeded', 'success').then(
-                            successfulPayment({ patientId: userId, details: items, amount: totalCost })
+                        Swal.fire('success', 'Payment Succeeded', 'success').then(() => {
+                            const callBackUrl = successfulPayment({ patientId: userId, details: items, amount: totalCost });
+                            navigate(callBackUrl, { replace: true });
+                        }
                         )
                     )
                     .catch((error) => {
@@ -100,6 +102,12 @@ const Checkout = () => {
                     }
                 });
             }
+        } else {
+            Swal.fire('success', 'Payment Succeeded', 'success').then(() => {
+                const callBackUrl = successfulPayment({ patientId: userId, details: items, amount: totalCost });
+                navigate(callBackUrl, { replace: true });
+            }
+            );
         }
     };
 
@@ -131,8 +139,11 @@ const Checkout = () => {
             </SubCard>
             <SubCard title='Payment method' sx={{ marginTop: 5 }}>
                 <PaymentOptions handleChange={handleChange} value={value} />
-                <Button onClick={handlePayment} variant="solid" > Place Order </Button>
+
             </SubCard>
+            <Container sx={{ justifyContent: 'flex-end' , display: 'flex', marginTop : 2 }}>
+                <Button onClick={handlePayment} variant="contained" color="secondary"> Place Order </Button>
+            </Container>
         </MainCard>
     );
 };

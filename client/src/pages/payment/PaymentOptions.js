@@ -1,11 +1,6 @@
 import React, { useState } from 'react';
-import FormControl from '@mui/joy/FormControl';
-import FormLabel from '@mui/joy/FormLabel';
-import Radio from '@mui/joy/Radio';
-import RadioGroup from '@mui/joy/RadioGroup';
+import { Radio, FormControlLabel  , RadioGroup, FormLabel, FormControl } from '@mui/material';
 import { patientAxios } from 'utils/AxiosConfig.js';
-
-
 
 const PaymentOptions = ({ handleChange, value }) => {
     const [amountInWallet, setAmountInWallet] = useState(0);
@@ -21,12 +16,12 @@ const PaymentOptions = ({ handleChange, value }) => {
                 defaultValue='credit card'
                 name='controlled-radio-buttons-group'
                 value={value}
-                onChange={handleChange }
+                onChange={handleChange}
                 sx={{ my: 1 }}
             >
-                <Radio value='credit-card' label='Credit Card' />
-                <Radio value='wallet' label= {`My Wallet  ${amountInWallet}`} />
-                <Radio value='cash' label='Cash on deleviry' />
+                <FormControlLabel  value='credit-card' control={<Radio />} label='Credit Card' />
+                <FormControlLabel  value='wallet' control={<Radio />} label={`My Wallet  ${amountInWallet}`} />
+                <FormControlLabel  value='cash' control={<Radio />} label='Cash on deleviry' />
             </RadioGroup>
         </FormControl>
     );

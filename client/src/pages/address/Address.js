@@ -10,7 +10,7 @@ import EditAddress from './EditAddress.js';
 import { ZERO_INDEX } from 'utils/Constants.js';
 
 const Address = () => {
-    const [addresses, setAddresses] = useState(null);
+    const [addresses, setAddresses] = useState([]);
     const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
     const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
     const [address, setAddress] = useState({
