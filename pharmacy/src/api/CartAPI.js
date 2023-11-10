@@ -56,6 +56,7 @@ export const cart = (app) => {
 					.status(NOT_FOUND_STATUS_CODE)
 					.json({ err: 'Cart not found!' });
 			}
+
 			res.status(OK_STATUS_CODE).json({ cart });
 		} catch (err) {
 			res.status(ERROR_STATUS_CODE).json({ err: err.message });
@@ -122,27 +123,28 @@ export const cart = (app) => {
 			const { userId, medicineId } = req.params;
 			if (!isValidMongoId(medicineId)) {
 				return res
-					.status(NOT_FOUND_STATUS_CODE)
+					.status(ERROR_STATUS_CODE)
 					.json({ err: 'Invalid medicine id!' });
 			}
 			if (!isValidMongoId(userId)) {
-				return res
-					.status(NOT_FOUND_STATUS_CODE)
-					.json({ err: 'Invalid user id!' });
+				return res.status(ERROR_STATUS_CODE).json({ err: 'Invalid user id!' });
 			}
 
-			const medicines = await service.getCartMedicines(userId);
-			console.log('medicinesLength', medicines.length);
 			const cart = await service.deleteMedicineFromCart(userId, medicineId);
-			if (cart.medicines.length + 1 !== medicines.length) {
+			if (!cart) {
+				return res
+					.status(NOT_FOUND_STATUS_CODE)
+					.json({ err: 'No cart for this user' });
+			}
+
+			const medicine = await service.getMedicine(userId, medicineId);
+			if (!medicine) {
 				return res
 					.status(NOT_FOUND_STATUS_CODE)
 					.json({ err: 'Medicine is not in the cart!' });
 			}
 
-			res
-				.status(OK_STATUS_CODE)
-				.json({ message: 'Medicine deleted from cart!' });
+			res.status(OK_STATUS_CODE).json({ cart });
 		} catch (err) {
 			res.status(ERROR_STATUS_CODE).json({ err: err.message });
 		}

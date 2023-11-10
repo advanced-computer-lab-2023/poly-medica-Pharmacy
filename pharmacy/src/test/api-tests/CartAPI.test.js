@@ -19,8 +19,6 @@ import {
 	it,
 	jest,
 } from '@jest/globals';
-// import { faker } from '@faker-js/faker';
-// import axios from 'axios';
 
 const SECONDS = 1000;
 jest.setTimeout(80 * SECONDS);
@@ -246,3 +244,69 @@ describe('Patch /cart/users/:userId/medicine/:medicineId', () => {
 	});
 });
 
+describe('DELETE /cart/user/:userId/medicines/:medicineId', () => {
+	const addMedicineToCart = async (userId, medicine) => {
+		return await request(app)
+			.post(`/cart/users/${userId}/medicines`)
+			.send({ medicine });
+	};
+
+	const deleteMedicineFromCart = async (userId, medicineId) => {
+		return await request(app).delete(
+			`/cart/users/${userId}/medicines/${medicineId}`,
+		);
+	};
+
+	beforeEach(async () => {
+		await connectDBTest();
+	});
+
+	it('should return 404 when deleting from none existing cart', async () => {
+		const medicineId = '60f1b2b4b8b8b1b2b4b8b8b1';
+		const userId = '20f1b2b4b8b8b1b2b4b8b8b1';
+		const response = await deleteMedicineFromCart(userId, medicineId);
+		expect(response.status).toBe(NOT_FOUND_STATUS_CODE);
+	});
+
+	it('should return 200 when deleting medicine from cart', async () => {
+		const userId = '60f1b2b4b8b8b1b2b4b8b8b1';
+		const medicine1 = new MedicineModel(generateMedicine());
+		const medicine2 = new MedicineModel(generateMedicine());
+		await medicine1.save();
+		await medicine2.save();
+		await CartModel(generateCart(userId, [])).save();
+		await addMedicineToCart(userId, medicine1);
+		await addMedicineToCart(userId, medicine2);
+		const response = await deleteMedicineFromCart(userId, medicine1._id);
+		expect(response.status).toBe(OK_STATUS_CODE);
+		expect(response.body.cart).toBeDefined();
+		expect(response.body.cart.medicines.length).toBe(1);
+	});
+
+	it('should return 500 when deleting medicine from cart with invalid user id', async () => {
+		const medicineId = '60f1b2b4b8b8b1b2b4b8b8b1';
+		const userId = '60f1b2b4bbbbb4b8b8b1';
+		const response = await deleteMedicineFromCart(userId, medicineId);
+		expect(response.status).toBe(ERROR_STATUS_CODE);
+	});
+
+	it('should return 500 when deleting medicine from cart with invalid medicine id', async () => {
+		const medicineId = '60f1b2b4b8bb4b8b8b1';
+		const userId = '60f1b2b4b8b8b1b2b4b8b8b1';
+		await CartModel(generateCart(userId, [])).save();
+		const response = await deleteMedicineFromCart(userId, medicineId);
+		expect(response.status).toBe(ERROR_STATUS_CODE);
+	});
+
+	it('should return 404 when deleting none existing medicine from cart', async () => {
+		const medicineId = '60f1b2b4b8b8b1b2b4b8b8b1';
+		const userId = '20f1b2b4b8b8b1b2b4b8b8b1';
+		await CartModel(generateCart(userId, [])).save();
+		const response = await deleteMedicineFromCart(userId, medicineId);
+		expect(response.status).toBe(NOT_FOUND_STATUS_CODE);
+	});
+
+	afterEach(async () => {
+		await disconnectDBTest();
+	});
+});

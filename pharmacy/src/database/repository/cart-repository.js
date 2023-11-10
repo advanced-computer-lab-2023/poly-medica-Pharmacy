@@ -61,15 +61,15 @@ class CartRepository {
 	}
 
 	async deleteMedicineFromCart(userId, medicineId) {
-		const cart = await CartModel.findOne({
-			userId: new mongoose.Types.ObjectId(userId),
-		});
-
-		const updatedMedicines = cart.medicines.filter(
-			(item) => item.medicine._id != medicineId,
-		);
-		cart.medicines = updatedMedicines;
-		await cart.save();
+		const cart = await this.getCart(userId);
+		if (cart) {
+			for (let i = 0; i < cart.medicines.length; i++) {
+				if (cart.medicines[i].medicine._id == medicineId) {
+					cart.medicines.splice(i, 1);
+					break;
+				}
+			}
+		}
 
 		return cart;
 	}
