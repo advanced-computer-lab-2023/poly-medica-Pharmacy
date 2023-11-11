@@ -27,7 +27,7 @@ jest.setTimeout(80 * SECONDS);
 jest.mock('axios');
 
 describe('GET /pharmacist-requests', () => {
-	const getPharmacists = async () => {
+	const getPharmacistRequests = async () => {
 		const response = await request(app).get('/pharmacist-requests');
 		return response;
 	};
@@ -40,7 +40,7 @@ describe('GET /pharmacist-requests', () => {
 		const pharmacistReq = await PharmacistReqModel(
 			generatePharmacistReq(),
 		).save();
-		const response = await getPharmacists();
+		const response = await getPharmacistRequests();
 
 		expect(response.status).toBe(OK_STATUS_CODE);
 		expect(response.body.pharmacistRequests.length).toBe(1);
