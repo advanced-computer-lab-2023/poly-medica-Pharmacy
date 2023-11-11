@@ -65,7 +65,7 @@ describe('GET /pharmacists/:id', () => {
 		const response = await getPharmacist(pharmacist._id);
 
 		expect(response.status).toBe(OK_STATUS_CODE);
-		expect(response.body.pharmacist.userName).toBe(pharmacist.userName);
+		expect(response.body.pharmacist.userData.userName).toBe(pharmacist.userData.userName);
 	});
 
 	it('should return 500 when id is invalid', async () => {
