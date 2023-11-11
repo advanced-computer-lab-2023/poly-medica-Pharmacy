@@ -6,7 +6,7 @@ class PharmacistService {
 	}
 
 	async getPharmacist(id) {
-		const pharmacist = await this.repository.findPharmacist(id);
+		const pharmacist = await this.repository.findOnePharmacist(id);
 		return pharmacist;
 	}
 
@@ -20,8 +20,15 @@ class PharmacistService {
 		return pharmacistUser;
 	}
 
-	async addReqPharmacist(req) {
-		const pharmacistUser = await this.repository.addPharmacistReq(req);
+	async getPharmacistRequestById(id) {
+		const pharmacistRequest = await this.repository.findPharmacistRequestById(
+			id,
+		);
+		return pharmacistRequest;
+	}
+
+	async addReqPharmacist(data) {
+		const pharmacistUser = await this.repository.addPharmacistReq(data);
 		return pharmacistUser;
 	}
 
@@ -43,6 +50,14 @@ class PharmacistService {
 
 	async checkPharmacistReqUser(req) {
 		await this.repository.checkPharmacistReqUser(req);
+	}
+
+	getFile(fileName) {
+		return this.repository.getFile(fileName);
+	}
+
+	deleteFile(fileName) {
+		return this.repository.deleteFile(fileName);
 	}
 }
 

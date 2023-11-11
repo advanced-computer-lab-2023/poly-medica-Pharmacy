@@ -19,7 +19,6 @@ class AdminRepository {
 	}
 
 	async addAdmin(req) {
-		console.log('in add admin repository', req.body);
 		const { userName, password, mainAdmin } = req.body;
 		const user = await AdminModel.addUser(userName, password, mainAdmin);
 		return user;
