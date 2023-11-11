@@ -172,7 +172,9 @@ const Cart = () => {
                             </Paper>
                             <Button
                                 color='primary'
-                                onClick={() => history.push('/medicines')}
+                                onClick={() =>
+                                    navigate('/patient/pages/medicines')
+                                }
                                 sx={{
                                     border: '1px solid #3f51b5',
                                     borderRadius: '25px',

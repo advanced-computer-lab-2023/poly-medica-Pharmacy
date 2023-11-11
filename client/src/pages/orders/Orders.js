@@ -24,7 +24,7 @@ const Orders = () => {
                 });
         } else {
             patientAxios
-                .get(`/order-pending/`)
+                .get(`/order/pending/`)
                 .then((response) => {
                     setOrders(response.data);
                 })

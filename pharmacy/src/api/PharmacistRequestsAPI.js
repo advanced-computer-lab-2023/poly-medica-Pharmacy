@@ -30,6 +30,7 @@ export const pharmacistRequests = (app) => {
 		upload(PHARMACIST_FOLDER_NAME).array('file'),
 		async (req, res) => {
 			try {
+				console.log(req.body);
 				const { sendData } = req.body;
 				const parsedData = JSON.parse(sendData);
 				parsedData.documentsNames = req.files.map((file) => file.filename);
