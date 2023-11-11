@@ -53,6 +53,19 @@ class CartRepository {
 		return cart;
 	}
 
+	async deleteAllMedicinesFromCart(userId) {
+		const cart = await CartModel.findOneAndUpdate(
+			{ userId: new mongoose.Types.ObjectId(userId) },
+			{
+				$set: {
+					medicines: [],
+				},
+			},
+			{ new: true },
+		);
+		return cart;
+	}
+
 	async getCart(userId) {
 		const cart = await CartModel.findOne({
 			userId: new mongoose.Types.ObjectId(userId),

@@ -324,7 +324,7 @@ describe('PATCH /cart/users/:userId/medicine/:medicineId?quantity=x', () => {
 	});
 });
 
-describe('DELETE /cart/user/:userId/medicines/:medicineId', () => {
+describe('DELETE /cart/users/:userId/medicines/:medicineId', () => {
 	const deleteMedicineFromCart = async (userId, medicineId) => {
 		return await request(app).delete(
 			`/cart/users/${userId}/medicines/${medicineId}`,
@@ -378,6 +378,47 @@ describe('DELETE /cart/user/:userId/medicines/:medicineId', () => {
 		await CartModel(generateCart(userId, [])).save();
 		const response = await deleteMedicineFromCart(userId, medicineId);
 		expect(response.status).toBe(NOT_FOUND_STATUS_CODE);
+	});
+
+	afterEach(async () => {
+		await disconnectDBTest();
+	});
+});
+
+describe('DELETE /cart/users/:userId/medicines', () => {
+	const deleteAllMedicinesFromCart = async (userId) => {
+		return await request(app).delete(`/cart/users/${userId}/medicines`);
+	};
+
+	beforeEach(async () => {
+		await connectDBTest();
+	});
+
+	it('should return 404 when deleting all medicines from none existing cart', async () => {
+		const userId = faker.database.mongodbObjectId();
+		const response = await deleteAllMedicinesFromCart(userId);
+		expect(response.status).toBe(NOT_FOUND_STATUS_CODE);
+	});
+
+	it('should return 200 when deleting all medicines from cart', async () => {
+		const userId = faker.database.mongodbObjectId();
+		const medicine1 = new MedicineModel(generateMedicine());
+		const medicine2 = new MedicineModel(generateMedicine());
+		await medicine1.save();
+		await medicine2.save();
+		await CartModel(
+			generateCart(userId, [{ medicine: medicine1 }, { medicine: medicine2 }]),
+		).save();
+		const response = await deleteAllMedicinesFromCart(userId);
+		expect(response.status).toBe(OK_STATUS_CODE);
+		expect(response.body.updatedCart).toBeDefined();
+		expect(response.body.updatedCart.medicines.length).toBe(0);
+	});
+
+	it('should return 500 when deleting all medicines from cart with invalid user id', async () => {
+		const userId = faker.lorem.word();
+		const response = await deleteAllMedicinesFromCart(userId);
+		expect(response.status).toBe(ERROR_STATUS_CODE);
 	});
 
 	afterEach(async () => {
