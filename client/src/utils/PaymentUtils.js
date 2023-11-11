@@ -5,7 +5,6 @@ import Swal from 'sweetalert2';
 
 
 export const successfulPayment = (order) => {
-  console.log("was here");
   patientAxios.post('/order', { order })
     .catch((error) => {
       console.log('Error in placing the order', error);
