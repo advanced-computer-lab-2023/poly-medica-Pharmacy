@@ -39,7 +39,11 @@ class CartService {
 		return cart;
 	}
 
-	
+	async deleteAllMedicinesFromCart(userId) {
+		const cart = await this.repository.deleteAllMedicinesFromCart(userId);
+		return cart;
+	}
+
 	async deleteMedicineFromCart(userId, medicineId) {
 		const cart = await this.repository.deleteMedicineFromCart(
 			userId,
