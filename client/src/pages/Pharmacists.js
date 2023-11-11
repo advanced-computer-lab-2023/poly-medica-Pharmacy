@@ -57,14 +57,6 @@ const Pharmacists = () => {
 				setPharmacistToDelete(null);
 				setConfirmDeleteDialogOpen(false);
 			});
-
-		fetch(`http://localhost:8004/users/${pharmacistToDelete}`, {
-			method: 'DELETE',
-		})
-			.then((response) => response.json())
-			.catch((error) => {
-				console.error('Error deleting pharmacist:', error);
-			});
 	};
 
 	const handleCancelDelete = () => {
