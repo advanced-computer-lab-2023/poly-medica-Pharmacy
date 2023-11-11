@@ -29,12 +29,9 @@ export const pharmacistRequests = (app) => {
 		upload(PHARMACIST_FOLDER_NAME).array('file'),
 		async (req, res) => {
 			try {
-				// console.log('In add-pharmacist-req');
-				console.log('req.files', req.files);
 				const { sendData } = req.body;
 				const parsedData = JSON.parse(sendData);
 				parsedData.documentsNames = req.files.map((file) => file.filename);
-				console.log('parsedData', parsedData);
 				const pharmacistUser = await service.addReqPharmacist(parsedData);
 				req.body = {
 					userId: pharmacistUser._id,

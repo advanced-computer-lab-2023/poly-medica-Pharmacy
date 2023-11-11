@@ -55,7 +55,9 @@ export const pharmacist = (app) => {
 
 	app.get('/pharmacists/:id', async (req, res) => {
 		try {
-			const id = req.params.id;
+			const { id } = req.params;
+			if (!isValidMongoId(id))
+				return res.status(ERROR_STATUS_CODE).json({ message: 'Invalid ID' });
 			const pharmacist = await service.getPharmacist(id);
 			if (pharmacist) {
 				res.status(OK_STATUS_CODE).json({ pharmacist });
@@ -93,35 +95,21 @@ export const pharmacist = (app) => {
 			const { id } = req.params;
 			if (!isValidMongoId(id))
 				return res.status(ERROR_STATUS_CODE).json({ message: 'Invalid ID' });
-			await service
-				.getPharmacist(id)
-				.then((pharmacist) => {
-					if (!pharmacist) {
-						console.log('pharmacist not found');
-						return res
-							.status(ERROR_STATUS_CODE)
-							.json({ message: 'pharmacist not found' });
-					}
-					pharmacist.documentsNames.forEach((fileName) => {
-						service.deleteFile(fileName);
-					});
-				})
-				.catch((err) => {
-					console.log('Here 1111', err.message);
-					return res.status(ERROR_STATUS_CODE).json({ message: err.message });
-				});
+
+			const pharmacist = await service.getPharmacist(id);
+			if (!pharmacist) {
+				return res
+					.status(NOT_FOUND_STATUS_CODE)
+					.json({ message: 'pharmacist not found' });
+			}
+			pharmacist.documentsNames.forEach((fileName) => {
+				service.deleteFile(fileName);
+			});
 
 			const deletedPharmacist = await service.deletePharmacist(id);
-			if (deletedPharmacist) {
-				await axios.delete(`${AUTH_BASE_URL}/users/${id}`);
-				res
-					.status(OK_STATUS_CODE)
-					.json({ message: 'pharmacist deleted!', deletedPharmacist });
-			} else {
-				res
-					.status(NOT_FOUND_STATUS_CODE)
-					.json({ message: 'pharmacist not found!' });
-			}
+
+			await axios.delete(`${AUTH_BASE_URL}/users/${id}`);
+			res.status(OK_STATUS_CODE).json({ deletedPharmacist });
 		} catch (err) {
 			res.status(ERROR_STATUS_CODE).json({ err: err.message });
 		}
