@@ -4,21 +4,22 @@ import {
   useStripe,
   useElements
 } from '@stripe/react-stripe-js';
-import { successfulPayment } from '../../utils/PaymentUtils';
+import { paymentStatus , paymentElementOptions } from '../../utils/PaymentUtils';
 import { Button } from '@mui/material';
 import Swal from 'sweetalert2';
-import { useNavigate,useLocation } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
+
+
 
 export default function CheckoutForm({ item }) {
 
   const stripe = useStripe();
-  const [status, setStatus] = useState(null);
   const elements = useElements();
   const [message, setMessage] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const location = useLocation();
-  const queryParams = new URLSearchParams(location.search);
   const navigate = useNavigate();
+  const queryParams = new URLSearchParams(location.search);
 
 
   useEffect(() => {
@@ -37,40 +38,11 @@ export default function CheckoutForm({ item }) {
     stripe.retrievePaymentIntent(clientSecret).then(({ paymentIntent }) => {
       const deserializedItem = queryParams.get('item');
       item = JSON.parse(decodeURIComponent(deserializedItem));
-
-      switch (paymentIntent.status) {
-        case 'succeeded': {
-          setMessage('Payment succeeded!');
-          Swal.fire('success', 'Payment Succeeded', 'success').then(() => {
-            const callBackUrl = successfulPayment(item);
-            navigate(callBackUrl, { replace: true });
-            }
-          ).catch((error) => {
-            console.log('Error the purchase', error);
-          });
-        }
-          break;
-        case 'processing': {
-          setMessage('Your payment is processing.');
-        }
-          break;
-        case 'requires_payment_method': {
-          setMessage('Your payment was not successful, please try again.');
-          Swal.fire('error', 'failed payment', 'error');
-        }
-          break;
-        default:
-          setMessage('Something went wrong.');
-          break;
-      }
-      setStatus(paymentIntent.status);
+      setMessage(paymentStatus(navigate,paymentIntent.status, item));
     });
 
   }, [stripe]);
 
-  if (status === 'succeeded') {
-    // TODO: to redirect the user after payment is successful
-  }
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -98,14 +70,7 @@ export default function CheckoutForm({ item }) {
     setIsLoading(false);
   };
 
-  const paymentElementOptions = {
-    layout: {
-      type: 'accordion',
-      defaultCollapsed: false,
-      radios: true,
-      spacedAccordionItems: true
-    }
-  };
+  
 
 
   return (
