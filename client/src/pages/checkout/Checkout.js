@@ -103,7 +103,14 @@ const Checkout = () => {
                                 details: items,
                                 amount: totalCost,
                             });
-                            navigate(callBackUrl, { replace: true });
+                            pharmacyAxios
+                                .delete(`/cart/users/${userId}/medicines`)
+                                .then(() => {
+                                    navigate(callBackUrl, { replace: true });
+                                })
+                                .catch((err) => {
+                                    console.log(err);
+                                });
                         })
                     )
                     .catch((error) => {
