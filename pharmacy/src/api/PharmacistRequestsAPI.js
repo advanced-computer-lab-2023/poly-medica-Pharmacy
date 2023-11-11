@@ -9,6 +9,7 @@ import {
 	ZERO_INDEX_ARR,
 	ONE_ELEMENT_IN_ARR,
 	PHARMACIST_FOLDER_NAME,
+	NOT_FOUND_STATUS_CODE,
 } from '../utils/Constants.js';
 import { isValidMongoId } from '../utils/Validation.js';
 
@@ -79,34 +80,31 @@ export const pharmacistRequests = (app) => {
 			if (!isValidMongoId(id))
 				return res.status(ERROR_STATUS_CODE).json({ message: 'Invalid ID' });
 
-			if (accept === 'false') {
-				await service
-					.getPharmacistRequestById(id)
-					.then((pharmacistRequest) => {
-						if (!pharmacistRequest) {
-							return res
-								.status(ERROR_STATUS_CODE)
-								.json({ message: 'Pharmacist request not found' });
-						}
-						pharmacistRequest.documentsNames.forEach((fileName) => {
-							service.deleteFile(fileName);
-						});
-					})
-					.catch((err) => {
-						return res.status(ERROR_STATUS_CODE).json({ message: err.message });
-					});
+			const pharmacistRequest = await service.getPharmacistRequestById(id);
+			if (!pharmacistRequest) {
+				return res
+					.status(NOT_FOUND_STATUS_CODE)
+					.json({ message: 'pharmacist request not found' });
 			}
 
-			const pharmacistRequest = await service.deletePharmacistRequest(id);
-			if (pharmacistRequest) {
-				res
-					.status(OK_STATUS_CODE)
-					.json({ message: 'pharmacist request deleted' });
-			} else {
-				res.status(ERROR_STATUS_CODE).json({
-					message: 'pharmacist not found',
+			if (accept === 'false') {
+				pharmacistRequest.documentsNames.forEach((fileName) => {
+					service.deleteFile(fileName);
 				});
 			}
+
+			const deletedPharmacistRequest = await service.deletePharmacistRequest(
+				id,
+			);
+			if (!deletedPharmacistRequest) {
+				return res
+					.status(ERROR_STATUS_CODE)
+					.json({ message: 'pharmacist request not deleted' });
+			}
+			res.status(OK_STATUS_CODE).json({
+				message: 'pharmacist request deleted',
+				deletedPharmacistRequest,
+			});
 		} catch (error) {
 			res.status(ERROR_STATUS_CODE).json({ message: error });
 		}

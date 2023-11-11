@@ -24,7 +24,6 @@ class PharmacyRepository {
 			documentsNames,
 		} = data;
 
-		console.log('data', data);
 		const user = await PharmacistReqModel.addUser(
 			userData,
 			speciality,
