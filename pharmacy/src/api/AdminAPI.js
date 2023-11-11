@@ -18,13 +18,10 @@ export const admin = (app) => {
 	const service = new AdminService();
 
 	app.get('/admins', async (req, res) => {
-		console.log('in get admins');
 		try {
-			console.log('in try');
 			const admins = await service.findAllAdmins();
 			res.status(OK_STATUS_CODE).json({ admins });
 		} catch (err) {
-			console.log('in catch');
 			res.status(ERROR_STATUS_CODE).json({ err: err.message });
 		}
 	});
@@ -54,7 +51,6 @@ export const admin = (app) => {
 	});
 
 	app.delete('/admins/:id', async (req, res) => {
-		console.log('in delete admin', req.params);
 		try {
 			const { id } = req.params;
 			if (!isValidMongoId(id))
@@ -62,30 +58,24 @@ export const admin = (app) => {
 
 			const isMainAdmin = await service.checkMainAdmin(id);
 			if (isMainAdmin) {
-				console.log('Here 1');
 				res
 					.status(ERROR_STATUS_CODE)
 					.json({ message: 'you can not delete main admin' });
 			} else {
-				console.log('Here 2');
 				const deletedAdmin = await service.deleteAdmin(id);
 
 				if (deletedAdmin) {
-					console.log('Here 3');
 					axios.delete(`${AUTH_BASE_URL}/users/${id}`);
 					res
 						.status(OK_STATUS_CODE)
 						.json({ message: 'admin deleted!', deletedAdmin });
 				} else {
-					console.log('Here 4');
 					res
 						.status(NOT_FOUND_STATUS_CODE)
 						.json({ message: 'admin not found!' });
 				}
 			}
 		} catch (err) {
-			console.log('Here 5');
-			console.log(err.message);
 			res.status(ERROR_STATUS_CODE).json({ err: err.message });
 		}
 	});

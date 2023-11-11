@@ -20,6 +20,8 @@ import {
 	jest,
 } from '@jest/globals';
 
+import { faker } from '@faker-js/faker';
+
 const SECONDS = 1000;
 jest.setTimeout(80 * SECONDS);
 
@@ -35,13 +37,13 @@ describe('POST /cart/users', () => {
 	});
 
 	it('should return 200 when adding a cart', async () => {
-		const userId = '60f1b2b4b8b8b1b2b4b8b8b1';
+		const userId = faker.database.mongodbObjectId();
 		const response = await addCart(userId);
 		expect(response.status).toBe(OK_STATUS_CODE);
 	});
 
 	it('should return 500 when adding a cart with invalid user id', async () => {
-		const userId = '60f1b2b4b8b8b1b2b4b8b1';
+		const userId = faker.lorem.word();
 		const response = await addCart(userId);
 		expect(response.status).toBe(ERROR_STATUS_CODE);
 	});
@@ -61,7 +63,7 @@ describe('GET /cart/users/:userId', () => {
 	});
 
 	it('should return 200 when getting a cart', async () => {
-		const userId = '60f1b2b4b8b8b1b2b4b8b8b1';
+		const userId = faker.database.mongodbObjectId();
 		const cart = await CartModel(generateCart(userId, []));
 		await cart.save();
 		const response = await getCart(userId);
@@ -70,13 +72,13 @@ describe('GET /cart/users/:userId', () => {
 	});
 
 	it('should return 500 when getting a cart with invalid user id', async () => {
-		const userId = '60f1b2b4b8b8b2b4b8b1';
+		const userId = faker.lorem.word();
 		const response = await getCart(userId);
 		expect(response.status).toBe(ERROR_STATUS_CODE);
 	});
 
 	it('should return 404 when getting a none existing cart', async () => {
-		const userId = '60f1b2b4b8b8b1b2b4b8b8b1';
+		const userId = faker.database.mongodbObjectId();
 		const response = await getCart(userId);
 		expect(response.status).toBe(NOT_FOUND_STATUS_CODE);
 		expect(response.body.cart).toBeUndefined();
@@ -102,7 +104,7 @@ describe('POST /cart/users/:userId/medicines', () => {
 		const medicine = new MedicineModel(generateMedicine());
 		await medicine.save();
 
-		const userId = '60f1b2b4b8b8b1b2b4b8b8b1';
+		const userId = faker.database.mongodbObjectId();
 		await CartModel(generateCart(userId, [])).save();
 
 		const response = await addMedicineToCart(userId, medicine);
@@ -116,7 +118,7 @@ describe('POST /cart/users/:userId/medicines', () => {
 		const medicine = new MedicineModel(generateMedicine());
 		await medicine.save();
 
-		const userId = '60f1b2b4b8b8bb24bb8b1';
+		const userId = faker.lorem.word();
 
 		const response = await addMedicineToCart(userId, medicine);
 		expect(response.status).toBe(ERROR_STATUS_CODE);
@@ -126,7 +128,7 @@ describe('POST /cart/users/:userId/medicines', () => {
 		const medicine = new MedicineModel(generateMedicine());
 		await medicine.save();
 
-		const userId = '60f1b2b4b8b8b1b2b4b8b8b1';
+		const userId = faker.database.mongodbObjectId();
 		const response = await addMedicineToCart(userId, medicine);
 
 		expect(response.status).toBe(NOT_FOUND_STATUS_CODE);
@@ -139,12 +141,6 @@ describe('POST /cart/users/:userId/medicines', () => {
 });
 
 describe('GET /cart/users/:userId/medicines', () => {
-	const addMedicineToCart = async (userId, medicine) => {
-		return await request(app)
-			.post(`/cart/users/${userId}/medicines`)
-			.send({ medicine });
-	};
-
 	const getMedicinesFromCart = async (userId) => {
 		return await request(app).get(`/cart/users/${userId}/medicines`);
 	};
@@ -154,22 +150,21 @@ describe('GET /cart/users/:userId/medicines', () => {
 	});
 
 	it('should return 404 when getting medicines from a none existing cart', async () => {
-		const userId = '60f1b2b4b8b8b1b2b4b8b8b1';
+		const userId = faker.database.mongodbObjectId();
 		const response = await getMedicinesFromCart(userId);
 		expect(response.status).toBe(NOT_FOUND_STATUS_CODE);
 		expect(response.body.medicines).toBeUndefined();
 	});
 
 	it('should return 200 when getting medicines from cart', async () => {
-		const userId = '60f1b2b4b8b8b1b2b4b8b8b1';
-		await CartModel(generateCart(userId, [])).save();
-
+		const userId = faker.database.mongodbObjectId();
+		const medicines = [];
 		for (let i = 0; i < 5; i++) {
 			const medicine = new MedicineModel(generateMedicine());
 			await medicine.save();
-			await addMedicineToCart(userId, medicine);
+			medicines.push({ medicine: medicine });
 		}
-
+		await CartModel(generateCart(userId, medicines)).save();
 		const response = await getMedicinesFromCart(userId);
 		expect(response.status).toBe(OK_STATUS_CODE);
 		expect(response.body.medicines).toBeDefined();
@@ -177,7 +172,7 @@ describe('GET /cart/users/:userId/medicines', () => {
 	});
 
 	it('should return 500 when getting medicines from cart with invalid user id', async () => {
-		const userId = '60f1b2b4b8b82b4b8b8b1';
+		const userId = faker.lorem.word();
 		const response = await getMedicinesFromCart(userId);
 		expect(response.status).toBe(ERROR_STATUS_CODE);
 	});
@@ -188,12 +183,6 @@ describe('GET /cart/users/:userId/medicines', () => {
 });
 
 describe('GET /cart/users/:userId/medicines/:medicineId', () => {
-	const addMedicineToCart = async (userId, medicine) => {
-		return await request(app)
-			.post(`/cart/users/${userId}/medicines`)
-			.send({ medicine });
-	};
-
 	const getMedicineFromCart = async (userId, medicineId) => {
 		return await request(app).get(
 			`/cart/users/${userId}/medicines/${medicineId}`,
@@ -205,8 +194,8 @@ describe('GET /cart/users/:userId/medicines/:medicineId', () => {
 	});
 
 	it('should return 404 when getting a medicine from a none existing cart', async () => {
-		const medicineId = '60f1b2b4b8b8b1b2b4b8b8b1';
-		const userId = '60f1b2b4b8b8b1b2b4b8b8b1';
+		const medicineId = faker.database.mongodbObjectId();
+		const userId = faker.database.mongodbObjectId();
 
 		const response = await getMedicineFromCart(userId, medicineId);
 		expect(response.status).toBe(NOT_FOUND_STATUS_CODE);
@@ -214,12 +203,10 @@ describe('GET /cart/users/:userId/medicines/:medicineId', () => {
 	});
 
 	it('should return 200 when getting a medicine from cart', async () => {
-		const userId = '60f1b2b4b8b8b1b2b4b8b8b1';
-		await CartModel(generateCart(userId, [])).save();
-
+		const userId = faker.database.mongodbObjectId();
 		const medicine = new MedicineModel(generateMedicine());
 		await medicine.save();
-		await addMedicineToCart(userId, medicine);
+		await CartModel(generateCart(userId, [{ medicine: medicine }])).save();
 
 		const response = await getMedicineFromCart(userId, medicine._id);
 		expect(response.status).toBe(OK_STATUS_CODE);
@@ -227,24 +214,24 @@ describe('GET /cart/users/:userId/medicines/:medicineId', () => {
 	});
 
 	it('should return 500 when getting a medicine from cart with invalid user id', async () => {
-		const medicineId = '60f1b2b4b8b82b4b8b8b1';
-		const userId = '60f1b2b4b8b82b4b8b8b1';
+		const medicineId = faker.database.mongodbObjectId();
+		const userId = faker.lorem.word();
 
 		const response = await getMedicineFromCart(userId, medicineId);
 		expect(response.status).toBe(ERROR_STATUS_CODE);
 	});
 
 	it('should return 500 when getting a medicine from cart with invalid medicine id', async () => {
-		const medicineId = '60f1b2bb82b4b8b8b1';
-		const userId = '60f1b2b4b8b8b1b2b4b8b8b1';
+		const medicineId = faker.lorem.word();
+		const userId = faker.database.mongodbObjectId();
 
 		const response = await getMedicineFromCart(userId, medicineId);
 		expect(response.status).toBe(ERROR_STATUS_CODE);
 	});
 
 	it('should return 404 when getting a none existing medicine from cart', async () => {
-		const medicineId = '60f1b2b4b8b8b1b2b4b8b8b1';
-		const userId = '60f1b2b4b8b8b1b2b4b8b8b1';
+		const medicineId = faker.database.mongodbObjectId();
+		const userId = faker.database.mongodbObjectId();
 
 		const response = await getMedicineFromCart(userId, medicineId);
 		expect(response.status).toBe(NOT_FOUND_STATUS_CODE);
@@ -257,11 +244,6 @@ describe('GET /cart/users/:userId/medicines/:medicineId', () => {
 });
 
 describe('PATCH /cart/users/:userId/medicine/:medicineId?quantity=x', () => {
-	const addMedicineToCart = async (userId, medicine) => {
-		return await request(app)
-			.post(`/cart/users/${userId}/medicines`)
-			.send({ medicine });
-	};
 	const updateMedicineQuantity = async (medicineId, userId, quantity) => {
 		return await request(app).patch(
 			`/cart/users/${userId}/medicines/${medicineId}?quantity=${quantity}`,
@@ -273,12 +255,12 @@ describe('PATCH /cart/users/:userId/medicine/:medicineId?quantity=x', () => {
 	});
 
 	it('should return 200 when updating medicine quantity', async () => {
-		const userId = '60f1b2b4b8b8b1b2b4b8b8b1';
+		const userId = faker.database.mongodbObjectId();
 		const medicine = new MedicineModel(generateMedicine());
-		medicine.quantity = 10;
 		await medicine.save();
-		await CartModel(generateCart(userId, [])).save();
-		await addMedicineToCart(userId, medicine);
+		await CartModel(
+			generateCart(userId, [{ medicine: medicine, quantity: 10 }]),
+		).save();
 
 		const response = await updateMedicineQuantity(medicine._id, userId, 2);
 
@@ -288,53 +270,50 @@ describe('PATCH /cart/users/:userId/medicine/:medicineId?quantity=x', () => {
 	});
 
 	it('should return 500 when updating medicine with zero quantity', async () => {
-		const userId = '60f1b2b4b8b8b1b2b4b8b8b1';
+		const userId = faker.database.mongodbObjectId();
 		const medicine = new MedicineModel(generateMedicine());
 		await medicine.save();
-		await CartModel(generateCart(userId, [])).save();
-		await addMedicineToCart(userId, medicine);
+		await CartModel(generateCart(userId, [{ medicine: medicine }])).save();
 		const response = await updateMedicineQuantity(medicine._id, userId, 0);
 		expect(response.status).toBe(ERROR_STATUS_CODE);
 	});
 
 	it('should return 500 when updating medicine with negative quantity', async () => {
-		const userId = '60f1b2b4b8b8b1b2b4b8b8b1';
+		const userId = faker.database.mongodbObjectId();
 		const medicine = new MedicineModel(generateMedicine());
 		await medicine.save();
-		await CartModel(generateCart(userId, [])).save();
-		await addMedicineToCart(userId, medicine);
+		await CartModel(generateCart(userId, [{ medicine: medicine }])).save();
 		const response = await updateMedicineQuantity(medicine._id, userId, -2);
 		expect(response.status).toBe(ERROR_STATUS_CODE);
 	});
 
 	it('should return 500 when updating medicine with quantity greater than available quantity', async () => {
-		const userId = '60f1b2b4b8b8b1b2b4b8b8b1';
+		const userId = faker.database.mongodbObjectId();
 		const medicine = new MedicineModel(generateMedicine());
 		medicine.quantity = 10;
 		await medicine.save();
-		await CartModel(generateCart(userId, [])).save();
-		await addMedicineToCart(userId, medicine);
+		await CartModel(generateCart(userId, [{ medicine: medicine }])).save();
 		const response = await updateMedicineQuantity(medicine._id, userId, 100);
 		expect(response.status).toBe(ERROR_STATUS_CODE);
 	});
 
 	it('should return 500 when updating medicine quantity with invalid user id', async () => {
-		const medicineId = '60f1b2b4b8b8b1b2b4b8b8b1';
-		const userId = '60f1b2b4bbbbb4b8b8b1';
+		const medicineId = faker.database.mongodbObjectId();
+		const userId = faker.lorem.word();
 		const response = await updateMedicineQuantity(medicineId, userId, 3);
 		expect(response.status).toBe(ERROR_STATUS_CODE);
 	});
 
 	it('should return 500 when updating medicine quantity with invalid medicine id', async () => {
-		const medicineId = '60f1b2b4b8bb4b8b8b1';
-		const userId = '60f1b2b4b8b8b1b2b4b8b8b1';
+		const medicineId = faker.lorem.word();
+		const userId = faker.database.mongodbObjectId();
 		const response = await updateMedicineQuantity(medicineId, userId, 3);
 		expect(response.status).toBe(ERROR_STATUS_CODE);
 	});
 
 	it('should return 404 when updating quantity of none existing medicine', async () => {
-		const medicineId = '60f1b2b4b8b8b1b2b4b8b8b1';
-		const userId = '20f1b2b4b8b8b1b2b4b8b8b1';
+		const medicineId = faker.database.mongodbObjectId();
+		const userId = faker.database.mongodbObjectId();
 		await CartModel(generateCart(userId, [])).save();
 		const response = await updateMedicineQuantity(medicineId, userId, 3);
 		expect(response.status).toBe(NOT_FOUND_STATUS_CODE);
@@ -346,12 +325,6 @@ describe('PATCH /cart/users/:userId/medicine/:medicineId?quantity=x', () => {
 });
 
 describe('DELETE /cart/user/:userId/medicines/:medicineId', () => {
-	const addMedicineToCart = async (userId, medicine) => {
-		return await request(app)
-			.post(`/cart/users/${userId}/medicines`)
-			.send({ medicine });
-	};
-
 	const deleteMedicineFromCart = async (userId, medicineId) => {
 		return await request(app).delete(
 			`/cart/users/${userId}/medicines/${medicineId}`,
@@ -363,21 +336,21 @@ describe('DELETE /cart/user/:userId/medicines/:medicineId', () => {
 	});
 
 	it('should return 404 when deleting from none existing cart', async () => {
-		const medicineId = '60f1b2b4b8b8b1b2b4b8b8b1';
-		const userId = '20f1b2b4b8b8b1b2b4b8b8b1';
+		const medicineId = faker.database.mongodbObjectId();
+		const userId = faker.database.mongodbObjectId();
 		const response = await deleteMedicineFromCart(userId, medicineId);
 		expect(response.status).toBe(NOT_FOUND_STATUS_CODE);
 	});
 
 	it('should return 200 when deleting medicine from cart', async () => {
-		const userId = '60f1b2b4b8b8b1b2b4b8b8b1';
+		const userId = faker.database.mongodbObjectId();
 		const medicine1 = new MedicineModel(generateMedicine());
 		const medicine2 = new MedicineModel(generateMedicine());
 		await medicine1.save();
 		await medicine2.save();
-		await CartModel(generateCart(userId, [])).save();
-		await addMedicineToCart(userId, medicine1);
-		await addMedicineToCart(userId, medicine2);
+		await CartModel(
+			generateCart(userId, [{ medicine: medicine1 }, { medicine: medicine2 }]),
+		).save();
 		const response = await deleteMedicineFromCart(userId, medicine1._id);
 		expect(response.status).toBe(OK_STATUS_CODE);
 		expect(response.body.updatedCart).toBeDefined();
@@ -385,23 +358,23 @@ describe('DELETE /cart/user/:userId/medicines/:medicineId', () => {
 	});
 
 	it('should return 500 when deleting medicine from cart with invalid user id', async () => {
-		const medicineId = '60f1b2b4b8b8b1b2b4b8b8b1';
-		const userId = '60f1b2b4bbbbb4b8b8b1';
+		const medicineId = faker.database.mongodbObjectId();
+		const userId = faker.lorem.word();
 		const response = await deleteMedicineFromCart(userId, medicineId);
 		expect(response.status).toBe(ERROR_STATUS_CODE);
 	});
 
 	it('should return 500 when deleting medicine from cart with invalid medicine id', async () => {
-		const medicineId = '60f1b2b4b8bb4b8b8b1';
-		const userId = '60f1b2b4b8b8b1b2b4b8b8b1';
+		const medicineId = faker.lorem.word();
+		const userId = faker.database.mongodbObjectId();
 		await CartModel(generateCart(userId, [])).save();
 		const response = await deleteMedicineFromCart(userId, medicineId);
 		expect(response.status).toBe(ERROR_STATUS_CODE);
 	});
 
 	it('should return 404 when deleting none existing medicine from cart', async () => {
-		const medicineId = '60f1b2b4b8b8b1b2b4b8b8b1';
-		const userId = '20f1b2b4b8b8b1b2b4b8b8b1';
+		const medicineId = faker.database.mongodbObjectId();
+		const userId = faker.database.mongodbObjectId();
 		await CartModel(generateCart(userId, [])).save();
 		const response = await deleteMedicineFromCart(userId, medicineId);
 		expect(response.status).toBe(NOT_FOUND_STATUS_CODE);
