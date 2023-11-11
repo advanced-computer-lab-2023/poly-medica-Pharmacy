@@ -35,7 +35,7 @@ export const admin = (app) => {
 				userName: adminUser.userName,
 				type: ADMIN_ENUM,
 			};
-			res.status(OK_STATUS_CODE).send(adminUser);
+			res.status(OK_STATUS_CODE).send(req.body);
 		} catch (err) {
 			if (err.code == DUPLICATE_KEY_ERROR_CODE) {
 				const duplicateKeyAttrb = Object.keys(err.keyPattern)[ZERO_INDEX_ARR];
