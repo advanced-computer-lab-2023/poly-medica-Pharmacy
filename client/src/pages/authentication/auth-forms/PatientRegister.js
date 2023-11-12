@@ -15,12 +15,12 @@ import {
 	Typography,
 	useMediaQuery
 } from '@mui/material';
-import axiosInstanceAuthSer from 'utils/api/axiosInstanceAuthSer';
 
 import AnimateButton from 'ui-component/extended/AnimateButton';
 import { DatePicker } from '@mui/x-date-pickers';
 import { strengthColor, strengthIndicator } from 'utils/password-strength';
 import Swal from 'sweetalert2';
+import { authenticationAxios } from 'utils/AxiosConfig';
 
 
 
@@ -84,7 +84,7 @@ const FirebaseRegister = () => {
 		e.preventDefault();
 		setIsSubmitting(true);
 		const sendData = { type: "patient" ,name: name, email: email, password: password, userName: userName, dateOfBirth: selectedDate, gender: selectedGender, mobileNumber: mobileNumber, emergencyContact: { name: emergencyFullName, mobile: emergencyMobileNumber, relation: selectedRelation } };
-		const response = await axiosInstanceAuthSer.post('/signup/pharmacy', sendData);
+		const response = await authenticationAxios.post('/signup/pharmacy', sendData);
 		const data = response.data;
 		console.log({ response , data });
 		if(response.status === 200){		

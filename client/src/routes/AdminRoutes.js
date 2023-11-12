@@ -19,6 +19,7 @@ const LazyPharmacists = Loadable(lazy(() => import('pages/Pharmacists')));
 const UtilsTypography = Loadable(lazy(() => import('pages/utilities/Typography')));
 const UtilsColor = Loadable(lazy(() => import('pages/utilities/Color')));
 const UtilsShadow = Loadable(lazy(() => import('pages/utilities/Shadow')));
+const Account = Loadable(lazy(() => import('pages/profile/Account')));
 
 // sample page routing
 const SamplePage = Loadable(lazy(() => import('pages/sample-page')));
@@ -47,6 +48,10 @@ const AdminRoutes = {
 		{
 			path: 'pages',
 			children: [
+				{
+                    path: 'profile',
+                    element: <Account />,
+                },
 				{
 					path: 'medicines',
 					element: <LazyMedicines />

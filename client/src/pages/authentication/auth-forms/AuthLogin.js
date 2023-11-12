@@ -10,11 +10,11 @@ import {
 } from '@mui/material';
 import { useUserContext } from 'hooks/useUserContext';
 import { useNavigate } from 'react-router-dom';
-import axiosInstanceAuthSer from 'utils/api/axiosInstanceAuthSer';
 
 // project imports
 import AnimateButton from 'ui-component/extended/AnimateButton';
 import Swal from 'sweetalert2';
+import { authenticationAxios } from 'utils/AxiosConfig';
 
 
 
@@ -31,17 +31,20 @@ const FirebaseLogin = () => {
 		e.preventDefault();
 		setIsSubmitting(true);
 		const postData = { 'userName': userName, 'password': password };
-		const response = await axiosInstanceAuthSer.post('/login/pharmacy', postData);
+		const response = await authenticationAxios.post('/login/pharmacy', postData);
 		const data = response.data;		
-		if(response.status === 200){
+		try{
 			dispatch({ auth: true, payload:data });
-			navigate(`/${data.type}`);
+			if(data.reset)
+				navigate(`/${data.type}/pages/profile`);
+			else
+				navigate(`/${data.type}`);
 			setIsSubmitting(false);
-		} else{
+		} catch(error){
 			Swal.fire({
 				icon: 'error',
 				title: 'Oops...',
-				text: response.response.data.message,
+				text: error.response.data.message,
 			});
 			setIsSubmitting(false);
 			}
@@ -77,7 +80,7 @@ const FirebaseLogin = () => {
 							/>
 						</FormControl>
 						<Stack direction="row" alignItems="center" justifyContent="space-between" spacing={1}>
-							<Typography variant="subtitle1" color="secondary" sx={{ textDecoration: 'none', cursor: 'pointer' }}>
+							<Typography onClick={ () => { navigate('/login/reset-password'); } } variant="subtitle1" color="secondary" sx={{ textDecoration: 'none', cursor: 'pointer' }}>
                 Forgot Password?
 							</Typography>
 						</Stack>

@@ -15,6 +15,7 @@ import MainCard from 'ui-component/cards/MainCard';
 import AdminRow from './AdminRow';
 import DeleteConfirmationDialog from './DeleteConfirmationDialog';
 import AddAdminDialog from './AddAdminDialog';
+import { authenticationAxios, pharmacyAxios } from 'utils/AxiosConfig';
 
 const Admins = () => {
 	const [admins, setAdmins] = useState([]);
@@ -28,8 +29,8 @@ const Admins = () => {
 	const { user } = useUserContext();
 
 	useEffect(() => {
-		fetch('http://localhost:8003/admins')
-			.then((response) => response.json())
+		pharmacyAxios.get('/admins')
+			.then((response) => response.data)
 			.then((data) => {
 				setAdmins(
 					data.admins.filter((admin) => admin.userName !== user.userName),
@@ -58,10 +59,8 @@ const Admins = () => {
 			return;
 		}
 
-		fetch(`http://localhost:8003/admins/${adminToDelete}`, {
-			method: 'DELETE',
-		})
-			.then((response) => response.json())
+		pharmacyAxios.delete(`/admins/${adminToDelete}`)
+			.then((response) => response.data)
 			.then(() =>
 				setAdmins((prevAdmins) =>
 					prevAdmins.filter((admin) => admin._id !== adminToDelete),
@@ -103,14 +102,12 @@ const Admins = () => {
 		}
 
 		// Make a POST request to add a new admin
-		fetch('http://localhost:8004/admins/pharmacy', {
-			method: 'POST',
+		authenticationAxios.post('/admins/pharmacy', JSON.stringify(newAdmin), {
 			headers: {
 				'Content-Type': 'application/json',
 			},
-			body: JSON.stringify(newAdmin),
 		})
-			.then((response) => response.json())
+			.then((response) => response.data)
 			.then((data) => {
 				if (data.message === 'that username is already registered') {
 					setErrorMessage(

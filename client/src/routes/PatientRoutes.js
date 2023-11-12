@@ -17,6 +17,7 @@ const LazyPharmacistsInfo = Loadable(
 const LazyPharmacistRequests = Loadable(
     lazy(() => import('pages/PharmacistRequests'))
 );
+const Account = Loadable(lazy(() => import('pages/profile/Account'))); //TODO: generalize this
 const LazyPatients = Loadable(lazy(() => import('pages/Patients')));
 const LazyAdmins = Loadable(lazy(() => import('pages/Admins')));
 const LazyPharmacists = Loadable(lazy(() => import('pages/Pharmacists')));
@@ -56,6 +57,14 @@ const PatientRoutes = {
         {
             path: 'pages',
             children: [
+				{
+                    path: 'profile',
+                    element: <Account />,
+                },
+				{
+					path: 'medicines',
+					element: <LazyMedicines />
+				},
                 {
                     path: 'medicines',
                     element: <LazyMedicines />,
