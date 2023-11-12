@@ -6,6 +6,7 @@ import { styled, useTheme } from '@mui/material/styles';
 import { AppBar, Box, CssBaseline, Toolbar, useMediaQuery } from '@mui/material';
 
 // project imports
+import { pharmacyAxios } from '../../utils/AxiosConfig';
 
 import Header from './Header';
 import Sidebar from './Sidebar';
@@ -14,6 +15,7 @@ import Sidebar from './Sidebar';
 import { drawerWidth } from 'store/constant';
 import { SET_MENU } from 'store/actions';
 import { SearchProvider } from 'contexts/SearchContext';
+import { FilterProvider } from 'contexts/FilterContext';
 import { useUserContext } from 'hooks/useUserContext';
 import { useEffect } from 'react';
 
@@ -62,10 +64,24 @@ const MainLayout = ({ userType }) => {
 	// Handle left drawer
 	const leftDrawerOpened = useSelector((state) => state.customization.opened);
 	const { user } = useUserContext();
+	const userId = user.id;
 	const navigate = useNavigate();
 	useEffect(() => {
 		if(!user || user.type != userType){
 			navigate(`/${user.type}`);
+		} else if(userType == 'patient') {
+			pharmacyAxios.get(`/cart/users/${userId}`).then(() => { 
+				console.log('cart already created!');
+			}).catch((error) => {
+				if(error.response.status == 404){
+					pharmacyAxios.post('/cart/users', { userId }).then(() => {
+						console.log('cart created!');
+					}).catch((error) => {
+						console.log(error);
+					});
+				}
+			});
+			
 		}
 	},[]);
 	const dispatch = useDispatch();
@@ -74,6 +90,7 @@ const MainLayout = ({ userType }) => {
 	};
 
 	return (
+		<FilterProvider>
 		<SearchProvider>
 		<Box sx={{ display: 'flex' }}>
 			<CssBaseline />
@@ -104,6 +121,7 @@ const MainLayout = ({ userType }) => {
 			{/* <Customization /> */}
 		</Box>
 		</SearchProvider>
+		</FilterProvider>
 	);
 };
 

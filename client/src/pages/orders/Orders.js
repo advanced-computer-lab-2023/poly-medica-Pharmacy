@@ -24,7 +24,7 @@ const Orders = () => {
                 });
         } else {
             patientAxios
-                .get(`/order-pending/`)
+                .get(`/order/pending/`)
                 .then((response) => {
                     setOrders(response.data);
                 })
@@ -38,10 +38,11 @@ const Orders = () => {
         setSelectedOrder(null);
     };
 
-    const handleCancleOrder = () => {
-        selectedOrder.status = CANCELLED_STATUS;
+    const handleCancleOrder = (order) => {
+        console.log(order);
+        order.status = CANCELLED_STATUS;
         patientAxios
-            .patch(`/order/${selectedOrder._id}`, { order: selectedOrder })
+            .patch(`/order/${order._id}`, { order })
             .then((response) => {
                 const order = response.data;
                 setOrders((prevOrders) => {
@@ -79,11 +80,10 @@ const Orders = () => {
 
     return (
         <MainCard title='Orders'>
-            <OrdersList orders={orders} setSelectedOrder={setSelectedOrder} />
+            <OrdersList orders={orders} setSelectedOrder={setSelectedOrder} handleCancleOrder={handleCancleOrder} />
             <OrdersDetails
                 selectedOrder={selectedOrder}
                 handleDialogClose={handleDialogClose}
-                handleCancleOrder={handleCancleOrder}
                 handleAcceptOrRejectOrder={handleAcceptOrRejectOrder}
             />
         </MainCard>

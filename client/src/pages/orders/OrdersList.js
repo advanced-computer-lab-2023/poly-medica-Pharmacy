@@ -2,7 +2,7 @@ import React from 'react';
 import { List } from '@mui/material';
 import OrdersCard from './OrdersCard.js';
 
-const OrdersList = ({ orders, setSelectedOrder }) => {
+const OrdersList = ({ orders, setSelectedOrder, handleCancleOrder }) => {
     return (
         <List>
             {Array.isArray(orders) &&
@@ -11,8 +11,9 @@ const OrdersList = ({ orders, setSelectedOrder }) => {
                         <div key={index}>
                             <OrdersCard
                                 order={order}
-                                setSelectedOrder={
-                                    setSelectedOrder
+                                setSelectedOrder={setSelectedOrder}
+                                handleCancleOrder={
+                                    handleCancleOrder
                                 }></OrdersCard>
                         </div>
                     </div>

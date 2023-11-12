@@ -7,11 +7,12 @@ import Loadable from 'ui-component/Loadable';
 // dashboard routing
 const DashboardDefault = Loadable(lazy(() => import('pages/dashboard')));
 const LazyMedicines = Loadable(lazy(() => import('pages/medicine/Medicines')));
+const LazyCart = Loadable(lazy(() => import('pages/cart/Cart')));
 const LazyPatientsInfo = Loadable(
-    lazy(() => import('pages/patient/PatientInfo'))
+	lazy(() => import('pages/patient/PatientInfo')),
 );
 const LazyPharmacistsInfo = Loadable(
-    lazy(() => import('pages/pharmacist/PharmacistInfo'))
+	lazy(() => import('pages/pharmacist/PharmacistInfo')),
 );
 const LazyPharmacistRequests = Loadable(
     lazy(() => import('pages/PharmacistRequests'))
@@ -25,7 +26,7 @@ const LazyCheckout = Loadable(lazy(() => import('pages/checkout/Checkout')));
 const LazyAddress = Loadable(lazy(() => import('pages/address/Address')));
 // utilities routing
 const UtilsTypography = Loadable(
-    lazy(() => import('pages/utilities/Typography'))
+	lazy(() => import('pages/utilities/Typography')),
 );
 const UtilsColor = Loadable(lazy(() => import('pages/utilities/Color')));
 const UtilsShadow = Loadable(lazy(() => import('pages/utilities/Shadow')));
@@ -59,6 +60,10 @@ const PatientRoutes = {
                     path: 'medicines',
                     element: <LazyMedicines />,
                 },
+                {
+					path: 'cart',
+					element: <LazyCart />,
+				},
                 {
                     path: 'admins',
                     element: <LazyAdmins />,

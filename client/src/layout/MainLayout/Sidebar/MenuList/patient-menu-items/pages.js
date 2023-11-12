@@ -6,6 +6,7 @@ import {
     IconMedicineSyrup,
     IconRegistered,
 } from '@tabler/icons';
+import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
 import PersonIcon from '@mui/icons-material/Person';
 import LocalPharmacyIcon from '@mui/icons-material/LocalPharmacy';
 import AdminPanelSettingsOutlinedIcon from '@mui/icons-material/AdminPanelSettingsOutlined';
@@ -20,6 +21,7 @@ const icons = {
     IconMedicineSyrup,
     AdminPanelSettingsOutlinedIcon,
     IconRegistered,
+    ShoppingCartOutlinedIcon,
     PointOfSaleIcon,
     ReceiptLongIcon,
     HomeIcon,
@@ -39,6 +41,14 @@ const pages = {
             type: 'item',
             icon: icons.IconVaccineBottle,
             url: '/patient/pages/medicines',
+            target: false,
+        },
+        {
+            id: 'cart',
+            title: 'Cart',
+            type: 'item',
+            icon: ShoppingCartOutlinedIcon,
+            url: '/patient/pages/cart',
             target: false,
         },
         {

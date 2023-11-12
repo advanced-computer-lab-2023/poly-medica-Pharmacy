@@ -98,7 +98,7 @@ const Address = () => {
             return addres;
         });
         address.primary = true;
-        const deliveryAddresses = [...addresses, address];
+        const deliveryAddresses = [address, ...addresses];
         patientAxios
             .patch('/address/' + userId, { deliveryAddresses })
             .then((response) => {
