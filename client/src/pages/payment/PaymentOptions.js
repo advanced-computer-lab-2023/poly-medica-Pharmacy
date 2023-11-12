@@ -7,7 +7,7 @@ const PaymentOptions = ({ handleChange, value }) => {
     const [amountInWallet, setAmountInWallet] = useState(0);
     const { user } = useUserContext();
     const userId = user.id;
-    patientAxios.get('/wallet/' + userId ).then((response) => {
+    patientAxios.get(`/patients/${userId}/wallet`).then((response) => {
         setAmountInWallet(response.data.amountInWallet);
     });
 
@@ -23,7 +23,7 @@ const PaymentOptions = ({ handleChange, value }) => {
                 sx={{ my: 1 }}
             >
                 <FormControlLabel  value='credit-card' control={<Radio />} label='Credit Card' />
-                <FormControlLabel  value='wallet' control={<Radio />} label={`My Wallet  ${amountInWallet}`} />
+                <FormControlLabel  value='wallet' control={<Radio />} label={`Ploy-Wallet $${amountInWallet}`} />
                 <FormControlLabel  value='cash' control={<Radio />} label='Cash on deleviry' />
             </RadioGroup>
         </FormControl>
