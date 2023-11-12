@@ -15,6 +15,7 @@ import Sidebar from './Sidebar';
 import { drawerWidth } from 'store/constant';
 import { SET_MENU } from 'store/actions';
 import { SearchProvider } from 'contexts/SearchContext';
+import { FilterProvider } from 'contexts/FilterContext';
 import { useUserContext } from 'hooks/useUserContext';
 import { useEffect } from 'react';
 
@@ -89,6 +90,7 @@ const MainLayout = ({ userType }) => {
 	};
 
 	return (
+		<FilterProvider>
 		<SearchProvider>
 		<Box sx={{ display: 'flex' }}>
 			<CssBaseline />
@@ -119,6 +121,7 @@ const MainLayout = ({ userType }) => {
 			{/* <Customization /> */}
 		</Box>
 		</SearchProvider>
+		</FilterProvider>
 	);
 };
 

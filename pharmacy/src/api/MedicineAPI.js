@@ -66,8 +66,7 @@ export const medicine = (app) => {
 					.status(NOT_FOUND_STATUS_CODE)
 					.json({ message: 'No medicine found' });
 			} else {
-				Object.assign(oldMedicine, updatedMedicine);
-				const updated = service.updateMedicine(oldMedicine);
+				const updated = await service.updateMedicine(oldMedicine, updatedMedicine);
 				res.status(OK_STATUS_CODE).json(updated);
 			}
 		} catch (error) {
