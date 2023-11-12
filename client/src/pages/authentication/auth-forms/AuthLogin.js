@@ -33,18 +33,18 @@ const FirebaseLogin = () => {
 		const postData = { 'userName': userName, 'password': password };
 		const response = await authenticationAxios.post('/login/pharmacy', postData);
 		const data = response.data;		
-		if(response.status === 200){
+		try{
 			dispatch({ auth: true, payload:data });
 			if(data.reset)
 				navigate(`/${data.type}/pages/profile`);
 			else
 				navigate(`/${data.type}`);
 			setIsSubmitting(false);
-		} else{
+		} catch(error){
 			Swal.fire({
 				icon: 'error',
 				title: 'Oops...',
-				text: response.response.data.message,
+				text: error.response.data.message,
 			});
 			setIsSubmitting(false);
 			}
