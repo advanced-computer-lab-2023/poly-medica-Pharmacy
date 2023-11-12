@@ -21,6 +21,7 @@ const AddAddress = ({
             <DialogTitle>Add New Address</DialogTitle>
             <DialogContent>
                 <AddressForm
+                    isAddDialogOpen={isAddDialogOpen}
                     handleFormInputChange={handleFormInputChange}
                     handleSubmit={handleAddAddress}
                     object={newAddress}

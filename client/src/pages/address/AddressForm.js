@@ -6,6 +6,7 @@ import {
 } from '@mui/material';
 
 const AddressForm = ({
+    isAddDialogOpen,
     handleFormInputChange,
     handleSubmit,
     object,
@@ -27,7 +28,7 @@ const AddressForm = ({
                     />
                 </FormControl>
             ))}
-            <FormControl required fullWidth key={'primaryAddress'}>
+            {!isAddDialogOpen &&<FormControl required fullWidth key={'primaryAddress'}>
                 <FormControlLabel
                     onChange={(e) => {
                         object.primary = true;
@@ -37,7 +38,7 @@ const AddressForm = ({
                     control={<Checkbox />}
                     label='primary'
                 />
-            </FormControl>
+            </FormControl>}
         </form>
     );
 };
