@@ -17,7 +17,6 @@ class PharmacyRepository {
 	async addPharmacistReq(data) {
 		const {
 			userData,
-			speciality,
 			hourlyRate,
 			affiliation,
 			educationalBackground,
@@ -26,7 +25,6 @@ class PharmacyRepository {
 
 		const user = await PharmacistReqModel.addUser(
 			userData,
-			speciality,
 			hourlyRate,
 			affiliation,
 			educationalBackground,

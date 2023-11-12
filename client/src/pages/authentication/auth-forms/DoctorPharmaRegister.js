@@ -31,7 +31,6 @@ const FirebaseRegister = ({ type }) => {
     const [hourlyRating, setHourlyRating] = useState(0);
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [selectedDate, setSelectedDate] = useState(new Date());
-    const [speciality, setSpeciality] = useState('');
     const [affiliation, setAffiliation] = useState('');
     const [uploadedFiles, setUploadedFiles] = useState([]);
 
@@ -87,7 +86,6 @@ const FirebaseRegister = ({ type }) => {
                 userName: userName,
                 dateOfBirth: selectedDate,
             },
-            speciality: speciality,
             hourlyRate: hourlyRating,
             affiliation: affiliation,
             educationalBackground: educationalBackground,
@@ -101,18 +99,20 @@ const FirebaseRegister = ({ type }) => {
 
         formData.append('sendData', JSON.stringify(sendData));
 
-        const signupResponse = await authenticationAxios.post(
-            '/signup/pharmacy',
-            sendData 
-        );
+        
 
-        if (signupResponse.status === 200) {
-            const pharmacistRequestResponse = await pharmacyAxios.post(
-                '/add-pharmacist-req',
-                formData
+        try {
+            await authenticationAxios.post(
+                '/signup/pharmacy',
+                sendData 
             );
+            
 
-            if (pharmacistRequestResponse.status === 200) {
+            try{
+                await pharmacyAxios.post(
+                    '/add-pharmacist-req',
+                    formData
+                );
                 Swal.fire({
                     icon: 'success',
                     title: 'Sign-up Success!',
@@ -127,22 +127,21 @@ const FirebaseRegister = ({ type }) => {
                 setHourlyRating(0);
                 setIsSubmitting(false);
                 setSelectedDate(new Date());
-                setSpeciality('');
                 setAffiliation('');
                 setUploadedFiles([]);
-            } else {
+            } catch(error) {
                 Swal.fire({
                     icon: 'error',
                     title: 'Oops...',
-                    text: pharmacistRequestResponse.response.data.message,
+                    text: error.response.data.message,
                 });
                 setIsSubmitting(false);
             }
-        } else {
+        } catch(error) {
             Swal.fire({
                 icon: 'error',
                 title: 'Oops...',
-                text: signupResponse.response.data.message,
+                text: error.response.data.message,
             });
             setIsSubmitting(false);
         }
@@ -280,20 +279,6 @@ const FirebaseRegister = ({ type }) => {
                         onChange={(e) =>
                             setEducationalBackground(e.target.value)
                         }
-                        required
-                        sx={{ ...theme.typography.customInput }}
-                    />
-                </FormControl>
-
-                <FormControl fullWidth required>
-                    <TextField
-                        fullWidth
-                        label='speciality'
-                        type='text'
-                        margin='normal'
-                        name='eb'
-                        value={speciality}
-                        onChange={(e) => setSpeciality(e.target.value)}
                         required
                         sx={{ ...theme.typography.customInput }}
                     />
