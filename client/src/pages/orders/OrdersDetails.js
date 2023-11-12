@@ -9,8 +9,6 @@ import {
 } from '@mui/material';
 import { useUserContext } from 'hooks/useUserContext.js';
 
-import { PENDING_STATUS } from 'utils/Constants';
-
 import OrderTable from './OrderTable';
 
 // import ReceiptLongIcon from '@mui/icons-material/ReceiptLong';
@@ -18,7 +16,6 @@ import OrderTable from './OrderTable';
 const OrdersDetails = ({
     selectedOrder,
     handleDialogClose,
-    handleCancleOrder,
     handleAcceptOrRejectOrder,
 }) => {
     const { user } = useUserContext();
@@ -55,17 +52,6 @@ const OrdersDetails = ({
                         />
                     </DialogContent>
                     <DialogActions>
-                        {user.type === 'patient' &&
-                            selectedOrder &&
-                            selectedOrder.status === PENDING_STATUS && (
-                                <Button
-                                    variant='contained'
-                                    sx={{ margin: 2 }}
-                                    onClick={handleCancleOrder}
-                                    color='error'>
-                                    Cancle Order
-                                </Button>
-                            )}
                         {user.type !== 'patient' && selectedOrder && (
                             <>
                                 <Button
