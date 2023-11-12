@@ -35,7 +35,10 @@ const FirebaseLogin = () => {
 		const data = response.data;		
 		if(response.status === 200){
 			dispatch({ auth: true, payload:data });
-			navigate(`/${data.type}`);
+			if(data.reset)
+				navigate(`/${data.type}/pages/profile`);
+			else
+				navigate(`/${data.type}`);
 			setIsSubmitting(false);
 		} else{
 			Swal.fire({
@@ -77,7 +80,7 @@ const FirebaseLogin = () => {
 							/>
 						</FormControl>
 						<Stack direction="row" alignItems="center" justifyContent="space-between" spacing={1}>
-							<Typography variant="subtitle1" color="secondary" sx={{ textDecoration: 'none', cursor: 'pointer' }}>
+							<Typography onClick={ () => { navigate('/login/reset-password'); } } variant="subtitle1" color="secondary" sx={{ textDecoration: 'none', cursor: 'pointer' }}>
                 Forgot Password?
 							</Typography>
 						</Stack>
