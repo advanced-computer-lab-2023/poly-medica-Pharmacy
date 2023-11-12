@@ -11,6 +11,7 @@ import {
 import MainCard from 'ui-component/cards/MainCard';
 import PatientRow from './PatientRow';
 import DeleteConfirmationDialog from './DeleteConfirmationDialog';
+import { patientAxios, pharmacyAxios } from 'utils/AxiosConfig';
 
 const Patients = () => {
 	const [patients, setPatients] = useState([]);
@@ -19,8 +20,8 @@ const Patients = () => {
 	const [patientToDelete, setPatientToDelete] = useState(null);
 
 	useEffect(() => {
-		fetch('http://localhost:8002/patients')
-			.then((response) => response.json())
+		patientAxios.get('/patients')
+			.then((response) => response.data)
 			.then((data) => {
 				setPatients(data.patients);
 				setIsLoading(false);
@@ -37,10 +38,8 @@ const Patients = () => {
 	};
 
 	const handleConfirmDelete = () => {
-		fetch(`http://localhost:8003/patients/${patientToDelete}`, {
-			method: 'DELETE',
-		})
-			.then((response) => response.json())
+		pharmacyAxios.delete(`/patients/${patientToDelete}`)
+			.then((response) => response.data)
 			.then(() =>
 				setPatients((prevPatients) =>
 					prevPatients.filter((patient) => patient._id !== patientToDelete),

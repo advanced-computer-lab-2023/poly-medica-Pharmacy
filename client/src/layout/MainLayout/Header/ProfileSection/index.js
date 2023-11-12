@@ -35,11 +35,11 @@ import MainCard from 'ui-component/cards/MainCard';
 import Transitions from 'ui-component/extended/Transitions';
 import UpgradePlanCard from './UpgradePlanCard';
 import User1 from 'assets/images/users/user-round.svg';
-import axiosInstanceAuthService from 'utils/api/axiosInstanceAuthSer';
 // assets
 import { IconLogout, IconSearch, IconSettings, IconUser } from '@tabler/icons';
 import Swal from 'sweetalert2';
 import { useUserContext } from 'hooks/useUserContext';
+import { authenticationAxios } from 'utils/AxiosConfig';
 
 // ==============================|| PROFILE MENU ||============================== //
 
@@ -59,7 +59,7 @@ const ProfileSection = () => {
    * */
 	const anchorRef = useRef(null);
 	const handleLogout = async () => {
-		await axiosInstanceAuthService.get('/remove-cookie').then( () => {
+		await authenticationAxios.get('/remove-cookie').then( () => {
 			dispatch({ auth: false, payload: null });
 			navigate('/login/login3');
 		}).catch(() => {

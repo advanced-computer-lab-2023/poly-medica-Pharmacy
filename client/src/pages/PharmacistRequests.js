@@ -1,15 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import PharmacistRequestCard from './PharmacistRequestCard';
+import { pharmacyAxios } from 'utils/AxiosConfig';
 
 const DoctorRequests = () => {
 	const [pharmacistRequests, setPharmacistRequests] = useState([]);
 	const [isLoading, setIsLoading] = useState(true);
 
 	useEffect(() => {
-		fetch('http://localhost:8003/pharmacist-requests', {
-			method: 'GET',
-		})
-			.then((response) => response.json())
+		pharmacyAxios.get('/pharmacist-requests')
+			.then((response) => response.data)
 			.then((data) => {
 				setPharmacistRequests(data.pharmacistRequests);
 				setIsLoading(false);
@@ -22,15 +21,12 @@ const DoctorRequests = () => {
 
 	const handleAccept = (pharmacistReq) => {
 		// Delete the pharmacist request from the database
-		fetch(
-			`http://localhost:8003/pharmacist-requests/${
+		pharmacyAxios.delete(
+			`/pharmacist-requests/${
 				pharmacistReq._id
 			}?accept=${true}`,
-			{
-				method: 'DELETE',
-			},
 		)
-			.then((response) => response.json())
+			.then((response) => response.data)
 			.then(() => {
 				setPharmacistRequests((prevPharmacistRequests) =>
 					prevPharmacistRequests.filter(
@@ -43,12 +39,10 @@ const DoctorRequests = () => {
 			});
 
 		// Add the pharmacist to the pharmacist table
-		fetch('http://localhost:8003/pharmacists', {
-			method: 'POST',
+		pharmacyAxios.post('/pharmacists', JSON.stringify(pharmacistReq), {
 			headers: { 'Content-Type': 'application/json' },
-			body: JSON.stringify(pharmacistReq),
 		})
-			.then((response) => response.json())
+			.then((response) => response.data)
 			.then(() => {
 				setPharmacistRequests((prevPharmacistRequests) =>
 					prevPharmacistRequests.filter(
@@ -62,13 +56,10 @@ const DoctorRequests = () => {
 	};
 
 	const handleReject = (pharmacistReq) => {
-		fetch(
-			`http://localhost:8003/pharmacist-requests/${
+		pharmacyAxios.delete(
+			`/pharmacist-requests/${
 				pharmacistReq._id
 			}?accept=${false}`,
-			{
-				method: 'DELETE',
-			},
 		)
 			.then(() => {
 				setPharmacistRequests((prevPharmacistRequests) =>

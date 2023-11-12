@@ -10,11 +10,11 @@ import {
 } from '@mui/material';
 import { useUserContext } from 'hooks/useUserContext';
 import { useNavigate } from 'react-router-dom';
-import axiosInstanceAuthSer from 'utils/api/axiosInstanceAuthSer';
 
 // project imports
 import AnimateButton from 'ui-component/extended/AnimateButton';
 import Swal from 'sweetalert2';
+import { authenticationAxios } from 'utils/AxiosConfig';
 
 
 
@@ -31,7 +31,7 @@ const FirebaseLogin = () => {
 		e.preventDefault();
 		setIsSubmitting(true);
 		const postData = { 'userName': userName, 'password': password };
-		const response = await axiosInstanceAuthSer.post('/login/pharmacy', postData);
+		const response = await authenticationAxios.post('/login/pharmacy', postData);
 		const data = response.data;		
 		if(response.status === 200){
 			dispatch({ auth: true, payload:data });
