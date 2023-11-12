@@ -1,3 +1,5 @@
+import { PHARMACIST_FOLDER_NAME } from '../../utils/Constants.js';
+import { getFile, deleteFile } from '../../utils/CommonUtils.js';
 import PharmacistModel from '../models/Pharmacist.js';
 import PharmacistReqModel from '../models/PharmacistReq.js';
 
@@ -12,22 +14,30 @@ class PharmacyRepository {
 		return pharmacists;
 	}
 
-	async addPharmacistReq(req) {
+	async addPharmacistReq(data) {
 		const {
 			userData,
 			speciality,
 			hourlyRate,
 			affiliation,
 			educationalBackground,
-		} = req.body;
+			documentsNames,
+		} = data;
+
 		const user = await PharmacistReqModel.addUser(
 			userData,
 			speciality,
 			hourlyRate,
 			affiliation,
 			educationalBackground,
+			documentsNames,
 		);
 		return user;
+	}
+
+	async findPharmacistRequestById(id) {
+		const pharmacist = await PharmacistReqModel.findById(id);
+		return pharmacist;
 	}
 
 	async findAllPharmacistRequests() {
@@ -46,13 +56,19 @@ class PharmacyRepository {
 	}
 
 	async addPharmacist(req) {
-		const { userData, hourlyRate, affiliation, educationalBackground } =
-			req.body;
+		const {
+			userData,
+			hourlyRate,
+			affiliation,
+			educationalBackground,
+			documentsNames,
+		} = req.body;
 		const user = await PharmacistModel.addUser(
 			userData,
 			hourlyRate,
 			affiliation,
 			educationalBackground,
+			documentsNames,
 		);
 		return user;
 	}
@@ -74,6 +90,15 @@ class PharmacyRepository {
 		if (checkUserUserName) {
 			throw new Error('that username is already registered');
 		}
+	}
+
+	getFile(fileName) {
+		const filePath = getFile(PHARMACIST_FOLDER_NAME, fileName);
+		return filePath;
+	}
+
+	deleteFile(fileName) {
+		return deleteFile(PHARMACIST_FOLDER_NAME, fileName);
 	}
 }
 

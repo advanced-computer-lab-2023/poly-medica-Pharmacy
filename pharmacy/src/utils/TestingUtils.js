@@ -3,21 +3,20 @@ const dotenv = require('dotenv');
 dotenv.config();
 
 const connectDBTest = async () => {
-	try{
+	try {
 		const mongoURL = process.env.MONGO_URI_TEST;
 		await mongoose.connect(mongoURL);
-		console.log('Database connected', mongoURL);
 		await mongoose.connection.db.dropDatabase();
-	} catch(err){
+	} catch (err) {
 		console.error('Error connecting to the database:', err.message);
 	}
 };
 
 const disconnectDBTest = async () => {
-	try{
+	try {
 		await mongoose.connection.db.dropDatabase();
 		await mongoose.disconnect();
-	} catch(err){
+	} catch (err) {
 		console.error('Error connecting to the database:', err.message);
 	}
 };
