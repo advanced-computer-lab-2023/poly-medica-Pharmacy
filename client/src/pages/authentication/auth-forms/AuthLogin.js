@@ -31,9 +31,9 @@ const FirebaseLogin = () => {
 		e.preventDefault();
 		setIsSubmitting(true);
 		const postData = { 'userName': userName, 'password': password };
-		const response = await authenticationAxios.post('/login/pharmacy', postData);
-		const data = response.data;		
 		try{
+			const response = await authenticationAxios.post('/login/pharmacy', postData);
+			const data = response.data;		
 			dispatch({ auth: true, payload:data });
 			if(data.reset)
 				navigate(`/${data.type}/pages/profile`);
