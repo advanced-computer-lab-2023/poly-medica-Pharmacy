@@ -6,17 +6,16 @@ import Loadable from 'ui-component/Loadable';
 
 // dashboard routing
 const DashboardDefault = Loadable(lazy(() => import('pages/dashboard')));
-const LazyMedicines = Loadable(lazy(() => import('pages/medicine/Medicines')));
-const LazyPatientsInfo = Loadable(lazy(() => import('pages/patient/PatientInfo')));
-const LazyPharmacistsInfo = Loadable(lazy(() => import('pages/pharmacist/PharmacistInfo')));
 const LazyPharmacistRequests = Loadable(
-	lazy(() => import('pages/PharmacistRequests')),
+	lazy(() => import('pages/pharmacist/PharmacistRequests')),
 );
-const LazyPatients = Loadable(lazy(() => import('pages/Patients')));
-const LazyAdmins = Loadable(lazy(() => import('pages/Admins')));
-const LazyPharmacists = Loadable(lazy(() => import('pages/Pharmacists')));
+const LazyPatients = Loadable(lazy(() => import('pages/patient/Patients')));
+const LazyAdmins = Loadable(lazy(() => import('pages/admin/Admins')));
+const LazyPharmacists = Loadable(lazy(() => import('pages/pharmacist/Pharmacists')));
 // utilities routing
-const UtilsTypography = Loadable(lazy(() => import('pages/utilities/Typography')));
+const UtilsTypography = Loadable(
+	lazy(() => import('pages/utilities/Typography')),
+);
 const UtilsColor = Loadable(lazy(() => import('pages/utilities/Color')));
 const UtilsShadow = Loadable(lazy(() => import('pages/utilities/Shadow')));
 const Account = Loadable(lazy(() => import('pages/profile/Account')));
@@ -30,31 +29,27 @@ const SamplePage = Loadable(lazy(() => import('pages/sample-page')));
 
 const AdminRoutes = {
 	path: '/admin',
-	element: <MainLayout userType={'admin'}/>,
+	element: <MainLayout userType={'admin'} />,
 	children: [
 		{
 			path: 'admin',
-			element: <DashboardDefault />
+			element: <DashboardDefault />,
 		},
 		{
 			path: 'dashboard',
 			children: [
 				{
 					path: 'default',
-					element: <DashboardDefault />
-				}
-			]
+					element: <DashboardDefault />,
+				},
+			],
 		},
 		{
 			path: 'pages',
 			children: [
 				{
-                    path: 'profile',
-                    element: <Account />,
-                },
-				{
-					path: 'medicines',
-					element: <LazyMedicines />
+					path: 'profile',
+					element: <Account />,
 				},
 				{
 					path: 'admins',
@@ -72,25 +67,7 @@ const AdminRoutes = {
 					path: 'patients',
 					element: <LazyPatients />,
 				},
-			]
-		},
-		{
-			path: 'pages',
-			children: [
-				{
-					path: 'patientInfo',
-					element: <LazyPatientsInfo />
-				},
-			]
-		},
-		{
-			path: 'pages',
-			children: [
-				{
-					path: 'PharmacistsInfo',
-					element: <LazyPharmacistsInfo />
-				}
-			]
+			],
 		},
 		{
 			path: 'utils',
@@ -112,9 +89,9 @@ const AdminRoutes = {
 
 		{
 			path: 'sample-page',
-			element: <SamplePage />
-		}
-	]
+			element: <SamplePage />,
+		},
+	],
 };
 
 export default AdminRoutes;
