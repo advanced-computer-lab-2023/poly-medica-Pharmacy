@@ -5,6 +5,7 @@ const Message = ({ message, type, time, vertical, horizontal }) => {
 	return (
 		<Snackbar
 			anchorOrigin={{ vertical, horizontal }}
+			open={open}
 			autoHideDuration={time}
 		>
 			<Alert variant='filled' severity={type}>
