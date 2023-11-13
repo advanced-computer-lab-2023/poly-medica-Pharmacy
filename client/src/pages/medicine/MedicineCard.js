@@ -50,7 +50,7 @@ const MedicineCard = ({
 
 	return (
 		<div>
-			{userType === 'pharmacist' && (
+			{userType !== 'patient' && (
 				<ListItem button onClick={() => setSelectedMedicine(medicine)}>
 					<ListItemAvatar sx={{ paddingRight: '2%' }}>
 						<img
@@ -83,14 +83,15 @@ const MedicineCard = ({
 						sx={{ paddingLeft: '2%' }}
 						primary={`$${medicine.price}`}
 					/>
-
-					<IconButton
-						edge='end'
-						aria-label='edit'
-						onClick={(event) => handleEditButtonClick(medicine, event)}
-					>
-						<EditIcon />
-					</IconButton>
+					{userType !== 'admin' && (
+						<IconButton
+							edge='end'
+							aria-label='edit'
+							onClick={(event) => handleEditButtonClick(medicine, event)}
+						>
+							<EditIcon />
+						</IconButton>
+					)}
 				</ListItem>
 			)}
 

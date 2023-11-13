@@ -233,7 +233,7 @@ const Medicines = () => {
 				selectedMedicine={selectedMedicine}
 				handleDialogClose={handleDialogClose}
 			/>
-			{userType === 'pharmacist' && (
+			{userType !== 'patient' && (
 				<div>
 					<AddMedicine
 						isAddDialogOpen={isAddDialogOpen}
