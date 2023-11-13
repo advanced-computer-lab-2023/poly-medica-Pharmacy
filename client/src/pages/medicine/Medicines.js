@@ -130,7 +130,8 @@ const Medicines = () => {
 		setIsEditDialogOpen(true);
 	};
 
-	const handleSaveEdit = () => {
+	const handleSaveEdit = (e) => {
+		e.preventDefault();
 		if (selectedEditMedicine) {
 			pharmacyAxios
 				.patch(`/medicines/${selectedEditMedicine._id}`, {

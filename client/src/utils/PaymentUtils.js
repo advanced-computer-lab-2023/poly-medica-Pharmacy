@@ -5,7 +5,6 @@ import Swal from 'sweetalert2';
 
 
 export const successfulPayment = (userId, order) => {
-  console.log('userId is ', userId);
   patientAxios.post('/order', { order }).then(() => {
     pharmacyAxios
       .delete(`/cart/users/${userId}/medicines`)
