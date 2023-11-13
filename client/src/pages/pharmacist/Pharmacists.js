@@ -66,8 +66,7 @@ const Pharmacists = () => {
 				setPharmacistIsBeingDeleted(false);
 				setErrorMessage('Error deleting pharmacist');
 				console.error('Error deleting pharmacist:', error);
-			})
-			.finally(() => {});
+			});
 	};
 
 	const handleCancelDelete = () => {
