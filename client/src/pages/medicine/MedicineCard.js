@@ -5,8 +5,9 @@ import {
 	ListItemAvatar,
 	ListItemText,
 	Divider,
-	Button,
 	CircularProgress,
+	Grid,
+	Button,
 } from '@mui/material';
 import { Edit as EditIcon } from '@mui/icons-material';
 import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
@@ -41,39 +42,40 @@ const MedicineCard = ({
 
 	return (
 		<div>
-			<ListItem button onClick={() => setSelectedMedicine(medicine)}>
-				<ListItemAvatar sx={{ paddingRight: '2%' }}>
-					<img
-						src={`${PHARMACY_BASE_URL}/medicines/${medicine._id}/pictures`}
-						alt={medicine.name}
-						width='80'
-						height='80'
+			{userType === 'pharmacy' && (
+				<ListItem button onClick={() => setSelectedMedicine(medicine)}>
+					<ListItemAvatar sx={{ paddingRight: '2%' }}>
+						<img
+							src={`${PHARMACY_BASE_URL}/medicines/${medicine._id}/pictures`}
+							alt={medicine.name}
+							width='80'
+							height='80'
+						/>
+					</ListItemAvatar>
+					<ListItemText
+						primary={medicine.name}
+						secondary={
+							<div
+								style={{
+									overflow: 'hidden',
+									whiteSpace: 'nowrap',
+									textOverflow: 'ellipsis',
+								}}
+							>
+								{medicine.description}
+							</div>
+						}
+						sx={{
+							width: '60%',
+							lineHeight: '1.5em',
+							maxHeight: '3em',
+						}}
 					/>
-				</ListItemAvatar>
-				<ListItemText
-					primary={medicine.name}
-					secondary={
-						<div
-							style={{
-								overflow: 'hidden',
-								whiteSpace: 'nowrap',
-								textOverflow: 'ellipsis',
-							}}
-						>
-							{medicine.description}
-						</div>
-					}
-					sx={{
-						width: '60%',
-						lineHeight: '1.5em',
-						maxHeight: '3em',
-					}}
-				/>
-				<ListItemText
-					sx={{ paddingLeft: '2%' }}
-					primary={`$${medicine.price}`}
-				/>
-				{userType == 'pharmacist' && (
+					<ListItemText
+						sx={{ paddingLeft: '2%' }}
+						primary={`$${medicine.price}`}
+					/>
+
 					<IconButton
 						edge='end'
 						aria-label='edit'
@@ -81,38 +83,75 @@ const MedicineCard = ({
 					>
 						<EditIcon />
 					</IconButton>
-				)}
-			</ListItem>
-			{userType !== 'pharmacist' && (
-				<ListItem
-					sx={{
-						display: 'flex',
-						justifyContent: 'center',
-						alignItems: 'center',
-					}}
-				>
-					{isLoading ? (
-						<CircularProgress />
-					) : (
-						<Button
-							disabled={!addToCartStatus}
-							onClick={() => {
-								setAddToCartStatus(false);
-								handleAddToCart(medicine);
-							}}
-						>
-							<IconButton
-								color='primary'
-								aria-label='add to shopping cart'
-								variant='contained'
-								disabled={!addToCartStatus}
-							>
-								<AddShoppingCartIcon />
-							</IconButton>
-						</Button>
-					)}
 				</ListItem>
 			)}
+
+			{userType === 'patient' && (
+				<Grid container spacing={5} m={0}>
+					<Grid item xs={10}>
+						<ListItem
+							button
+							onClick={() => setSelectedMedicine(medicine)}
+							sx={{ width: '100%' }}
+						>
+							<ListItemAvatar sx={{ paddingRight: '2%' }}>
+								<img
+									src={`${PHARMACY_BASE_URL}/medicines/${medicine._id}/pictures`}
+									alt={medicine.name}
+									width='80'
+									height='80'
+								/>
+							</ListItemAvatar>
+							<ListItemText
+								primary={medicine.name}
+								secondary={
+									<div
+										style={{
+											overflow: 'hidden',
+											whiteSpace: 'nowrap',
+											textOverflow: 'ellipsis',
+										}}
+									>
+										{medicine.description}
+									</div>
+								}
+								sx={{
+									width: '70%',
+									lineHeight: '1.5em',
+									maxHeight: '3em',
+								}}
+							/>
+							<ListItemText
+								sx={{ paddingLeft: '2%' }}
+								primary={`$${medicine.price}`}
+							/>
+						</ListItem>
+					</Grid>
+					<Grid item sx={{ alignSelf: 'center' }} xs={2}>
+						{isLoading ? (
+							<CircularProgress />
+						) : (
+							<Button
+								disabled={!addToCartStatus}
+								onClick={() => {
+									setAddToCartStatus(false);
+									handleAddToCart(medicine);
+								}}
+							>
+								<IconButton
+									color='primary'
+									edge='end'
+									aria-label='add to cart'
+									disabled={!addToCartStatus}
+								>
+									<AddShoppingCartIcon />
+								</IconButton>
+							</Button>
+						)}
+					</Grid>
+				</Grid>
+			)}
+
 			<Divider />
 		</div>
 	);
