@@ -20,7 +20,8 @@ const Pharmacists = () => {
 	const [pharmacistToDelete, setPharmacistToDelete] = useState(null);
 
 	useEffect(() => {
-		pharmacists.get('/pharmacists')
+		pharmacyAxios
+			.get('/pharmacists')
 			.then((response) => response.data)
 			.then((data) => {
 				setPharmacists(data.pharmacists);
@@ -38,7 +39,8 @@ const Pharmacists = () => {
 	};
 
 	const handleConfirmDelete = () => {
-		pharmacyAxios.delete(`/pharmacists/${pharmacistToDelete}`)
+		pharmacyAxios
+			.delete(`/pharmacists/${pharmacistToDelete}`)
 			.then((response) => response.data)
 			.then(() =>
 				setPharmacists((prevPharmacists) =>

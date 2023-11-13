@@ -8,6 +8,8 @@ import {
 	Alert,
 	Grid,
 	CircularProgress,
+	ListItemAvatar,
+	ListItemText,
 } from '@mui/material';
 import DangerousIcon from '@mui/icons-material/Dangerous';
 import AddIcon from '@mui/icons-material/Add';
@@ -64,21 +66,21 @@ const CartMedicineCard = ({
 					}}
 					mt={0}
 				>
-					<Grid item xs={1}>
+					<ListItemAvatar sx={{ paddingRight: '2%' }}>
 						<img
 							src={`${PHARMACY_BASE_URL}/medicines/${medicine._id}/pictures`}
 							alt={name}
-							style={{
-								width: '80px',
-								height: '80px',
-							}}
+							width='80'
+							height='80'
 						/>
-					</Grid>
-					<Grid item xs={4}>
-						<Typography variant='h6' component='div'>
-							{name}
-						</Typography>
-					</Grid>
+					</ListItemAvatar>
+					<ListItemText
+						primary={name}
+						sx={{
+							lineHeight: '1.5em',
+							maxHeight: '3em',
+						}}
+					/>
 					<Grid item xs={3}>
 						<Typography variant='body2'>
 							Total: ${totalPrice.toFixed(2)}
