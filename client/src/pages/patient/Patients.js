@@ -35,7 +35,7 @@ const Patients = () => {
 				console.error('Error fetching data:', error);
 				setIsLoading(false);
 			});
-	}, []);
+	}, [patients.length]);
 
 	const handleRemovePatient = (patientId) => {
 		setPatientToDelete(patientId);
