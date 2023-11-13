@@ -6,6 +6,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import Tooltip from '@mui/material/Tooltip';
 
 const AdminRow = ({ admin, handleRemoveAdmin }) => {
+	console.log('admin to be deleted ============', admin);
 	return (
 		<TableRow key={admin._id}>
 			<TableCell>{admin.userName}</TableCell>

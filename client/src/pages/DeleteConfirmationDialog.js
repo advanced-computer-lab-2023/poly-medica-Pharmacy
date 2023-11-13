@@ -19,10 +19,10 @@ const DeleteConfirmationDialog = ({
 			<DialogTitle>{title}</DialogTitle>
 			<DialogContent>{content}</DialogContent>
 			<DialogActions>
-				<Button onClick={onClose} color='primary'>
+				<Button onClick={() => onClose()} color='primary'>
 					Cancel
 				</Button>
-				<Button onClick={onConfirm} color='error' variant='contained'>
+				<Button onClick={() => onConfirm()} color='error' variant='contained'>
 					Delete
 				</Button>
 			</DialogActions>

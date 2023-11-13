@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Fab, Grid, Alert } from '@mui/material';
+import { Fab } from '@mui/material';
 import MainCard from '../../ui-component/cards/MainCard';
 import { pharmacyAxios } from '../../utils/AxiosConfig';
 import { Add as AddIcon } from '@mui/icons-material';
@@ -7,10 +7,10 @@ import MedicinesList from './MedicinesList';
 import MedicineDetails from './MedicineDetails';
 import AddMedicine from './AddMedicine';
 import EditMedicine from './EditMedicine';
+import Message from 'ui-component/Message';
 import { useSearch } from 'contexts/SearchContext';
 import { useFilter } from 'contexts/FilterContext';
 import { useUserContext } from 'hooks/useUserContext';
-
 
 const Medicines = () => {
 	const { user } = useUserContext();
@@ -176,19 +176,13 @@ const Medicines = () => {
 				handleAddToCart={handleAddToCart}
 			/>
 			{addToCartAlert && (
-				<Grid
-					item
-					sx={{
-						position: 'fixed',
-						bottom: 16,
-						right: 30,
-						zIndex: 9999,
-					}}
-				>
-					<Alert variant='filled' severity='success'>
-						Medicine added to cart!
-					</Alert>
-				</Grid>
+				<Message
+					message={'Medicine added to cart successfully!'}
+					type={'success'}
+					time={1000}
+					vertical={'bottom'}
+					horizontal={'right'}
+				/>
 			)}
 			{userType === 'pharmacist' && (
 				<Fab

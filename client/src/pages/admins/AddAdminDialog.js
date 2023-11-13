@@ -52,11 +52,11 @@ const AddAdminDialog = ({
 				)}
 			</DialogContent>
 			<DialogActions>
-				<Button onClick={handleCloseAddDialog} color='primary'>
+				<Button onClick={() => handleCloseAddDialog()} color='primary'>
 					Cancel
 				</Button>
 				<Button
-					onClick={handleAddAdmin}
+					onClick={() => handleAddAdmin()}
 					color='primary'
 					variant='contained'
 					disabled={isAddButtonDisabled}

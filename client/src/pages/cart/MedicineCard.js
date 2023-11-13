@@ -5,7 +5,6 @@ import {
 	Typography,
 	Button,
 	IconButton,
-	Alert,
 	Grid,
 	CircularProgress,
 	ListItemAvatar,
@@ -15,6 +14,7 @@ import DangerousIcon from '@mui/icons-material/Dangerous';
 import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
 import { PHARMACY_BASE_URL } from 'utils/Constants';
+import Message from 'ui-component/Message';
 
 const CartMedicineCard = ({
 	medicine,
@@ -114,35 +114,23 @@ const CartMedicineCard = ({
 					</Grid>
 				</Grid>
 				{removeAlert && (
-					<Grid
-						item
-						sx={{
-							position: 'fixed',
-							bottom: 16,
-							right: 30,
-							zIndex: 9999,
-						}}
-					>
-						<Alert variant='filled' severity='info'>
-							Medicine is being removed from your cart . . .
-						</Alert>
-					</Grid>
+					<Message
+						message={'Medicine is being removed from cart . . .'}
+						type={'info'}
+						time={2000}
+						vertical={'bottom'}
+						horizontal={'right'}
+					/>
 				)}
 
 				{quantityAlert && (
-					<Grid
-						item
-						sx={{
-							position: 'fixed',
-							bottom: 16,
-							right: 30,
-							zIndex: 9999,
-						}}
-					>
-						<Alert variant='filled' severity='error'>
-							You reached the maximum quantity of this medicine!
-						</Alert>
-					</Grid>
+					<Message
+						message={'You reached the maximum quantity of this medicine!'}
+						type={'error'}
+						time={2000}
+						vertical={'bottom'}
+						horizontal={'right'}
+					/>
 				)}
 			</CardContent>
 		</Card>

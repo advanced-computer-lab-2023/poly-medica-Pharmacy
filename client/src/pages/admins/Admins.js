@@ -13,7 +13,7 @@ import {
 import AddIcon from '@mui/icons-material/Add';
 import MainCard from 'ui-component/cards/MainCard';
 import AdminRow from './AdminRow';
-import DeleteConfirmationDialog from './DeleteConfirmationDialog';
+import DeleteConfirmationDialog from '../DeleteConfirmationDialog';
 import AddAdminDialog from './AddAdminDialog';
 import { authenticationAxios, pharmacyAxios } from 'utils/AxiosConfig';
 
@@ -24,12 +24,13 @@ const Admins = () => {
 	const [newAdminUsername, setNewAdminUsername] = useState('');
 	const [newAdminPassword, setNewAdminPassword] = useState('');
 	const [confirmDeleteDialogOpen, setConfirmDeleteDialogOpen] = useState(false);
-	const [adminToDelete, setAdminToDelete] = useState(null);
+	const [adminToDelete, setAdminToDelete] = useState('');
 	const [errorMessage, setErrorMessage] = useState('');
 	const { user } = useUserContext();
 
 	useEffect(() => {
-		pharmacyAxios.get('/admins')
+		pharmacyAxios
+			.get('/admins')
 			.then((response) => response.data)
 			.then((data) => {
 				setAdmins(
@@ -49,7 +50,6 @@ const Admins = () => {
 	};
 
 	const handleConfirmDelete = () => {
-		// Check if the admin being deleted is a main admin
 		const adminToBeDeleted = admins.find(
 			(admin) => admin._id === adminToDelete,
 		);
@@ -59,7 +59,8 @@ const Admins = () => {
 			return;
 		}
 
-		pharmacyAxios.delete(`/admins/${adminToDelete}`)
+		pharmacyAxios
+			.delete(`/admins/${adminToDelete}`)
 			.then((response) => response.data)
 			.then(() =>
 				setAdmins((prevAdmins) =>
@@ -101,21 +102,14 @@ const Admins = () => {
 			return;
 		}
 
-		// Make a POST request to add a new admin
-		authenticationAxios.post('/admins/pharmacy', JSON.stringify(newAdmin), {
-			headers: {
-				'Content-Type': 'application/json',
-			},
-		})
+		authenticationAxios
+			.post('/admins/pharmacy', JSON.stringify(newAdmin), {
+				headers: {
+					'Content-Type': 'application/json',
+				},
+			})
 			.then((response) => response.data)
-			.then((data) => {
-				if (data.message === 'that username is already registered') {
-					setErrorMessage(
-						`Username '${newAdminUsername}' already exists. Please choose a different username.`,
-					);
-					return;
-				}
-
+			.then(() => {
 				setAdmins((prevAdmins) => [...prevAdmins, newAdmin]);
 				setOpenAddDialog(false);
 				setNewAdminUsername('');
@@ -123,7 +117,14 @@ const Admins = () => {
 				setErrorMessage('');
 			})
 			.catch((error) => {
-				console.error('Error adding admin:', error);
+				if (error.response) {
+					if (error.response.status == 400) {
+						setErrorMessage(
+							`Username '${newAdminUsername}' already exists. Please choose a different username.`,
+						);
+						return;
+					}
+				} else console.error('Error adding admin:', error);
 			});
 	};
 
@@ -181,7 +182,6 @@ const Admins = () => {
 						errorMessage={errorMessage}
 					/>
 
-					{/* Confirmation Dialog for Delete */}
 					<DeleteConfirmationDialog
 						open={confirmDeleteDialogOpen}
 						onClose={handleCancelDelete}
