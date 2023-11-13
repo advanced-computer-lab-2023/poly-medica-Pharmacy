@@ -11,12 +11,11 @@ import { useSearch } from 'contexts/SearchContext';
 import { useFilter } from 'contexts/FilterContext';
 import { useUserContext } from 'hooks/useUserContext';
 
-let userId;
 
 const Medicines = () => {
-	const user = useUserContext();
-	const userType = user.user.type;
-	userId = user.user.id;
+	const { user } = useUserContext();
+	const userType = user.type;
+	const userId = user.id;
 
 	const [medicines, setMedicines] = useState([]);
 	const [originalMedicines, setOriginalMedicines] = useState([]);
@@ -46,12 +45,15 @@ const Medicines = () => {
 				setOriginalMedicines(response.data.medicines);
 				for (let i = 0; i < response.data.medicines.length; i++) {
 					const medicine = response.data.medicines[i];
-					if (!medicinalUses.includes(medicine.medicinalUse)) medicinalUses.push(medicine.medicinalUse);
+					if (!medicinalUses.includes(medicine.medicinalUse))
+						medicinalUses.push(medicine.medicinalUse);
 				}
-				updateFilter([{
-                    attribute: 'Medicinal Use',
-                    values: medicinalUses
-                }]);
+				updateFilter([
+					{
+						attribute: 'Medicinal Use',
+						values: medicinalUses,
+					},
+				]);
 			})
 			.catch((error) => {
 				console.log(error);
@@ -59,9 +61,11 @@ const Medicines = () => {
 	}, []);
 
 	useEffect(() => {
-		const filteredMedicines = originalMedicines.filter((medicine) =>
-			medicine.name.toLowerCase().includes(searchQuery.toLowerCase()) &&
-			(!filterData[0].selectedValue || medicine.medicinalUse === filterData[0].selectedValue)
+		const filteredMedicines = originalMedicines.filter(
+			(medicine) =>
+				medicine.name.toLowerCase().includes(searchQuery.toLowerCase()) &&
+				(!filterData[0].selectedValue ||
+					medicine.medicinalUse === filterData[0].selectedValue),
 		);
 		setMedicines(filteredMedicines);
 	}, [searchQuery, originalMedicines, filterData]);
@@ -170,8 +174,6 @@ const Medicines = () => {
 				setSelectedMedicine={setSelectedMedicine}
 				handleEditButtonClick={handleEditButtonClick}
 				handleAddToCart={handleAddToCart}
-				userId={userId}
-				userType={userType}
 			/>
 			{addToCartAlert && (
 				<Grid
@@ -206,7 +208,6 @@ const Medicines = () => {
 			<MedicineDetails
 				selectedMedicine={selectedMedicine}
 				handleDialogClose={handleDialogClose}
-				userType={userType}
 			/>
 			{userType === 'pharmacist' && (
 				<div>

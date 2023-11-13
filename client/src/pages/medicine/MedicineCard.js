@@ -13,15 +13,17 @@ import { Edit as EditIcon } from '@mui/icons-material';
 import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
 import { PHARMACY_BASE_URL } from 'utils/Constants';
 import { pharmacyAxios } from '../../utils/AxiosConfig';
+import { useUserContext } from 'hooks/useUserContext';
 
 const MedicineCard = ({
-	userId,
 	medicine,
 	setSelectedMedicine,
 	handleEditButtonClick,
-	userType,
 	handleAddToCart,
 }) => {
+	const { user } = useUserContext();
+	const userId = user.id;
+	const userType = user.type;
 	const [addToCartStatus, setAddToCartStatus] = useState(true);
 	const [isLoading, setIsLoading] = useState(true);
 
