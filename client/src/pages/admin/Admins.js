@@ -82,8 +82,7 @@ const Admins = () => {
 				setAdminIsBeingDeleted(false);
 				setErrorMessage('Error in deleting admin.');
 				console.error('Error deleting admin:', error);
-			})
-			.finally(() => {});
+			});
 	};
 
 	const handleCancelDelete = () => {
