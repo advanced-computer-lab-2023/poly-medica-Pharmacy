@@ -8,7 +8,7 @@ import {
 	TableHead,
 	TableRow,
 	Paper,
-	Button,
+	Fab,
 } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import MainCard from 'ui-component/cards/MainCard';
@@ -176,19 +176,20 @@ const Admins = () => {
 							</TableBody>
 						</Table>
 					</TableContainer>
-					<Button
-						variant='contained'
-						color='primary'
+
+					<Fab
+						color='secondary'
+						aria-label='Add'
 						onClick={handleOpenAddDialog}
-						style={{
+						sx={{
 							position: 'fixed',
-							bottom: '20px',
-							right: '50px',
+							bottom: 16,
+							right: 16,
+							zIndex: 9999,
 						}}
 					>
 						<AddIcon />
-						Add Admin
-					</Button>
+					</Fab>
 
 					{addAdmin && (
 						<Message
