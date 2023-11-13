@@ -29,6 +29,8 @@ const Admins = () => {
 	const [adminToDelete, setAdminToDelete] = useState('');
 	const [addAdmin, setAddAdmin] = useState(false);
 	const [removeAdmin, setRemoveAdmin] = useState(false);
+	const [adminIsBeingAdded, setAdminIsBeingAdded] = useState(false);
+	const [adminIsBeingDeleted, setAdminIsBeingDeleted] = useState(false);
 	const [errorMessage, setErrorMessage] = useState('');
 
 	useEffect(() => {
@@ -45,7 +47,7 @@ const Admins = () => {
 				console.error('Error fetching data:', error);
 				setIsLoading(false);
 			});
-	}, []);
+	}, [admins.length]);
 
 	const handleRemoveAdmin = (adminId) => {
 		setAdminToDelete(adminId);
@@ -57,11 +59,10 @@ const Admins = () => {
 			(admin) => admin._id === adminToDelete,
 		);
 		if (adminToBeDeleted && adminToBeDeleted.mainAdmin) {
-			// If it's a main admin, prevent deletion and show a message
 			setConfirmDeleteDialogOpen(false);
 			return;
 		}
-
+		setAdminIsBeingDeleted(true);
 		pharmacyAxios
 			.delete(`/admins/${adminToDelete}`)
 			.then((response) => response.data)
@@ -69,23 +70,27 @@ const Admins = () => {
 				setAdmins((prevAdmins) =>
 					prevAdmins.filter((admin) => admin._id !== adminToDelete),
 				);
+				setAdminIsBeingDeleted(false);
+				setAdminToDelete('');
+				setConfirmDeleteDialogOpen(false);
 				setRemoveAdmin(true);
 				setTimeout(() => {
 					setRemoveAdmin(false);
 				}, 2000);
 			})
 			.catch((error) => {
+				setAdminIsBeingDeleted(false);
+				setErrorMessage('Error in deleting admin.');
 				console.error('Error deleting admin:', error);
 			})
-			.finally(() => {
-				setAdminToDelete('');
-				setConfirmDeleteDialogOpen(false);
-			});
+			.finally(() => {});
 	};
 
 	const handleCancelDelete = () => {
 		setAdminToDelete('');
 		setConfirmDeleteDialogOpen(false);
+		setErrorMessage('');
+		setAdminIsBeingDeleted(false);
 	};
 
 	const handleOpenAddDialog = () => {
@@ -97,6 +102,7 @@ const Admins = () => {
 		setNewAdminUsername('');
 		setNewAdminPassword('');
 		setErrorMessage('');
+		setAdminIsBeingAdded(false);
 	};
 
 	const handleAddAdmin = () => {
@@ -109,6 +115,7 @@ const Admins = () => {
 			return;
 		}
 
+		setAdminIsBeingAdded(true);
 		authenticationAxios
 			.post('/admins/pharmacy', JSON.stringify(newAdmin), {
 				headers: {
@@ -118,6 +125,7 @@ const Admins = () => {
 			.then((response) => response.data)
 			.then(() => {
 				setAdmins((prevAdmins) => [...prevAdmins, newAdmin]);
+				setAdminIsBeingAdded(false);
 				setOpenAddDialog(false);
 				setNewAdminUsername('');
 				setNewAdminPassword('');
@@ -128,6 +136,7 @@ const Admins = () => {
 				}, 2000);
 			})
 			.catch((error) => {
+				setAdminIsBeingAdded(false);
 				if (error.response) {
 					if (error.response.status == 400) {
 						setErrorMessage(
@@ -210,6 +219,7 @@ const Admins = () => {
 						setNewAdminPassword={setNewAdminPassword}
 						handleAddAdmin={handleAddAdmin}
 						isAddButtonDisabled={isAddButtonDisabled}
+						adminIsBeingAdded={adminIsBeingAdded}
 						errorMessage={errorMessage}
 					/>
 
@@ -219,6 +229,8 @@ const Admins = () => {
 						onConfirm={handleConfirmDelete}
 						title='Confirm Delete'
 						content='Are you sure you want to delete this admin?'
+						adminIsBeingDeleted={adminIsBeingDeleted}
+						errorMessage={errorMessage}
 					/>
 				</div>
 			)}
