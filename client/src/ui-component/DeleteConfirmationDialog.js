@@ -15,7 +15,8 @@ const DeleteConfirmationDialog = ({
 	title,
 	content,
 	errorMessage,
-	adminIsBeingDeleted,
+	someoneIsBeingDeleted,
+	
 }) => {
 	return (
 		<Dialog open={open} onClose={onClose}>
@@ -30,12 +31,12 @@ const DeleteConfirmationDialog = ({
 				<Button onClick={() => onClose()} color='primary'>
 					Cancel
 				</Button>
-				{!adminIsBeingDeleted && (
+				{!someoneIsBeingDeleted && (
 					<Button onClick={() => onConfirm()} color='error' variant='contained'>
 						Delete
 					</Button>
 				)}
-				{adminIsBeingDeleted && (
+				{someoneIsBeingDeleted && (
 					<Button color='primary' disabled>
 						<CircularProgress color='inherit' size={25} />
 					</Button>

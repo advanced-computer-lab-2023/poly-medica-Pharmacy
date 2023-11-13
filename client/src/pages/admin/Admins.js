@@ -229,7 +229,7 @@ const Admins = () => {
 						onConfirm={handleConfirmDelete}
 						title='Confirm Delete'
 						content='Are you sure you want to delete this admin?'
-						adminIsBeingDeleted={adminIsBeingDeleted}
+						someoneIsBeingDeleted={adminIsBeingDeleted}
 						errorMessage={errorMessage}
 					/>
 				</div>
