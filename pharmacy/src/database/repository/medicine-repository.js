@@ -25,10 +25,10 @@ class MedicineRepository {
 		return updated;
 	}
 
-	async updateMedicineQuantity(id, newQuantity) {
+	async updateMedicineQuantity(id, newQuantity, newSales) {
 		const updated = await MedicineModel.findByIdAndUpdate(
 			id,
-			{ quantity: newQuantity },
+			{ quantity: newQuantity, sales: newSales },
 			{ new: true },
 		);
 		return updated;

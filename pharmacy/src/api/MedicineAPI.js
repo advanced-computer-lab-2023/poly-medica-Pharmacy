@@ -89,10 +89,8 @@ export const medicine = (app) => {
 					.json({ message: 'No medicine found' });
 			}
 
-			const updated = await service.updateMedicineQuantity(
-				id,
-				oldMedicine.quantity - quantity,
-			);
+			const newSales = oldMedicine.sales + (oldMedicine.quantity - quantity);
+			const updated = await service.updateMedicineQuantity(id, quantity, newSales);
 
 			return res.status(OK_STATUS_CODE).json(updated);
 		} catch (error) {
