@@ -36,6 +36,9 @@ const Medicines = () => {
 	const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
 	const medicinalUses = [];
 	const [addToCartAlert, setAddToCartAlert] = useState(false);
+	const [medicineIsBeingAddedToCart, setMedicineIsBeingAddedToCart] =
+		useState(false);
+	const [errorAddingToCart, setErrorAddingToCart] = useState(false);
 
 	useEffect(() => {
 		pharmacyAxios
@@ -153,16 +156,21 @@ const Medicines = () => {
 	};
 
 	const handleAddToCart = (medicine) => {
+		setErrorAddingToCart(false);
+		setMedicineIsBeingAddedToCart(true);
 		pharmacyAxios
 			.post(`/cart/users/${userId}/medicines`, { medicine })
 			.then((response) => {
 				console.log(response.data);
+				setMedicineIsBeingAddedToCart(false);
 				setAddToCartAlert(true);
 				setTimeout(() => {
 					setAddToCartAlert(false);
 				}, 1000);
 			})
 			.catch((error) => {
+				setMedicineIsBeingAddedToCart(false);
+				errorAddingToCart(true);
 				console.log(error);
 			});
 	};
@@ -174,6 +182,7 @@ const Medicines = () => {
 				setSelectedMedicine={setSelectedMedicine}
 				handleEditButtonClick={handleEditButtonClick}
 				handleAddToCart={handleAddToCart}
+				medicineIsBeingAddedToCart={medicineIsBeingAddedToCart}
 			/>
 			{addToCartAlert && (
 				<Message
@@ -184,6 +193,27 @@ const Medicines = () => {
 					horizontal={'right'}
 				/>
 			)}
+
+			{medicineIsBeingAddedToCart && (
+				<Message
+					message={'Adding medicine to cart...'}
+					type={'info'}
+					time={1000}
+					vertical={'bottom'}
+					horizontal={'right'}
+				/>
+			)}
+
+			{errorAddingToCart && (
+				<Message
+					message={'Error adding medicine to cart'}
+					type={'error'}
+					time={1000}
+					vertical={'bottom'}
+					horizontal={'right'}
+				/>
+			)}
+
 			{userType === 'pharmacist' && (
 				<Fab
 					color='secondary'

@@ -20,6 +20,7 @@ const MedicineCard = ({
 	setSelectedMedicine,
 	handleEditButtonClick,
 	handleAddToCart,
+	medicineIsBeingAddedToCart,
 }) => {
 	const { user } = useUserContext();
 	const userId = user.id;
@@ -41,6 +42,11 @@ const MedicineCard = ({
 				console.log(error);
 			});
 	}, []);
+
+	const addToCart = (medicine) => {
+		handleAddToCart(medicine);
+		setIsLoading(medicineIsBeingAddedToCart);
+	};
 
 	return (
 		<div>
@@ -137,7 +143,7 @@ const MedicineCard = ({
 								disabled={!addToCartStatus}
 								onClick={() => {
 									setAddToCartStatus(false);
-									handleAddToCart(medicine);
+									addToCart(medicine);
 								}}
 							>
 								<IconButton

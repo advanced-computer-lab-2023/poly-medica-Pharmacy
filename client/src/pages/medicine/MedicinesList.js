@@ -7,6 +7,7 @@ const MedicinesList = ({
 	setSelectedMedicine,
 	handleEditButtonClick,
 	handleAddToCart,
+	medicineIsBeingAddedToCart,
 }) => {
 	return (
 		<List>
@@ -19,6 +20,7 @@ const MedicinesList = ({
 								handleEditButtonClick={handleEditButtonClick}
 								setSelectedMedicine={setSelectedMedicine}
 								handleAddToCart={handleAddToCart}
+								medicineIsBeingAddedToCart={medicineIsBeingAddedToCart}
 							></MedicineCard>
 						</div>
 					</div>
