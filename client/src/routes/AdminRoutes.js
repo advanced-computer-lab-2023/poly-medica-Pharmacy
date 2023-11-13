@@ -7,11 +7,11 @@ import Loadable from 'ui-component/Loadable';
 // dashboard routing
 const DashboardDefault = Loadable(lazy(() => import('pages/dashboard')));
 const LazyPharmacistRequests = Loadable(
-	lazy(() => import('pages/PharmacistRequests')),
+	lazy(() => import('pages/pharmacist/PharmacistRequests')),
 );
-const LazyPatients = Loadable(lazy(() => import('pages/Patients')));
-const LazyAdmins = Loadable(lazy(() => import('pages/admins/Admins')));
-const LazyPharmacists = Loadable(lazy(() => import('pages/Pharmacists')));
+const LazyPatients = Loadable(lazy(() => import('pages/patient/Patients')));
+const LazyAdmins = Loadable(lazy(() => import('pages/admin/Admins')));
+const LazyPharmacists = Loadable(lazy(() => import('pages/pharmacist/Pharmacists')));
 // utilities routing
 const UtilsTypography = Loadable(
 	lazy(() => import('pages/utilities/Typography')),

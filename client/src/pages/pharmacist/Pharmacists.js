@@ -9,22 +9,22 @@ import {
 	Paper,
 } from '@mui/material';
 import MainCard from 'ui-component/cards/MainCard';
-import PatientRow from './PatientRow';
-import DeleteConfirmationDialog from './DeleteConfirmationDialog';
-import { patientAxios, pharmacyAxios } from 'utils/AxiosConfig';
+import PharmacistRow from './PharmacistRow';
+import DeleteConfirmationDialog from '../../ui-component/DeleteConfirmationDialog';
+import { pharmacyAxios } from 'utils/AxiosConfig';
 
-const Patients = () => {
-	const [patients, setPatients] = useState([]);
+const Pharmacists = () => {
+	const [pharmacists, setPharmacists] = useState([]);
 	const [isLoading, setIsLoading] = useState(true);
 	const [confirmDeleteDialogOpen, setConfirmDeleteDialogOpen] = useState(false);
-	const [patientToDelete, setPatientToDelete] = useState(null);
+	const [pharmacistToDelete, setPharmacistToDelete] = useState(null);
 
 	useEffect(() => {
-		patientAxios
-			.get('/patients')
+		pharmacyAxios
+			.get('/pharmacists')
 			.then((response) => response.data)
 			.then((data) => {
-				setPatients(data.patients);
+				setPharmacists(data.pharmacists);
 				setIsLoading(false);
 			})
 			.catch((error) => {
@@ -33,36 +33,38 @@ const Patients = () => {
 			});
 	}, []);
 
-	const handleRemovePatient = (patientId) => {
-		setPatientToDelete(patientId);
+	const handleRemovePharmacist = (pharmacistId) => {
+		setPharmacistToDelete(pharmacistId);
 		setConfirmDeleteDialogOpen(true);
 	};
 
 	const handleConfirmDelete = () => {
 		pharmacyAxios
-			.delete(`/patients/${patientToDelete}`)
+			.delete(`/pharmacists/${pharmacistToDelete}`)
 			.then((response) => response.data)
 			.then(() =>
-				setPatients((prevPatients) =>
-					prevPatients.filter((patient) => patient._id !== patientToDelete),
+				setPharmacists((prevPharmacists) =>
+					prevPharmacists.filter(
+						(pharmacist) => pharmacist._id !== pharmacistToDelete,
+					),
 				),
 			)
 			.catch((error) => {
-				console.error('Error deleting patient:', error);
+				console.error('Error deleting pharmacist:', error);
 			})
 			.finally(() => {
-				setPatientToDelete(null);
+				setPharmacistToDelete(null);
 				setConfirmDeleteDialogOpen(false);
 			});
 	};
 
 	const handleCancelDelete = () => {
-		setPatientToDelete(null);
+		setPharmacistToDelete(null);
 		setConfirmDeleteDialogOpen(false);
 	};
 
 	return (
-		<MainCard title='Patients'>
+		<MainCard title='Pharmacists'>
 			{isLoading ? (
 				<p>Loading...</p>
 			) : (
@@ -75,18 +77,19 @@ const Patients = () => {
 									<TableCell>User Name</TableCell>
 									<TableCell>Email</TableCell>
 									<TableCell>Date of Birth</TableCell>
-									<TableCell>Gender</TableCell>
-									<TableCell>Mobile Number</TableCell>
+									<TableCell>Hourly Rate</TableCell>
+									<TableCell>Affiliation</TableCell>
+									<TableCell>Educational Background</TableCell>
 									<TableCell>Delete</TableCell>
 								</TableRow>
 							</TableHead>
 							<TableBody>
-								{Array.isArray(patients) &&
-									patients.map((patient) => (
-										<PatientRow
-											key={patient._id}
-											patient={patient}
-											handleRemovePatient={handleRemovePatient}
+								{Array.isArray(pharmacists) &&
+									pharmacists.map((pharmacist) => (
+										<PharmacistRow
+											key={pharmacist._id}
+											pharmacist={pharmacist}
+											handleRemovePharmacist={handleRemovePharmacist}
 										/>
 									))}
 							</TableBody>
@@ -99,7 +102,7 @@ const Patients = () => {
 						onClose={handleCancelDelete}
 						onConfirm={handleConfirmDelete}
 						title='Confirm Delete'
-						content='Are you sure you want to delete this patient?'
+						content='Are you sure you want to delete this pharmacist?'
 					/>
 				</div>
 			)}
@@ -107,4 +110,4 @@ const Patients = () => {
 	);
 };
 
-export default Patients;
+export default Pharmacists;

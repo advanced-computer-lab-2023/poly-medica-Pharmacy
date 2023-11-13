@@ -13,7 +13,7 @@ import {
 import AddIcon from '@mui/icons-material/Add';
 import MainCard from 'ui-component/cards/MainCard';
 import AdminRow from './AdminRow';
-import DeleteConfirmationDialog from '../DeleteConfirmationDialog';
+import DeleteConfirmationDialog from '../../ui-component/DeleteConfirmationDialog';
 import AddAdminDialog from './AddAdminDialog';
 import { authenticationAxios, pharmacyAxios } from 'utils/AxiosConfig';
 
@@ -71,13 +71,13 @@ const Admins = () => {
 				console.error('Error deleting admin:', error);
 			})
 			.finally(() => {
-				setAdminToDelete(null);
+				setAdminToDelete('');
 				setConfirmDeleteDialogOpen(false);
 			});
 	};
 
 	const handleCancelDelete = () => {
-		setAdminToDelete(null);
+		setAdminToDelete('');
 		setConfirmDeleteDialogOpen(false);
 	};
 

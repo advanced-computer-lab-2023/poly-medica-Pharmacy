@@ -14,13 +14,13 @@ const LazyPharmacistsInfo = Loadable(
 	lazy(() => import('pages/pharmacist/PharmacistInfo')),
 );
 const LazyPharmacistRequests = Loadable(
-	lazy(() => import('pages/PharmacistRequests')),
+	lazy(() => import('pages/pharmacist/PharmacistRequests')),
 );
 
 const Account = Loadable(lazy(() => import('pages/profile/Account')));
-const LazyPatients = Loadable(lazy(() => import('pages/Patients')));
-const LazyAdmins = Loadable(lazy(() => import('pages/admins/Admins')));
-const LazyPharmacists = Loadable(lazy(() => import('pages/Pharmacists')));
+const LazyPatients = Loadable(lazy(() => import('pages/patient/Patients')));
+const LazyAdmins = Loadable(lazy(() => import('pages/admin/Admins')));
+const LazyPharmacists = Loadable(lazy(() => import('pages/pharmacist/Pharmacists')));
 const LazyOrders = Loadable(lazy(() => import('pages/orders/Orders')));
 // utilities routing
 const UtilsTypography = Loadable(
