@@ -15,9 +15,11 @@ import MainCard from 'ui-component/cards/MainCard';
 import AdminRow from './AdminRow';
 import DeleteConfirmationDialog from '../../ui-component/DeleteConfirmationDialog';
 import AddAdminDialog from './AddAdminDialog';
+import Message from 'ui-component/Message';
 import { authenticationAxios, pharmacyAxios } from 'utils/AxiosConfig';
 
 const Admins = () => {
+	const { user } = useUserContext();
 	const [admins, setAdmins] = useState([]);
 	const [isLoading, setIsLoading] = useState(true);
 	const [openAddDialog, setOpenAddDialog] = useState(false);
@@ -25,8 +27,9 @@ const Admins = () => {
 	const [newAdminPassword, setNewAdminPassword] = useState('');
 	const [confirmDeleteDialogOpen, setConfirmDeleteDialogOpen] = useState(false);
 	const [adminToDelete, setAdminToDelete] = useState('');
+	const [addAdmin, setAddAdmin] = useState(false);
+	const [removeAdmin, setRemoveAdmin] = useState(false);
 	const [errorMessage, setErrorMessage] = useState('');
-	const { user } = useUserContext();
 
 	useEffect(() => {
 		pharmacyAxios
@@ -62,11 +65,15 @@ const Admins = () => {
 		pharmacyAxios
 			.delete(`/admins/${adminToDelete}`)
 			.then((response) => response.data)
-			.then(() =>
+			.then(() => {
 				setAdmins((prevAdmins) =>
 					prevAdmins.filter((admin) => admin._id !== adminToDelete),
-				),
-			)
+				);
+				setRemoveAdmin(true);
+				setTimeout(() => {
+					setRemoveAdmin(false);
+				}, 2000);
+			})
 			.catch((error) => {
 				console.error('Error deleting admin:', error);
 			})
@@ -115,6 +122,10 @@ const Admins = () => {
 				setNewAdminUsername('');
 				setNewAdminPassword('');
 				setErrorMessage('');
+				setAddAdmin(true);
+				setTimeout(() => {
+					setAddAdmin(false);
+				}, 2000);
 			})
 			.catch((error) => {
 				if (error.response) {
@@ -169,6 +180,26 @@ const Admins = () => {
 						<AddIcon />
 						Add Admin
 					</Button>
+
+					{addAdmin && (
+						<Message
+							message={'Admin added successfully!'}
+							type={'success'}
+							time={2000}
+							vertical={'bottom'}
+							horizontal={'left'}
+						/>
+					)}
+
+					{removeAdmin && (
+						<Message
+							message={'Admin removed successfully!'}
+							type={'success'}
+							time={2000}
+							vertical={'bottom'}
+							horizontal={'left'}
+						/>
+					)}
 
 					<AddAdminDialog
 						openAddDialog={openAddDialog}

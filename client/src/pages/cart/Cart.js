@@ -13,7 +13,6 @@ const Cart = () => {
     const navigate = useNavigate();
     const user = useUserContext();
     const userId = user.user.id;
-    console.log('user id: ', userId);
     const [cartItems, setCartItems] = useState([]);
     const [itemsLength, setItemsLength] = useState(0);
     const [isLoading, setIsLoading] = useState(true);
