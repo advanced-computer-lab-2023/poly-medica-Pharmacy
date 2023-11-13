@@ -42,7 +42,7 @@ const MedicineCard = ({
 
 	return (
 		<div>
-			{userType === 'pharmacy' && (
+			{userType === 'pharmacist' && (
 				<ListItem button onClick={() => setSelectedMedicine(medicine)}>
 					<ListItemAvatar sx={{ paddingRight: '2%' }}>
 						<img
