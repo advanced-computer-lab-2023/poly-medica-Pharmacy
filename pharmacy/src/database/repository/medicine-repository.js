@@ -25,6 +25,15 @@ class MedicineRepository {
 		return updated;
 	}
 
+	async updateMedicineQuantity(id, newQuantity) {
+		const updated = await MedicineModel.findByIdAndUpdate(
+			id,
+			{ quantity: newQuantity },
+			{ new: true },
+		);
+		return updated;
+	}
+
 	getPicture(picName) {
 		const pictureName = picName;
 		const picturePath = getImage(MEDICINE_FOLDER_NAME, pictureName);
