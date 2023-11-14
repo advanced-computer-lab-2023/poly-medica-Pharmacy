@@ -74,7 +74,14 @@ const FirebaseRegister = ({ type }) => {
                 text: 'Please upload documents for verification',
             });
             return;
-        }
+        } else if (!level || level.label != 'Strong'){
+			Swal.fire({
+				icon: 'error',
+				title: 'Oops...',
+				text: 'Please enter a Strong password. \n Password must be at least 8 characters and include one number, one letter, one capital letter, and one special character.',
+			});
+			return;
+		}
         setIsSubmitting(true);
 
         const sendData = {
@@ -107,8 +114,7 @@ const FirebaseRegister = ({ type }) => {
                 sendData 
             );
             
-
-            try{
+            try {
                 await pharmacyAxios.post(
                     '/add-pharmacist-req',
                     formData
@@ -129,19 +135,19 @@ const FirebaseRegister = ({ type }) => {
                 setSelectedDate(new Date());
                 setAffiliation('');
                 setUploadedFiles([]);
-            } catch(error) {
+            } catch(err) {
                 Swal.fire({
                     icon: 'error',
                     title: 'Oops...',
-                    text: error.response.data.message,
+                    text: err.response.data.message,
                 });
                 setIsSubmitting(false);
             }
-        } catch(error) {
+        } catch(err) {
             Swal.fire({
                 icon: 'error',
                 title: 'Oops...',
-                text: error.response.data.message,
+                text: err.response.data.message,
             });
             setIsSubmitting(false);
         }

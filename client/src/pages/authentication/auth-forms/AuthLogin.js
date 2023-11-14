@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useTheme } from '@mui/material/styles';
 import {
 	Box,
 	Button,
@@ -21,6 +22,7 @@ import { authenticationAxios } from 'utils/AxiosConfig';
 // ============================|| LOGIN ||============================ //
 
 const FirebaseLogin = () => {
+	const theme = useTheme();
 	const [isSubmitting, setIsSubmitting] = useState(false);
 	const [password, setPassword] = useState("");
 	const [userName, setUserName] = useState("");
@@ -77,6 +79,7 @@ const FirebaseLogin = () => {
 							value={password}
 							required
 							onChange={e => setPassword(e.target.value)}
+							sx={{ ...theme.typography.customInput }}
 							/>
 						</FormControl>
 						<Stack direction="row" alignItems="center" justifyContent="space-between" spacing={1}>
