@@ -197,7 +197,7 @@ const Checkout = () => {
 					marginTop: 2,
 				}}
 			>
-				<Button onClick={handlePayment} variant='contained' color='secondary' disabled={!primaryAddress}>
+				<Button onClick={handlePayment} variant='contained' color='secondary' disabled={!primaryAddress || !totalCost}>
 					Place Order
 				</Button>
 			</Container>
