@@ -182,7 +182,7 @@ const Checkout = () => {
 					<AddressCard address={primaryAddress} includeEdit={false} />
 				)}
 				{!primaryAddress && (
-					<Typography sx={{ textAlign: 'center' }}>
+					<Typography sx={{ textAlign: 'center' }} color='error' >
 						Please add a delivery address
 					</Typography>
 				)}
@@ -197,7 +197,7 @@ const Checkout = () => {
 					marginTop: 2,
 				}}
 			>
-				<Button onClick={handlePayment} variant='contained' color='secondary'>
+				<Button onClick={handlePayment} variant='contained' color='secondary' disabled={!primaryAddress}>
 					Place Order
 				</Button>
 			</Container>
