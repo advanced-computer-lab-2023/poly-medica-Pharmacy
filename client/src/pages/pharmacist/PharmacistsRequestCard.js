@@ -114,7 +114,7 @@ const PharmacistsRequestCard = ({ pharmacistReq, onAccept, onReject }) => {
 					<ListItem>
 						<ListItemText
 							primary='Date of Birth'
-							secondary={formatDate(pharmacistReq.userData.dateOfBirth)}
+							secondary={formatDate(pharmacistReq.userData.dateOfBirth)}	
 							xs={20}
 						/>
 						<ListItemText
