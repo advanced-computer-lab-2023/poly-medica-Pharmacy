@@ -18,6 +18,17 @@ const AddMedicine = ({
 	handleAddMedicine,
 	newMedicine,
 }) => {
+
+	const handleInputChange = (e) => {
+		const { value } = e.target;
+		console.log('value = ', value);
+		if (parseFloat(value) <= 0) {
+			console.log('value = ', parseFloat(value));
+			return;
+		}
+
+		handleFormInputChange(e);
+	};
 	return (
 		<Dialog open={isAddDialogOpen} onClose={handleAddDialogClose}>
 			<DialogTitle>Add New Medicine</DialogTitle>
@@ -43,8 +54,9 @@ const AddMedicine = ({
 							fullWidth
 							margin='normal'
 							value={newMedicine.price}
-							onChange={handleFormInputChange}
+							onChange={handleInputChange}
 							required
+							type='number'
 						/>
 					</FormControl>
 
@@ -68,7 +80,8 @@ const AddMedicine = ({
 							fullWidth
 							margin='normal'
 							value={newMedicine.quantity}
-							onChange={handleFormInputChange}
+							onChange={handleInputChange}
+							type='number'
 							required
 						/>
 					</FormControl>
