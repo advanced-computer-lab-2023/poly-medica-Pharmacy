@@ -5,7 +5,7 @@ import RejectConfirmationDialog from './RejectConfirmationDialog.js';
 import Message from 'ui-component/Message';
 import { pharmacyAxios } from 'utils/AxiosConfig';
 
-const DoctorRequests = () => {
+const PharmacistRequests = () => {
 	const [pharmacistRequests, setPharmacistRequests] = useState([]);
 	const [isLoading, setIsLoading] = useState(true);
 	const [selectedPharmacistRequest, setSelectedPharmacistRequest] =
@@ -204,4 +204,4 @@ const DoctorRequests = () => {
 	);
 };
 
-export default DoctorRequests;
+export default PharmacistRequests;
