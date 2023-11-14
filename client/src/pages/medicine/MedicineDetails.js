@@ -62,10 +62,13 @@ const MedicineDetails = ({ selectedMedicine, handleDialogClose }) => {
 								<Typography variant='body1'>
 									{selectedMedicine.quantity}
 								</Typography>
+
+								<Typography variant='subtitle1'>Sales:</Typography>
+								<Typography variant='body1'>
+									{selectedMedicine.sales}
+								</Typography>
 							</>
 						)}
-						<Typography variant='subtitle1'>Sales:</Typography>
-						<Typography variant='body1'>{selectedMedicine.sales}</Typography>
 					</DialogContent>
 					<DialogActions>
 						<Button onClick={handleDialogClose} color='primary'>

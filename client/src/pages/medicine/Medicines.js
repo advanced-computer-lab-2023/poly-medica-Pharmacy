@@ -130,7 +130,8 @@ const Medicines = () => {
 		setIsEditDialogOpen(true);
 	};
 
-	const handleSaveEdit = () => {
+	const handleSaveEdit = (e) => {
+		e.preventDefault();
 		if (selectedEditMedicine) {
 			pharmacyAxios
 				.patch(`/medicines/${selectedEditMedicine._id}`, {
@@ -233,7 +234,7 @@ const Medicines = () => {
 				selectedMedicine={selectedMedicine}
 				handleDialogClose={handleDialogClose}
 			/>
-			{userType === 'pharmacist' && (
+			{userType !== 'patient' && (
 				<div>
 					<AddMedicine
 						isAddDialogOpen={isAddDialogOpen}

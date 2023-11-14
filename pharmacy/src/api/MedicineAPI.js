@@ -66,9 +66,33 @@ export const medicine = (app) => {
 					.status(NOT_FOUND_STATUS_CODE)
 					.json({ message: 'No medicine found' });
 			} else {
-				const updated = await service.updateMedicine(oldMedicine, updatedMedicine);
+				const updated = await service.updateMedicine(
+					oldMedicine,
+					updatedMedicine,
+				);
 				res.status(OK_STATUS_CODE).json(updated);
 			}
+		} catch (error) {
+			res.status(ERROR_STATUS_CODE).json({ message: error.message });
+		}
+	});
+
+	app.patch('/medicines/:id/:quantity', async (req, res) => {
+		try {
+			const { id, quantity } = req.params;
+			console.log('quantity inside medicine api ===== ', quantity);
+			const oldMedicine = await service.getOneMedicine(id);
+			console.log('old medicine ===== ', oldMedicine);
+			if (!oldMedicine) {
+				return res
+					.status(NOT_FOUND_STATUS_CODE)
+					.json({ message: 'No medicine found' });
+			}
+
+			const newSales = oldMedicine.sales + (oldMedicine.quantity - quantity);
+			const updated = await service.updateMedicineQuantity(id, quantity, newSales);
+
+			return res.status(OK_STATUS_CODE).json(updated);
 		} catch (error) {
 			res.status(ERROR_STATUS_CODE).json({ message: error.message });
 		}
@@ -81,7 +105,7 @@ export const medicine = (app) => {
 			try {
 				const { newMedicine } = req.body;
 				const parsedMedicine = JSON.parse(newMedicine);
-				parsedMedicine.pictureName = req.file?req.file.filename:'';
+				parsedMedicine.pictureName = req.file ? req.file.filename : '';
 
 				const addedMedicine = await service.addMedicine(parsedMedicine);
 
