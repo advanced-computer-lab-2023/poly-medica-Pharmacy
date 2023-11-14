@@ -16,6 +16,8 @@ const EditMedicine = ({
 	handleSaveEdit,
 	selectedEditMedicine,
 }) => {
+
+
 	return (
 		<Dialog open={isEditDialogOpen} onClose={() => setIsEditDialogOpen(false)}>
 			<DialogTitle>Edit Medicine</DialogTitle>
@@ -47,12 +49,15 @@ const EditMedicine = ({
 								fullWidth
 								margin='normal'
 								value={selectedEditMedicine.price}
-								onChange={(e) =>
-									setSelectedEditMedicine({
-										...selectedEditMedicine,
-										price: e.target.value,
-									})
+								onChange={(e) => {
+									if (parseFloat(e.target.value) > 0)
+										setSelectedEditMedicine({
+											...selectedEditMedicine,
+											price: e.target.value,
+										});
 								}
+								}
+								type='number'
 								required
 							/>
 						</FormControl>
@@ -82,12 +87,15 @@ const EditMedicine = ({
 								fullWidth
 								margin='normal'
 								value={selectedEditMedicine.quantity}
-								onChange={(e) =>
-									setSelectedEditMedicine({
-										...selectedEditMedicine,
-										quantity: e.target.value,
-									})
+								onChange={(e) => {
+									if (parseFloat(e.target.value) > 0)
+										setSelectedEditMedicine({
+											...selectedEditMedicine,
+											quantity: e.target.value,
+										});
 								}
+								}
+								type='number'
 								required
 							/>
 						</FormControl>
