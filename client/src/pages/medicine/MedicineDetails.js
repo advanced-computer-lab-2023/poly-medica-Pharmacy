@@ -8,8 +8,11 @@ import {
 	Button,
 } from '@mui/material';
 import { PHARMACY_BASE_URL } from 'utils/Constants';
+import { useUserContext } from 'hooks/useUserContext';
 
-const MedicineDetails = ({ selectedMedicine, handleDialogClose, userType }) => {
+const MedicineDetails = ({ selectedMedicine, handleDialogClose }) => {
+	const { user } = useUserContext();
+	const userType = user.type;
 	console.log('user type in medicine details', userType);
 	return (
 		<Dialog
@@ -59,10 +62,13 @@ const MedicineDetails = ({ selectedMedicine, handleDialogClose, userType }) => {
 								<Typography variant='body1'>
 									{selectedMedicine.quantity}
 								</Typography>
+
+								<Typography variant='subtitle1'>Sales:</Typography>
+								<Typography variant='body1'>
+									{selectedMedicine.sales}
+								</Typography>
 							</>
 						)}
-						<Typography variant='subtitle1'>Sales:</Typography>
-						<Typography variant='body1'>{selectedMedicine.sales}</Typography>
 					</DialogContent>
 					<DialogActions>
 						<Button onClick={handleDialogClose} color='primary'>

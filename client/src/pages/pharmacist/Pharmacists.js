@@ -10,17 +10,23 @@ import {
 } from '@mui/material';
 import MainCard from 'ui-component/cards/MainCard';
 import PharmacistRow from './PharmacistRow';
-import DeleteConfirmationDialog from './DeleteConfirmationDialog';
+import DeleteConfirmationDialog from '../../ui-component/DeleteConfirmationDialog';
 import { pharmacyAxios } from 'utils/AxiosConfig';
+import Message from 'ui-component/Message';
 
 const Pharmacists = () => {
 	const [pharmacists, setPharmacists] = useState([]);
 	const [isLoading, setIsLoading] = useState(true);
 	const [confirmDeleteDialogOpen, setConfirmDeleteDialogOpen] = useState(false);
 	const [pharmacistToDelete, setPharmacistToDelete] = useState(null);
+	const [pharmacistIsBeingDeleted, setPharmacistIsBeingDeleted] =
+		useState(false);
+	const [pharmacistDeleted, setPharmacistDeleted] = useState(false);
+	const [errorMessage, setErrorMessage] = useState('');
 
 	useEffect(() => {
-		pharmacists.get('/pharmacists')
+		pharmacyAxios
+			.get('/pharmacists')
 			.then((response) => response.data)
 			.then((data) => {
 				setPharmacists(data.pharmacists);
@@ -30,7 +36,7 @@ const Pharmacists = () => {
 				console.error('Error fetching data:', error);
 				setIsLoading(false);
 			});
-	}, []);
+	}, [pharmacists.length]);
 
 	const handleRemovePharmacist = (pharmacistId) => {
 		setPharmacistToDelete(pharmacistId);
@@ -38,21 +44,28 @@ const Pharmacists = () => {
 	};
 
 	const handleConfirmDelete = () => {
-		pharmacyAxios.delete(`/pharmacists/${pharmacistToDelete}`)
+		setPharmacistIsBeingDeleted(true);
+		pharmacyAxios
+			.delete(`/pharmacists/${pharmacistToDelete}`)
 			.then((response) => response.data)
-			.then(() =>
+			.then(() => {
 				setPharmacists((prevPharmacists) =>
 					prevPharmacists.filter(
 						(pharmacist) => pharmacist._id !== pharmacistToDelete,
 					),
-				),
-			)
-			.catch((error) => {
-				console.error('Error deleting pharmacist:', error);
-			})
-			.finally(() => {
+				);
+				setPharmacistIsBeingDeleted(false);
 				setPharmacistToDelete(null);
 				setConfirmDeleteDialogOpen(false);
+				setPharmacistDeleted(true);
+				setTimeout(() => {
+					setPharmacistDeleted(false);
+				}, 2000);
+			})
+			.catch((error) => {
+				setPharmacistIsBeingDeleted(false);
+				setErrorMessage('Error deleting pharmacist');
+				console.error('Error deleting pharmacist:', error);
 			});
 	};
 
@@ -93,14 +106,24 @@ const Pharmacists = () => {
 							</TableBody>
 						</Table>
 					</TableContainer>
+					{pharmacistDeleted && (
+						<Message
+							message={'Pharmacist deleted successfully!'}
+							type={'success'}
+							time={2000}
+							vertical={'bottom'}
+							horizontal={'right'}
+						/>
+					)}
 
-					{/* Confirmation Dialog for Delete */}
 					<DeleteConfirmationDialog
 						open={confirmDeleteDialogOpen}
 						onClose={handleCancelDelete}
 						onConfirm={handleConfirmDelete}
 						title='Confirm Delete'
 						content='Are you sure you want to delete this pharmacist?'
+						errorMessage={errorMessage}
+						someoneIsBeingDeleted={pharmacistIsBeingDeleted}
 					/>
 				</div>
 			)}

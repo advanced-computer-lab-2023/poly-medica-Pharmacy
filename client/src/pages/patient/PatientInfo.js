@@ -5,36 +5,42 @@ import InfoList from './InfoList';
 import PatientDetails from './PatientDetails';
 
 const PatientInfo = () => {
-    const [patients, setPatients] = useState([]);
-    const [selectedPatients, setSelectedPatients] = useState(null);
-    const [loading, setLoading] = useState(true);
+	const [patients, setPatients] = useState([]);
+	const [selectedPatients, setSelectedPatients] = useState(null);
+	const [loading, setLoading] = useState(true);
 
-
-    useEffect(() => {
-		pharmacyAxios.get('/patients')
-			.then((response) => {
-				setPatients(response.data.allPatients.patients);
-                setLoading(false);
+	useEffect(() => {
+		pharmacyAxios
+			.get('/patients')
+			.then((response) => response.data.allPatients)
+			.then((data) => {
+				setPatients(data.patients);
+				setLoading(false);
 			})
-			.catch(error => {
+			.catch((error) => {
 				console.log(error);
-                setLoading(true);
+				setLoading(true);
 			});
 	}, []);
 
-    const handleDialogClose = () => {
+	const handleDialogClose = () => {
 		setSelectedPatients(null);
 	};
 
-	if (loading) return (<>Loading...</>);
-    else{
-        return (
-            <MainCard title="Patients Info">
-                <InfoList patients={patients} setSelectedPatients={setSelectedPatients} />
-                <PatientDetails selectedPatients={selectedPatients} handleDialogClose={handleDialogClose} />
-            </MainCard>
-        );
-    }
-
+	if (loading) return <>Loading...</>;
+	else {
+		return (
+			<MainCard title='Patients Info'>
+				<InfoList
+					patients={patients}
+					setSelectedPatients={setSelectedPatients}
+				/>
+				<PatientDetails
+					selectedPatients={selectedPatients}
+					handleDialogClose={handleDialogClose}
+				/>
+			</MainCard>
+		);
+	}
 };
 export default PatientInfo;

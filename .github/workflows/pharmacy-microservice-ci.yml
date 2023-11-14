@@ -29,3 +29,10 @@ jobs:
       - name: ESLint check (Microservice)
         run: npm run lint
         working-directory: pharmacy
+
+      - name: Run tests (Microservice)
+        run: npm run test
+        working-directory: pharmacy
+
+env:
+  MONGO_URI_TEST: ${{ secrets.MONGO_URI_TEST }}

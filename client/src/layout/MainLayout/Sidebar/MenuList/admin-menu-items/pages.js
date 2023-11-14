@@ -1,10 +1,11 @@
-
 // assets
-import { IconKey, IconVaccineBottle, IconEmergencyBed,
+import {
+	IconKey,
+	IconVaccineBottle,
+	IconEmergencyBed,
 	IconMedicineSyrup,
-	IconRegistered, } from '@tabler/icons';
-import PersonIcon from '@mui/icons-material/Person';
-import LocalPharmacyIcon from '@mui/icons-material/LocalPharmacy';
+	IconRegistered,
+} from '@tabler/icons';
 import AdminPanelSettingsOutlinedIcon from '@mui/icons-material/AdminPanelSettingsOutlined';
 // constant
 const icons = {
@@ -24,30 +25,6 @@ const pages = {
 	caption: 'Pages Caption',
 	type: 'group',
 	children: [
-		{
-			id: 'medicines',
-			title: 'Medicines',
-			type: 'item',
-			icon: icons.IconVaccineBottle,
-			url: '/admin/pages/medicines',
-			target: false
-		},
-		{
-			id: 'patientInfo',
-			title: 'Patient Info',
-			type: 'item',
-			icon: PersonIcon,
-			url: '/admin/pages/PatientInfo',
-			target: false
-		},
-		{
-			id: 'pharmacistsInfo',
-			title: 'Pharmacists Info',
-			type: 'item',
-			icon: LocalPharmacyIcon,
-			url: '/admin/pages/PharmacistsInfo',
-			target: false
-		},
 		{
 			id: 'admins',
 			title: 'Admins',
@@ -79,8 +56,14 @@ const pages = {
 			icon: icons.IconRegistered,
 			url: '/admin/pages/pharmacist-requests',
 		},
-
-	]
+		{
+			id: 'medicines',
+			title: 'Medicines',
+			type: 'item',
+			icon: icons.IconVaccineBottle,
+			url: '/admin/pages/medicines',
+		},
+	],
 };
 
 export default pages;

@@ -1,4 +1,4 @@
-import { Box, Container, Stack, Typography, Unstable_Grid2 as Grid, CardContent, CardHeader, Card, TextField, Button, Divider, CardActions,  } from '@mui/material';
+import { Box, Container, Stack, Typography, Unstable_Grid2 as Grid, CardContent, CardHeader, Card, TextField, Button, Divider, CardActions, FormControl } from '@mui/material';
 import AccountProfile from './AccountProfile';
 import PharmacistAccountProfileDetails from './accountProfileDetails/PharmacistAccountProfileDetails';
 import PatientAccountProfileDetails from './accountProfileDetails/PatientAccountProfileDetails';
@@ -7,6 +7,7 @@ import { PATIENT_TYPE_ENUM, PHARMACIST_TYPE_ENUM } from 'utils/Constants';
 import { useState } from 'react';
 import Swal from 'sweetalert2';
 import { authenticationAxios } from 'utils/AxiosConfig';
+import { strengthColor, strengthIndicator } from 'utils/password-strength';
 
 const Page = () => {
     
@@ -14,36 +15,48 @@ const Page = () => {
     const { user } = useUserContext();
 	const [password, setPassword] = useState('');
 	const [loading, setLoading] = useState(false);
-	const handleChangePassword = async () => {
+	const [strength, setStrength] = useState(0);
+	const [level, setLevel] = useState();
+
+	const submitPassword = async () => {
+		if (!level || level.label != 'Strong'){
+			Swal.fire({
+				icon: 'error',
+				title: 'Oops...',
+				text: 'Please enter a Strong password. \n Password must be at least 8 characters and include one number, one letter, one capital letter, and one special character.',
+			});
+			return;
+		}
 		setLoading(true);
-		const response = await authenticationAxios.patch(`/change-password/${user.id}`, { password });
 		try{
-			if(response.status === 200){
+			authenticationAxios.patch(`/change-password/${user.id}`, { password });
 				Swal.fire({
 					icon: 'success',
 					title: 'Success!',
 					text: 'password changed successfully',
 				});
 				setPassword('');
+				const temp = strengthIndicator('');
+				setStrength(temp);
+				setLevel(strengthColor(temp));
 				setLoading(false);
-			} else{
-				Swal.fire({
-					icon: 'error',
-					title: 'Oops...',
-					text: response.response.data.message,
-				});
-				setLoading(false);
-				}
 		} catch(err) {
 			Swal.fire({
 				icon: 'error',
 				title: 'Oops...',
-				text: response.response.data.message,
+				text: err.response.data.message,
 			});
 			setLoading(false);
-		}
-		
+		}	
 	};
+
+	const handleChangePassword = (e) => {
+		setPassword(e.target.value);
+		const temp = strengthIndicator(e.target.value);
+		setStrength(temp);
+		setLevel(strengthColor(temp));
+	};
+
 	return (
 		<>
 			<Box
@@ -93,20 +106,38 @@ const Page = () => {
 													label='password'
 													name='password'
 													type='password'
-													onChange={ (e) => setPassword(e.target.value) }
+													onChange={ handleChangePassword }
 													required
 													value={password}
 												/>
+																				{strength !== 0 && (
+					<FormControl fullWidth>
+						<Box sx={{ mb: 2 }}>
+							<Grid container spacing={2} alignItems='center'>
+								<Grid item>
+									<Box
+										style={{ backgroundColor: level?.color }}
+										sx={{ width: 85, height: 8, borderRadius: '7px' }}
+									/>
+								</Grid>
+								<Grid item>
+									<Typography variant='subtitle1' fontSize='0.75rem'>
+										{level?.label}
+									</Typography>
+								</Grid>
+							</Grid>
+						</Box>
+					</FormControl>
+				)}
 													</Grid>
 												</Grid>
-												{/* </Box> */}
 											</CardContent>
 											<Divider/>
 												<CardActions sx={{ justifyContent: 'flex-end' }}>
 												<Button
 														variant='contained'
 														type='submit'
-														onClick={ handleChangePassword }
+														onClick={ submitPassword }
 														disabled={loading}
 													>
 														Save password

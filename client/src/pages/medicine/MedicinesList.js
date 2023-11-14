@@ -3,12 +3,11 @@ import { List } from '@mui/material';
 import MedicineCard from './MedicineCard';
 
 const MedicinesList = ({
-	userId,
 	medicines,
 	setSelectedMedicine,
 	handleEditButtonClick,
 	handleAddToCart,
-	userType,
+	medicineIsBeingAddedToCart,
 }) => {
 	return (
 		<List>
@@ -21,8 +20,7 @@ const MedicinesList = ({
 								handleEditButtonClick={handleEditButtonClick}
 								setSelectedMedicine={setSelectedMedicine}
 								handleAddToCart={handleAddToCart}
-								userId={userId}
-								userType={userType}
+								medicineIsBeingAddedToCart={medicineIsBeingAddedToCart}
 							></MedicineCard>
 						</div>
 					</div>
