@@ -69,8 +69,8 @@ const Checkout = () => {
 
     const handlePayment = () => {
         let amountInWallet;
-        patientAxios.get('/wallet/' + userId).then((response) => {
-            amountInWallet = response.data.amountInWallet;
+        patientAxios.get(`/patients/${userId}/wallet`).then((response) => {
+            amountInWallet = response.data.walletAmount;
         });
         const amountToPay = totalCost;
         if (value === 'credit-card') {
@@ -127,11 +127,10 @@ const Checkout = () => {
                     confirmButtonText: 'Yes',
                 }).then((result) => {
                     if (result.isConfirmed) {
-                        const amountToPayByWallet =
-                            amountToPay - amountInWallet;
+                            console.log(amountInWallet);
                         paymentAxios
                             .post('/payment/wallet', {
-                                amountToPayByWallet,
+                                amountToPayByWallet: amountInWallet,
                                 userId: userId,
                             })
                             .catch((error) => {
@@ -141,7 +140,7 @@ const Checkout = () => {
                                 );
                             });
                         const amountToPayByCard =
-                            amountToPay - amountToPayByWallet;
+                            amountToPay - amountInWallet;
                         navigate('/patient/pages/payment', {
                             state: {
                                 items: {
@@ -163,14 +162,7 @@ const Checkout = () => {
                     details: items,
                     amount: totalCost,
                 });
-                pharmacyAxios
-                    .delete(`/cart/users/${userId}/medicines`)
-                    .then(() => {
-                        navigate(callBackUrl, { replace: true });
-                    })
-                    .catch((err) => {
-                        console.log(err);
-                    });
+                navigate(callBackUrl, { replace: true });
             });
         }
     };

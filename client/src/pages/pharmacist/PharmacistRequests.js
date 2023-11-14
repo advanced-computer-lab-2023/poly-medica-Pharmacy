@@ -20,7 +20,6 @@ const DoctorRequests = () => {
 	}, []);
 
 	const handleAccept = (pharmacistReq) => {
-		// Delete the pharmacist request from the database
 		pharmacyAxios.delete(
 			`/pharmacist-requests/${
 				pharmacistReq._id
@@ -38,7 +37,6 @@ const DoctorRequests = () => {
 				console.error('Error accepting pharmacist request:', error);
 			});
 
-		// Add the pharmacist to the pharmacist table
 		pharmacyAxios.post('/pharmacists', JSON.stringify(pharmacistReq), {
 			headers: { 'Content-Type': 'application/json' },
 		})

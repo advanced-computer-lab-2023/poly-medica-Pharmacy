@@ -93,8 +93,8 @@ const FirebaseRegister = () => {
 		setIsSubmitting(true);
 		const sendData = { type: "patient" ,name: name, email: email, password: password, userName: userName, dateOfBirth: selectedDate, gender: selectedGender, mobileNumber: mobileNumber, emergencyContact: { name: emergencyFullName, mobile: emergencyMobileNumber, relation: selectedRelation } };
 		
-		try{		
-			await authenticationAxios.post('/signup/pharmacy', sendData);
+		try{
+		await authenticationAxios.post('/signup/pharmacy', sendData);	
 		Swal.fire({
 			icon: 'success',
 			title: 'Sign-up Success!',
@@ -102,11 +102,11 @@ const FirebaseRegister = () => {
 		});	
 		navigate('/login/login3');
 		setIsSubmitting(false);
-		} catch(err){
+		} catch(error){
 			Swal.fire({
 				icon: 'error',
 				title: 'Oops...',
-				text: err.response.data.message,
+				text: error.response.data.message,
 			});
 			setIsSubmitting(false);
 			}

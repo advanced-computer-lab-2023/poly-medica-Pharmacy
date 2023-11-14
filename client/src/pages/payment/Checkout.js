@@ -4,15 +4,16 @@ import {
   useStripe,
   useElements
 } from '@stripe/react-stripe-js';
-import { paymentStatus , paymentElementOptions } from '../../utils/PaymentUtils';
+import { paymentStatus, paymentElementOptions } from '../../utils/PaymentUtils';
 import { Button } from '@mui/material';
 import Swal from 'sweetalert2';
 import { useNavigate, useLocation } from 'react-router-dom';
+import { useUserContext } from 'hooks/useUserContext';
 
 
 
 export default function CheckoutForm({ item }) {
-
+  const { user } = useUserContext();
   const stripe = useStripe();
   const elements = useElements();
   const [message, setMessage] = useState(null);
@@ -38,7 +39,8 @@ export default function CheckoutForm({ item }) {
     stripe.retrievePaymentIntent(clientSecret).then(({ paymentIntent }) => {
       const deserializedItem = queryParams.get('item');
       item = JSON.parse(decodeURIComponent(deserializedItem));
-      setMessage(paymentStatus(navigate,paymentIntent.status, item));
+      console.log(user);
+      setMessage(paymentStatus(navigate, paymentIntent.status, item, user.id));
     });
 
   }, [stripe]);
@@ -70,7 +72,7 @@ export default function CheckoutForm({ item }) {
     setIsLoading(false);
   };
 
-  
+
 
 
   return (

@@ -31,7 +31,6 @@ const FirebaseRegister = ({ type }) => {
     const [hourlyRating, setHourlyRating] = useState(0);
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [selectedDate, setSelectedDate] = useState(new Date());
-    const [speciality, setSpeciality] = useState('');
     const [affiliation, setAffiliation] = useState('');
     const [uploadedFiles, setUploadedFiles] = useState([]);
 
@@ -94,7 +93,6 @@ const FirebaseRegister = ({ type }) => {
                 userName: userName,
                 dateOfBirth: selectedDate,
             },
-            speciality: speciality,
             hourlyRate: hourlyRating,
             affiliation: affiliation,
             educationalBackground: educationalBackground,
@@ -115,9 +113,7 @@ const FirebaseRegister = ({ type }) => {
                 '/signup/pharmacy',
                 sendData 
             );
-
             
-
             try {
                 await pharmacyAxios.post(
                     '/add-pharmacist-req',
@@ -137,7 +133,6 @@ const FirebaseRegister = ({ type }) => {
                 setHourlyRating(0);
                 setIsSubmitting(false);
                 setSelectedDate(new Date());
-                setSpeciality('');
                 setAffiliation('');
                 setUploadedFiles([]);
             } catch(err) {
@@ -290,20 +285,6 @@ const FirebaseRegister = ({ type }) => {
                         onChange={(e) =>
                             setEducationalBackground(e.target.value)
                         }
-                        required
-                        sx={{ ...theme.typography.customInput }}
-                    />
-                </FormControl>
-
-                <FormControl fullWidth required>
-                    <TextField
-                        fullWidth
-                        label='speciality'
-                        type='text'
-                        margin='normal'
-                        name='eb'
-                        value={speciality}
-                        onChange={(e) => setSpeciality(e.target.value)}
                         required
                         sx={{ ...theme.typography.customInput }}
                     />

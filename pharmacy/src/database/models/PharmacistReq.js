@@ -24,10 +24,10 @@ const PharmacistReq = mongoose.Schema({
 	//.....
 });
 
-PharmacistReq.statics.addUser = async function (userData, speciality, hourlyRate, affiliation, educationalBackground, documentsNames){
+PharmacistReq.statics.addUser = async function (userData, hourlyRate, affiliation, educationalBackground, documentsNames){
 	const salt = await bcrypt.genSalt();
 	userData.password = await bcrypt.hash(userData.password, salt);
-	const newRecord = new this({ userData, speciality, hourlyRate, affiliation, educationalBackground, documentsNames });
+	const newRecord = new this({ userData, hourlyRate, affiliation, educationalBackground, documentsNames });
 	const user = await newRecord.save();
 	return user;
 };

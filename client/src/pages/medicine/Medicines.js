@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Fab, Grid, Alert } from '@mui/material';
+import { Fab } from '@mui/material';
 import MainCard from '../../ui-component/cards/MainCard';
 import { pharmacyAxios } from '../../utils/AxiosConfig';
 import { Add as AddIcon } from '@mui/icons-material';
@@ -7,16 +7,15 @@ import MedicinesList from './MedicinesList';
 import MedicineDetails from './MedicineDetails';
 import AddMedicine from './AddMedicine';
 import EditMedicine from './EditMedicine';
+import Message from 'ui-component/Message';
 import { useSearch } from 'contexts/SearchContext';
 import { useFilter } from 'contexts/FilterContext';
 import { useUserContext } from 'hooks/useUserContext';
 
-let userId;
-
 const Medicines = () => {
-	const user = useUserContext();
-	const userType = user.user.type;
-	userId = user.user.id;
+	const { user } = useUserContext();
+	const userType = user.type;
+	const userId = user.id;
 
 	const [medicines, setMedicines] = useState([]);
 	const [originalMedicines, setOriginalMedicines] = useState([]);
@@ -37,6 +36,9 @@ const Medicines = () => {
 	const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
 	const medicinalUses = [];
 	const [addToCartAlert, setAddToCartAlert] = useState(false);
+	const [medicineIsBeingAddedToCart, setMedicineIsBeingAddedToCart] =
+		useState(false);
+	const [errorAddingToCart, setErrorAddingToCart] = useState(false);
 
 	useEffect(() => {
 		pharmacyAxios
@@ -46,12 +48,15 @@ const Medicines = () => {
 				setOriginalMedicines(response.data.medicines);
 				for (let i = 0; i < response.data.medicines.length; i++) {
 					const medicine = response.data.medicines[i];
-					if (!medicinalUses.includes(medicine.medicinalUse)) medicinalUses.push(medicine.medicinalUse);
+					if (!medicinalUses.includes(medicine.medicinalUse))
+						medicinalUses.push(medicine.medicinalUse);
 				}
-				updateFilter([{
-                    attribute: 'Medicinal Use',
-                    values: medicinalUses
-                }]);
+				updateFilter([
+					{
+						attribute: 'Medicinal Use',
+						values: medicinalUses,
+					},
+				]);
 			})
 			.catch((error) => {
 				console.log(error);
@@ -59,9 +64,11 @@ const Medicines = () => {
 	}, []);
 
 	useEffect(() => {
-		const filteredMedicines = originalMedicines.filter((medicine) =>
-			medicine.name.toLowerCase().includes(searchQuery.toLowerCase()) &&
-			(!filterData[0].selectedValue || medicine.medicinalUse === filterData[0].selectedValue)
+		const filteredMedicines = originalMedicines.filter(
+			(medicine) =>
+				medicine.name.toLowerCase().includes(searchQuery.toLowerCase()) &&
+				(!filterData[0].selectedValue ||
+					medicine.medicinalUse === filterData[0].selectedValue),
 		);
 		setMedicines(filteredMedicines);
 	}, [searchQuery, originalMedicines, filterData]);
@@ -149,16 +156,21 @@ const Medicines = () => {
 	};
 
 	const handleAddToCart = (medicine) => {
+		setErrorAddingToCart(false);
+		setMedicineIsBeingAddedToCart(true);
 		pharmacyAxios
 			.post(`/cart/users/${userId}/medicines`, { medicine })
 			.then((response) => {
 				console.log(response.data);
+				setMedicineIsBeingAddedToCart(false);
 				setAddToCartAlert(true);
 				setTimeout(() => {
 					setAddToCartAlert(false);
 				}, 1000);
 			})
 			.catch((error) => {
+				setMedicineIsBeingAddedToCart(false);
+				errorAddingToCart(true);
 				console.log(error);
 			});
 	};
@@ -170,24 +182,38 @@ const Medicines = () => {
 				setSelectedMedicine={setSelectedMedicine}
 				handleEditButtonClick={handleEditButtonClick}
 				handleAddToCart={handleAddToCart}
-				userId={userId}
-				userType={userType}
+				medicineIsBeingAddedToCart={medicineIsBeingAddedToCart}
 			/>
 			{addToCartAlert && (
-				<Grid
-					item
-					sx={{
-						position: 'fixed',
-						bottom: 16,
-						right: 30,
-						zIndex: 9999,
-					}}
-				>
-					<Alert variant='filled' severity='success'>
-						Medicine added to cart!
-					</Alert>
-				</Grid>
+				<Message
+					message={'Medicine added to cart successfully!'}
+					type={'success'}
+					time={1000}
+					vertical={'bottom'}
+					horizontal={'right'}
+				/>
 			)}
+
+			{medicineIsBeingAddedToCart && (
+				<Message
+					message={'Adding medicine to cart...'}
+					type={'info'}
+					time={1000}
+					vertical={'bottom'}
+					horizontal={'right'}
+				/>
+			)}
+
+			{errorAddingToCart && (
+				<Message
+					message={'Error adding medicine to cart'}
+					type={'error'}
+					time={1000}
+					vertical={'bottom'}
+					horizontal={'right'}
+				/>
+			)}
+
 			{userType === 'pharmacist' && (
 				<Fab
 					color='secondary'
@@ -206,7 +232,6 @@ const Medicines = () => {
 			<MedicineDetails
 				selectedMedicine={selectedMedicine}
 				handleDialogClose={handleDialogClose}
-				userType={userType}
 			/>
 			{userType === 'pharmacist' && (
 				<div>
