@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import PharmacistRequestCard from './PharmacistRequestCard';
+import PharmacistsRequestCard from './PharmacistsRequestCard';
 import { pharmacyAxios } from 'utils/AxiosConfig';
 
 const DoctorRequests = () => {
@@ -7,7 +7,8 @@ const DoctorRequests = () => {
 	const [isLoading, setIsLoading] = useState(true);
 
 	useEffect(() => {
-		pharmacyAxios.get('/pharmacist-requests')
+		pharmacyAxios
+			.get('/pharmacist-requests')
 			.then((response) => response.data)
 			.then((data) => {
 				setPharmacistRequests(data.pharmacistRequests);
@@ -20,11 +21,8 @@ const DoctorRequests = () => {
 	}, []);
 
 	const handleAccept = (pharmacistReq) => {
-		pharmacyAxios.delete(
-			`/pharmacist-requests/${
-				pharmacistReq._id
-			}?accept=${true}`,
-		)
+		pharmacyAxios
+			.delete(`/pharmacist-requests/${pharmacistReq._id}?accept=${true}`)
 			.then((response) => response.data)
 			.then(() => {
 				setPharmacistRequests((prevPharmacistRequests) =>
@@ -37,9 +35,10 @@ const DoctorRequests = () => {
 				console.error('Error accepting pharmacist request:', error);
 			});
 
-		pharmacyAxios.post('/pharmacists', JSON.stringify(pharmacistReq), {
-			headers: { 'Content-Type': 'application/json' },
-		})
+		pharmacyAxios
+			.post('/pharmacists', JSON.stringify(pharmacistReq), {
+				headers: { 'Content-Type': 'application/json' },
+			})
 			.then((response) => response.data)
 			.then(() => {
 				setPharmacistRequests((prevPharmacistRequests) =>
@@ -54,11 +53,8 @@ const DoctorRequests = () => {
 	};
 
 	const handleReject = (pharmacistReq) => {
-		pharmacyAxios.delete(
-			`/pharmacist-requests/${
-				pharmacistReq._id
-			}?accept=${false}`,
-		)
+		pharmacyAxios
+			.delete(`/pharmacist-requests/${pharmacistReq._id}?accept=${false}`)
 			.then(() => {
 				setPharmacistRequests((prevPharmacistRequests) =>
 					prevPharmacistRequests.filter(
@@ -78,7 +74,7 @@ const DoctorRequests = () => {
 			) : (
 				<div>
 					{pharmacistRequests.map((pharmacistRequest) => (
-						<PharmacistRequestCard
+						<PharmacistsRequestCard
 							key={pharmacistRequest._id}
 							pharmacistReq={pharmacistRequest}
 							onAccept={handleAccept}
