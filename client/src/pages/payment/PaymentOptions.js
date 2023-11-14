@@ -3,6 +3,7 @@ import { patientAxios } from 'utils/AxiosConfig.js';
 import { useUserContext } from 'hooks/useUserContext';
 import Swal from 'sweetalert2';
 import { useState, useEffect } from 'react';
+import '../assets/css/swalStyle.css';
 
 const PaymentOptions = ({ handleChange, value }) => {
     const [amountInWallet, setAmountInWallet] = useState(0);
