@@ -116,6 +116,7 @@ const Medicines = () => {
 			.then((response) => {
 				const newMedicineData = response.data.addedMedicine;
 				setMedicines((prevMedicines) => [...prevMedicines, newMedicineData]);
+				setOriginalMedicines((prevMedicines) => [...prevMedicines, newMedicineData]);
 				handleAddDialogClose();
 			})
 			.catch((error) => {

@@ -72,92 +72,97 @@ const Checkout = () => {
 		let amountInWallet;
 		patientAxios.get(`/patients/${userId}/wallet`).then((response) => {
 			amountInWallet = response.data.walletAmount;
-		});
-		const amountToPay = totalCost;
-		if (value === 'credit-card') {
-			navigate('/patient/pages/payment', {
-				state: {
-					items: {
-						patientId: userId,
-						details: items,
-						amount: totalCost,
-					},
-					amountToPay: totalCost,
-				},
-				replace: true,
-			});
-		} else if (value === 'wallet') {
-			if (amountInWallet >= amountToPay) {
-				paymentAxios
-					.post('/payment/wallet', {
-						amountToPayByWallet: amountToPay,
-						userId: userId,
-					})
-					.then(
-						Swal.fire('success', 'Payment Succeeded', 'success').then(() => {
-							const callBackUrl = successfulPayment({
+
+		}).then(
+			() => {
+				const amountToPay = totalCost;
+				if (value === 'credit-card') {
+					navigate('/patient/pages/payment', {
+						state: {
+							items: {
 								patientId: userId,
 								details: items,
 								amount: totalCost,
-							});
-							pharmacyAxios
-								.delete(`/cart/users/${userId}/medicines`)
-								.then(() => {
-									navigate(callBackUrl, { replace: true });
-								})
-								.catch((err) => {
-									console.log(err);
-								});
-						}),
-					)
-					.catch((error) => {
-						console.log('Error in payment with the wallet', error);
+							},
+							amountToPay: totalCost,
+						},
+						replace: true,
 					});
-			} else {
-				Swal.fire({
-					title: 'Pay with the credit card',
-					text: 'Do you want to pay the rest of the amount using the card',
-					icon: 'warning',
-					showCancelButton: true,
-					confirmButtonColor: '#3085d6',
-					cancelButtonColor: '#d33',
-					confirmButtonText: 'Yes',
-				}).then((result) => {
-					if (result.isConfirmed) {
-						console.log(amountInWallet);
+				} else if (value === 'wallet') {
+					console.log('the amount in  wallet is : ', amountInWallet);
+					if (amountInWallet >= amountToPay) {
 						paymentAxios
 							.post('/payment/wallet', {
-								amountToPayByWallet: amountInWallet,
+								amountToPayByWallet: amountToPay,
 								userId: userId,
 							})
+							.then(
+								Swal.fire('success', 'Payment Succeeded', 'success').then(() => {
+									const callBackUrl = successfulPayment(userId,{
+										patientId: userId,
+										details: items,
+										amount: totalCost,
+									});
+									pharmacyAxios
+										.delete(`/cart/users/${userId}/medicines`)
+										.then(() => {
+											navigate(callBackUrl, { replace: true });
+										})
+										.catch((err) => {
+											console.log(err);
+										});
+								}),
+							)
 							.catch((error) => {
 								console.log('Error in payment with the wallet', error);
 							});
-						const amountToPayByCard = amountToPay - amountInWallet;
-						navigate('/patient/pages/payment', {
-							state: {
-								items: {
-									patientId: userId,
-									details: items,
-									amount: totalCost,
-								},
-								amountToPay: amountToPayByCard,
-							},
-							replace: true,
+					} else {
+						Swal.fire({
+							title: 'Pay with the credit card',
+							text: 'Do you want to pay the rest of the amount using the card',
+							icon: 'warning',
+							showCancelButton: true,
+							confirmButtonColor: '#3085d6',
+							cancelButtonColor: '#d33',
+							confirmButtonText: 'Yes',
+						}).then((result) => {
+							if (result.isConfirmed) {
+								console.log(amountInWallet);
+								paymentAxios
+									.post('/payment/wallet', {
+										amountToPayByWallet: amountInWallet,
+										userId: userId,
+									})
+									.catch((error) => {
+										console.log('Error in payment with the wallet', error);
+									});
+								const amountToPayByCard = amountToPay - amountInWallet;
+								navigate('/patient/pages/payment', {
+									state: {
+										items: {
+											patientId: userId,
+											details: items,
+											amount: totalCost,
+										},
+										amountToPay: amountToPayByCard,
+									},
+									replace: true,
+								});
+							}
 						});
 					}
-				});
+				} else {
+					Swal.fire('success', 'Payment Succeeded', 'success').then(() => {
+						const callBackUrl = successfulPayment(userId, {
+							patientId: userId,
+							details: items,
+							amount: totalCost,
+						});
+						navigate(callBackUrl, { replace: true });
+					});
+				}
 			}
-		} else {
-			Swal.fire('success', 'Payment Succeeded', 'success').then(() => {
-				const callBackUrl = successfulPayment(userId, {
-					patientId: userId,
-					details: items,
-					amount: totalCost,
-				});
-				navigate(callBackUrl, { replace: true });
-			});
-		}
+		);
 	};
 
 	return (
