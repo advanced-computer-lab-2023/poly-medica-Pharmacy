@@ -1,8 +1,11 @@
-
 // assets
-import { IconKey, IconVaccineBottle, IconEmergencyBed,
+import {
+	IconKey,
+	IconVaccineBottle,
+	IconEmergencyBed,
 	IconMedicineSyrup,
-	IconRegistered, } from '@tabler/icons';
+	IconRegistered,
+} from '@tabler/icons';
 import AdminPanelSettingsOutlinedIcon from '@mui/icons-material/AdminPanelSettingsOutlined';
 // constant
 const icons = {
@@ -53,8 +56,14 @@ const pages = {
 			icon: icons.IconRegistered,
 			url: '/admin/pages/pharmacist-requests',
 		},
-
-	]
+		{
+			id: 'medicines',
+			title: 'Medicines',
+			type: 'item',
+			icon: icons.IconVaccineBottle,
+			url: '/admin/pages/medicines',
+		},
+	],
 };
 
 export default pages;

@@ -8,6 +8,7 @@ import {
 	CircularProgress,
 	Grid,
 	Button,
+	Typography,
 } from '@mui/material';
 import { Edit as EditIcon } from '@mui/icons-material';
 import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
@@ -50,7 +51,7 @@ const MedicineCard = ({
 
 	return (
 		<div>
-			{userType === 'pharmacist' && (
+			{userType !== 'patient' && (
 				<ListItem button onClick={() => setSelectedMedicine(medicine)}>
 					<ListItemAvatar sx={{ paddingRight: '2%' }}>
 						<img
@@ -83,20 +84,21 @@ const MedicineCard = ({
 						sx={{ paddingLeft: '2%' }}
 						primary={`$${medicine.price}`}
 					/>
-
-					<IconButton
-						edge='end'
-						aria-label='edit'
-						onClick={(event) => handleEditButtonClick(medicine, event)}
-					>
-						<EditIcon />
-					</IconButton>
+					{userType !== 'admin' && (
+						<IconButton
+							edge='end'
+							aria-label='edit'
+							onClick={(event) => handleEditButtonClick(medicine, event)}
+						>
+							<EditIcon />
+						</IconButton>
+					)}
 				</ListItem>
 			)}
 
 			{userType === 'patient' && (
 				<Grid container spacing={5} m={0}>
-					<Grid item xs={10}>
+					<Grid item xs={9}>
 						<ListItem
 							button
 							onClick={() => setSelectedMedicine(medicine)}
@@ -136,25 +138,33 @@ const MedicineCard = ({
 						</ListItem>
 					</Grid>
 					<Grid item sx={{ alignSelf: 'center' }} xs={2}>
-						{isLoading ? (
-							<CircularProgress />
+						{medicine.quantity === 0 ? (
+							<Typography variant='body1' color='error' ml={0}>
+								Out of Stock
+							</Typography>
 						) : (
-							<Button
-								disabled={!addToCartStatus}
-								onClick={() => {
-									setAddToCartStatus(false);
-									addToCart(medicine);
-								}}
-							>
-								<IconButton
-									color='primary'
-									edge='end'
-									aria-label='add to cart'
-									disabled={!addToCartStatus}
-								>
-									<AddShoppingCartIcon />
-								</IconButton>
-							</Button>
+							<>
+								{isLoading ? (
+									<CircularProgress />
+								) : (
+									<Button
+										disabled={!addToCartStatus}
+										onClick={() => {
+											setAddToCartStatus(false);
+											addToCart(medicine);
+										}}
+									>
+										<IconButton
+											color='primary'
+											edge='end'
+											aria-label='add to cart'
+											disabled={!addToCartStatus}
+										>
+											<AddShoppingCartIcon />
+										</IconButton>
+									</Button>
+								)}
+							</>
 						)}
 					</Grid>
 				</Grid>

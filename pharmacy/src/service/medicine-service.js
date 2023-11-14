@@ -15,8 +15,20 @@ class MedicineService {
 		return medicine;
 	}
 
-	async updateMedicine (oldMedicine, updatedMedicine) {
-		const updated = await this.repository.updateMedicine(oldMedicine, updatedMedicine);
+	async updateMedicineQuantity(id, newQuantity, newSales) {
+		const updated = await this.repository.updateMedicineQuantity(
+			id,
+			newQuantity,
+			newSales,
+		);
+		return updated;
+	}
+
+	async updateMedicine(oldMedicine, updatedMedicine) {
+		const updated = await this.repository.updateMedicine(
+			oldMedicine,
+			updatedMedicine,
+		);
 		return updated;
 	}
 
