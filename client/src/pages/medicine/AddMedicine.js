@@ -45,6 +45,7 @@ const AddMedicine = ({
 							value={newMedicine.price}
 							onChange={handleFormInputChange}
 							required
+							type='number'
 						/>
 					</FormControl>
 
@@ -69,6 +70,7 @@ const AddMedicine = ({
 							margin='normal'
 							value={newMedicine.quantity}
 							onChange={handleFormInputChange}
+							type='number'
 							required
 						/>
 					</FormControl>

@@ -53,6 +53,7 @@ const EditMedicine = ({
 										price: e.target.value,
 									})
 								}
+								type='number'
 								required
 							/>
 						</FormControl>
@@ -88,6 +89,7 @@ const EditMedicine = ({
 										quantity: e.target.value,
 									})
 								}
+								type='number'
 								required
 							/>
 						</FormControl>
