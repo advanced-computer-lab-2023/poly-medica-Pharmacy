@@ -6,8 +6,6 @@ import {
 	IconMedicineSyrup,
 	IconRegistered,
 } from '@tabler/icons';
-import PersonIcon from '@mui/icons-material/Person';
-import LocalPharmacyIcon from '@mui/icons-material/LocalPharmacy';
 import AdminPanelSettingsOutlinedIcon from '@mui/icons-material/AdminPanelSettingsOutlined';
 import ReceiptLongIcon from '@mui/icons-material/ReceiptLong';
 // constant
@@ -35,22 +33,6 @@ const pages = {
 			type: 'item',
 			icon: icons.IconVaccineBottle,
 			url: '/pharmacist/pages/medicines',
-			target: false,
-		},
-		{
-			id: 'patientInfo',
-			title: 'Patient Info',
-			type: 'item',
-			icon: PersonIcon,
-			url: '/pharmacist/pages/PatientInfo',
-			target: false,
-		},
-		{
-			id: 'pharmacistsInfo',
-			title: 'Pharmacists Info',
-			type: 'item',
-			icon: LocalPharmacyIcon,
-			url: '/pharmacist/pages/PharmacistsInfo',
 			target: false,
 		},
 		{
