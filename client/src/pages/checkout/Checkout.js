@@ -15,6 +15,7 @@ import { Container, Button, Typography } from '@mui/material';
 import PaymentOptions from 'pages/payment/PaymentOptions';
 import { successfulPayment } from '../../utils/PaymentUtils';
 import Swal from 'sweetalert2';
+import '../../assets/css/swalStyle.css';
 
 const Checkout = () => {
 	const [items, setItems] = useState([]);
