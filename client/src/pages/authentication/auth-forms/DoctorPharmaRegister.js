@@ -75,7 +75,14 @@ const FirebaseRegister = ({ type }) => {
                 text: 'Please upload documents for verification',
             });
             return;
-        }
+        } else if (!level || level.label != 'Strong'){
+			Swal.fire({
+				icon: 'error',
+				title: 'Oops...',
+				text: 'Please enter a Strong password. \n Password must be at least 8 characters and include one number, one letter, one capital letter, and one special character.',
+			});
+			return;
+		}
         setIsSubmitting(true);
 
         const sendData = {
@@ -101,18 +108,21 @@ const FirebaseRegister = ({ type }) => {
 
         formData.append('sendData', JSON.stringify(sendData));
 
-        const signupResponse = await authenticationAxios.post(
-            '/signup/pharmacy',
-            sendData 
-        );
+        
 
-        if (signupResponse.status === 200) {
-            const pharmacistRequestResponse = await pharmacyAxios.post(
-                '/add-pharmacist-req',
-                formData
+        try {
+            await authenticationAxios.post(
+                '/signup/pharmacy',
+                sendData 
             );
 
-            if (pharmacistRequestResponse.status === 200) {
+            
+
+            try {
+                await pharmacyAxios.post(
+                    '/add-pharmacist-req',
+                    formData
+                );
                 Swal.fire({
                     icon: 'success',
                     title: 'Sign-up Success!',
@@ -130,19 +140,19 @@ const FirebaseRegister = ({ type }) => {
                 setSpeciality('');
                 setAffiliation('');
                 setUploadedFiles([]);
-            } else {
+            } catch(err) {
                 Swal.fire({
                     icon: 'error',
                     title: 'Oops...',
-                    text: pharmacistRequestResponse.response.data.message,
+                    text: err.response.data.message,
                 });
                 setIsSubmitting(false);
             }
-        } else {
+        } catch(err) {
             Swal.fire({
                 icon: 'error',
                 title: 'Oops...',
-                text: signupResponse.response.data.message,
+                text: err.response.data.message,
             });
             setIsSubmitting(false);
         }

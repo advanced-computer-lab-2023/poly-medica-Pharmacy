@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useTheme } from '@mui/material/styles';
 import {
 	Box,
 	Button,
@@ -21,6 +22,7 @@ import { authenticationAxios } from 'utils/AxiosConfig';
 // ============================|| LOGIN ||============================ //
 
 const FirebaseLogin = () => {
+	const theme = useTheme();
 	const [isSubmitting, setIsSubmitting] = useState(false);
 	const [password, setPassword] = useState("");
 	const [userName, setUserName] = useState("");
@@ -31,9 +33,9 @@ const FirebaseLogin = () => {
 		e.preventDefault();
 		setIsSubmitting(true);
 		const postData = { 'userName': userName, 'password': password };
-		const response = await authenticationAxios.post('/login/pharmacy', postData);
-		const data = response.data;		
 		try{
+			const response = await authenticationAxios.post('/login/pharmacy', postData);
+			const data = response.data;		
 			dispatch({ auth: true, payload:data });
 			if(data.reset)
 				navigate(`/${data.type}/pages/profile`);
@@ -77,6 +79,7 @@ const FirebaseLogin = () => {
 							value={password}
 							required
 							onChange={e => setPassword(e.target.value)}
+							sx={{ ...theme.typography.customInput }}
 							/>
 						</FormControl>
 						<Stack direction="row" alignItems="center" justifyContent="space-between" spacing={1}>
