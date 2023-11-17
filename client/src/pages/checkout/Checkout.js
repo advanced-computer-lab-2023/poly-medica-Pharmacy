@@ -35,6 +35,7 @@ const Checkout = () => {
 				setItems(() => {
 					const itms = medicines.medicines.map((medicine) => {
 						const itm = {
+							medicineId : medicine.medicine._id,
 							name: medicine.medicine.name,
 							quantity: medicine.quantity,
 							price: medicine.medicine.price,
