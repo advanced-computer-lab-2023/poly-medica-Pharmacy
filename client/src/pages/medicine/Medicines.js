@@ -30,6 +30,7 @@ const Medicines = () => {
 		quantity: '',
 		medicinalUse: '',
 		activeIngerdients: '',
+		prescriptionMedicine : false
 	});
 	const [image, setImage] = useState(null);
 	const [selectedEditMedicine, setSelectedEditMedicine] = useState(null);
@@ -90,6 +91,7 @@ const Medicines = () => {
 			quantity: '',
 			medicinalUse: '',
 			activeIngerdients: '',
+			prescriptionMedicine : false
 		});
 	};
 
@@ -244,6 +246,7 @@ const Medicines = () => {
 						handleImageUpload={handleImageUpload}
 						handleAddMedicine={handleAddMedicine}
 						newMedicine={newMedicine}
+						setNewMedicine={setNewMedicine}
 					/>
 					<EditMedicine
 						isEditDialogOpen={isEditDialogOpen}
