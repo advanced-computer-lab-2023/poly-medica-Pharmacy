@@ -45,6 +45,11 @@ const Cart = mongoose.Schema({
 					type: String,
 					required: true,
 				},
+				monthlySales:{
+					type: [Number],
+					required: true,
+					default: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+				},
 			},
 			quantity: {
 				type: Number,
