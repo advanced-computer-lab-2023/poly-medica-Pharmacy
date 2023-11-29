@@ -13,8 +13,10 @@ import {
 import { Edit as EditIcon } from '@mui/icons-material';
 import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
 import { PHARMACY_BASE_URL } from 'utils/Constants';
-import { pharmacyAxios } from '../../utils/AxiosConfig';
+import { patientAxios, pharmacyAxios } from '../../utils/AxiosConfig';
 import { useUserContext } from 'hooks/useUserContext';
+import Swal from 'sweetalert2';
+
 
 const MedicineCard = ({
 	medicine,
@@ -45,8 +47,27 @@ const MedicineCard = ({
 	}, []);
 
 	const addToCart = (medicine) => {
-		handleAddToCart(medicine);
-		setIsLoading(medicineIsBeingAddedToCart);
+		console.log('the prescriptionMedicine is ', medicine.prescriptionMedicine);
+		if (medicine.prescriptionMedicine === true) {
+			patientAxios
+				.get(`/patient/${userId}/prescriptions`)
+				.then((response) => response.data)
+				.then((data) => {
+					console.log("the prescription is ", data);
+					handleAddToCart(medicine);
+					setIsLoading(medicineIsBeingAddedToCart);
+				})
+				.catch((error) => {
+					console.error('Error fetching data:', error);
+					Swal.fire('error', error.message, 'error');
+					setIsLoading(false);
+				});
+
+		} else {
+			handleAddToCart(medicine);
+			setIsLoading(medicineIsBeingAddedToCart);
+		}
+
 	};
 
 	return (
