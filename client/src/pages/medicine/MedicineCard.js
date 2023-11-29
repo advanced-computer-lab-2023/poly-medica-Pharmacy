@@ -9,12 +9,15 @@ import {
 	Grid,
 	Button,
 	Typography,
+	Box,
+	Stack
 } from '@mui/material';
 import { Edit as EditIcon } from '@mui/icons-material';
 import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
 import { PHARMACY_BASE_URL } from 'utils/Constants';
 import { pharmacyAxios } from '../../utils/AxiosConfig';
 import { useUserContext } from 'hooks/useUserContext';
+import AltrentivesMedicine from './AlterentiveMedicine';
 
 const MedicineCard = ({
 	medicine,
@@ -26,8 +29,10 @@ const MedicineCard = ({
 	const { user } = useUserContext();
 	const userId = user.id;
 	const userType = user.type;
+	const [isAltDialogOpen, setIsAltDialogOpen] = useState(false);
 	const [addToCartStatus, setAddToCartStatus] = useState(true);
 	const [isLoading, setIsLoading] = useState(true);
+	const [activeIngerdients, setActiveIngerdients] = useState(null);
 
 	useEffect(() => {
 		pharmacyAxios
@@ -47,6 +52,11 @@ const MedicineCard = ({
 	const addToCart = (medicine) => {
 		handleAddToCart(medicine);
 		setIsLoading(medicineIsBeingAddedToCart);
+	};
+
+	const handleAltDialogOpen = () => {
+		setIsAltDialogOpen(true);
+		setActiveIngerdients(medicine.activeIngerdients);
 	};
 
 	return (
@@ -97,81 +107,90 @@ const MedicineCard = ({
 			)}
 
 			{userType === 'patient' && (
-				<Grid container spacing={5} m={0}>
-					<Grid item xs={9}>
-						<ListItem
-							button
-							onClick={() => setSelectedMedicine(medicine)}
-							sx={{ width: '100%' }}
-						>
-							<ListItemAvatar sx={{ paddingRight: '2%' }}>
-								<img
-									src={`${PHARMACY_BASE_URL}/medicines/${medicine._id}/pictures`}
-									alt={medicine.name}
-									width='80'
-									height='80'
-								/>
-							</ListItemAvatar>
-							<ListItemText
-								primary={medicine.name}
-								secondary={
-									<div
-										style={{
-											overflow: 'hidden',
-											whiteSpace: 'nowrap',
-											textOverflow: 'ellipsis',
-										}}
-									>
-										{medicine.description}
-									</div>
-								}
-								sx={{
-									width: '70%',
-									lineHeight: '1.5em',
-									maxHeight: '3em',
-								}}
-							/>
-							<ListItemText
-								sx={{ paddingLeft: '2%' }}
-								primary={`$${medicine.price}`}
-							/>
-						</ListItem>
-					</Grid>
-					<Grid item sx={{ alignSelf: 'center' }} xs={2}>
-						{medicine.quantity === 0 ? (
-							<Typography variant='body1' color='error' ml={0}>
-								Out of Stock
-							</Typography>
-						) : (
-							<>
-								{isLoading ? (
-									<CircularProgress />
-								) : (
-									<Button
-										disabled={!addToCartStatus}
-										onClick={() => {
-											setAddToCartStatus(false);
-											addToCart(medicine);
-										}}
-									>
-										<IconButton
-											color='primary'
-											edge='end'
-											aria-label='add to cart'
-											disabled={!addToCartStatus}
+				<div>
+					<AltrentivesMedicine isAltDialogOpen={isAltDialogOpen} setIsAltDialogOpen={setIsAltDialogOpen} activeIngerdients={activeIngerdients} />
+					<Grid container spacing={5} m={0}>
+						<Grid item xs={9}>
+							<ListItem
+								button
+								onClick={() => setSelectedMedicine(medicine)}
+								sx={{ width: '100%' }}
+							>
+								<ListItemAvatar sx={{ paddingRight: '2%' }}>
+									<img
+										src={`${PHARMACY_BASE_URL}/medicines/${medicine._id}/pictures`}
+										alt={medicine.name}
+										width='80'
+										height='80'
+									/>
+								</ListItemAvatar>
+								<ListItemText
+									primary={medicine.name}
+									secondary={
+										<div
+											style={{
+												overflow: 'hidden',
+												whiteSpace: 'nowrap',
+												textOverflow: 'ellipsis',
+											}}
 										>
-											<AddShoppingCartIcon />
-										</IconButton>
-									</Button>
-								)}
-							</>
-						)}
+											{medicine.description}
+										</div>
+									}
+									sx={{
+										width: '70%',
+										lineHeight: '1.5em',
+										maxHeight: '3em',
+									}}
+								/>
+								<ListItemText
+									sx={{ paddingLeft: '2%' }}
+									primary={`$${medicine.price}`}
+								/>
+							</ListItem>
+						</Grid>
+						<Grid item sx={{ alignSelf: 'center' }} xs={2}>
+							{medicine.quantity === 0 ? (
+								<Box sx={{ width: '100%' }}>
+									<Stack spacing={2}>
+										<Typography variant='body1' color='error' ml={0}>
+											Out of Stock
+										</Typography>
+										<Button variant="text" onClick={handleAltDialogOpen}>View Altrentives</Button>
+									</Stack>
+								</Box>
+							) : (
+								<>
+									{isLoading ? (
+										<CircularProgress />
+									) : (
+										<Button
+											disabled={!addToCartStatus}
+											onClick={() => {
+												setAddToCartStatus(false);
+												addToCart(medicine);
+											}}
+										>
+											<IconButton
+												color='primary'
+												edge='end'
+												aria-label='add to cart'
+												disabled={!addToCartStatus}
+											>
+												<AddShoppingCartIcon />
+											</IconButton>
+										</Button>
+									)}
+								</>
+							)}
+						</Grid>
 					</Grid>
-				</Grid>
+				</div>
 			)}
 
 			<Divider />
 		</div>
+
 	);
 };
 
