@@ -43,7 +43,15 @@ const pages = {
 			url: '/pharmacist/pages/orders',
 			target: false,
 		},
-	],
+		{
+			id: 'total-sales-report',
+			title: 'Total Sales Report',
+			type: 'item',
+			icon: icons.IconRegistered,
+			url: '/pharmacist/pages/total-sales-report',
+			target: false,
+		},
+			],
 };
 
 export default pages;
