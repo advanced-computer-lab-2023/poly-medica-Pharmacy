@@ -49,19 +49,32 @@ const MedicineCard = ({
 	const addToCart = (medicine) => {
 		console.log('the prescriptionMedicine is ', medicine.prescriptionMedicine);
 		if (medicine.prescriptionMedicine === true) {
+			let found = false;
 			patientAxios
 				.get(`/patient/${userId}/prescriptions`)
 				.then((response) => response.data)
 				.then((data) => {
-					console.log("the prescription is ", data);
-					handleAddToCart(medicine);
-					setIsLoading(medicineIsBeingAddedToCart);
+					for (let i = 0; i < data.length; i++) {
+						for (let j = 0; j < data[i].medicines.length; j++) {
+							if (medicine._id === data[i].medicines[j].medicineId) {
+								found = true;
+							}
+						}
+					}
+				}).then(() => {
+					if (!found) {
+						Swal.fire('error', "this medicine needs a prescriptions", 'error');
+					} else {
+						handleAddToCart(medicine);
+						setIsLoading(medicineIsBeingAddedToCart);
+					}
 				})
 				.catch((error) => {
 					console.error('Error fetching data:', error);
 					Swal.fire('error', error.message, 'error');
 					setIsLoading(false);
 				});
+
 
 		} else {
 			handleAddToCart(medicine);
