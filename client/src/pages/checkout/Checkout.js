@@ -18,7 +18,7 @@ import Swal from 'sweetalert2';
 import '../../assets/css/swalStyle.css';
 
 const Checkout = () => {
-	const { type } = useParams();
+	const { type, id } = useParams();
 	const [items, setItems] = useState([]);
 	const [primaryAddress, setPrimaryAddress] = useState(null);
 	const [value, setValue] = useState('credit-card');
@@ -33,7 +33,6 @@ const Checkout = () => {
 				.get(`/cart/users/${userId}/medicines/`)
 				.then((response) => {
 					const medicines = response.data;
-					// console.log(medicines);
 					setItems(() => {
 						const itms = medicines.medicines.map((medicine) => {
 							const itm = {
@@ -48,6 +47,32 @@ const Checkout = () => {
 							return itm;
 						});
 						return itms;
+					});
+				})
+				.catch((error) => {
+					console.log(error);
+				});
+		} else if (type == 'prescription') {
+			const prescriptionId = id;
+			patientAxios
+				.get(`/prescriptions/${prescriptionId}/medicines`)
+				.then((response) => {
+					const medicines = response.data;
+					medicines.map((medicine) => {
+						pharmacyAxios
+							.get(`/medicines/${medicine.medicineId}`)
+							.then((response) => {
+								const itm = {
+									medicineId: medicine.medicineId,
+									name: response.data.medicine.name,
+									quantity: medicine.amount,
+									price: response.data.medicine.price,
+								};
+								setTotalCost((prev) => {
+									return prev + itm.quantity * itm.price;
+								});
+								setItems((prev) => [...prev, itm]);
+							});
 					});
 				})
 				.catch((error) => {
