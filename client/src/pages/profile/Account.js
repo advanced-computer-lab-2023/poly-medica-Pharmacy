@@ -1,13 +1,14 @@
-import { Box, Container, Stack, Typography, Unstable_Grid2 as Grid, CardContent, CardHeader, Card, TextField, Button, Divider, CardActions, FormControl } from '@mui/material';
+import { Box, Container, Stack, Typography, Unstable_Grid2 as Grid, CardContent, CardHeader, Card, TextField, Button, Divider, CardActions, FormControl, Autocomplete } from '@mui/material';
 import AccountProfile from './AccountProfile';
 import PharmacistAccountProfileDetails from './accountProfileDetails/PharmacistAccountProfileDetails';
 import PatientAccountProfileDetails from './accountProfileDetails/PatientAccountProfileDetails';
 import { useUserContext } from 'hooks/useUserContext';
 import { PATIENT_TYPE_ENUM, PHARMACIST_TYPE_ENUM } from 'utils/Constants';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Swal from 'sweetalert2';
-import { authenticationAxios } from 'utils/AxiosConfig';
+import { authenticationAxios, pharmacyAxios } from 'utils/AxiosConfig';
 import { strengthColor, strengthIndicator } from 'utils/password-strength';
+import PharmacistArchive from './PharmacistArchive';
 
 const Page = () => {
     
@@ -17,6 +18,14 @@ const Page = () => {
 	const [loading, setLoading] = useState(false);
 	const [strength, setStrength] = useState(0);
 	const [level, setLevel] = useState();
+	const [archiveMedicine, setArchiveMedicine] = useState(null);
+	const [archiveMedicineOptions, setArchiveMedicineOptions] = useState([]);
+	const [archiveMedicineList, setArchiveMedicineList] = useState([]);
+	const [dataChange, setDataChange] = useState(true);
+
+	const handleDataChange = () => {
+		setDataChange(!dataChange);
+	};
 
 	const submitPassword = async () => {
 		if (!level || level.label != 'Strong'){
@@ -50,6 +59,37 @@ const Page = () => {
 		}	
 	};
 
+	useEffect(() => {
+		pharmacyAxios.get('/medicines').then((response ) => {
+			// response.data.medicines
+			let tmp = [];
+			console.log({ medi:response.data.medicines });
+			// _id
+			// name
+			// pictureName
+			for (let i = 0; i < response.data.medicines.length; i++) {
+				const medicine = response.data.medicines[i];
+				tmp = [...tmp, { label:medicine.name, value: medicine._id, image: medicine.pictureName } ];
+			}
+			setArchiveMedicineOptions(() => [...tmp]);
+			
+		}).catch((error) => {
+			console.log(error);
+		});
+}, []);
+
+useEffect(() => {
+	pharmacyAxios.get(`/archive/${user.id}`).then((response) => {
+		const data = response.data.medicines;
+		let tmp = [];
+		for(let i = 0; i != data.length; i++){
+			const medicine = data[i];
+			tmp = [...tmp, { name: medicine.name, id: medicine.medicineId }];
+		}
+		setArchiveMedicineList(() => [...tmp]);
+	});
+}, [dataChange]);
+
 	const handleChangePassword = (e) => {
 		setPassword(e.target.value);
 		const temp = strengthIndicator(e.target.value);
@@ -57,6 +97,23 @@ const Page = () => {
 		setLevel(strengthColor(temp));
 	};
 
+	const handleAddArchiveMedicine = async () => {
+		// 
+		if(!archiveMedicine) return;
+		console.log({ archiveMedicine });
+		try{
+			const sendData = { name: archiveMedicine.label };
+			await pharmacyAxios.post(`/archive/${user.id}/medicine/${archiveMedicine.value}`, sendData);
+			handleDataChange();
+		} catch (error){
+			Swal.fire({
+				icon: 'error',
+				title: 'Oops...',
+				text: error.response.data.errMessage,
+			});
+		}
+		
+	};
 	return (
 		<>
 			<Box
@@ -144,9 +201,54 @@ const Page = () => {
 													</Button>
 												</CardActions>
 									</Card>
-									{/* {user.type == ADMIN_TYPE_ENUM &&<PatientAccountProfileDetails />} */}
-									{/* TODO: admin !! */}
-									{/* here will be the gener */}
+
+									<Card sx={{ mt:5 }} >
+										<CardHeader
+											title='Archive medicines'
+										/>
+											<CardContent  sx={{ width:'100%' }}>
+												
+												<Grid container width={'100%'} spacing={1}>
+													
+													<Grid item container width={'100%'} display={ 'flex' } flexDirection={'row'} spacing={3} justifyContent={'center'}>
+														<Grid item width={'70%'}>
+													<Autocomplete
+													value={archiveMedicine}
+													onChange={(event, newValue) => {
+														setArchiveMedicine(newValue);
+													}}
+													options={archiveMedicineOptions}
+													getOptionLabel={(option) => option.label}
+													renderInput={(params) => (
+													<TextField
+													{...params}
+													label="Choose an option"
+													variant="outlined"
+													/>
+													)}
+													/>
+													</Grid>
+													<Grid item container justifyContent={'center'} alignItems={'center'}>
+														<Button variant='contained'onClick={handleAddArchiveMedicine}>
+															Add
+														</Button>
+													</Grid>
+													</Grid>
+													<Grid item container width={'100%'} justifyContent='center' >
+														<Grid width={'70%'}>
+															{ archiveMedicineList.map((element, idx) => (
+																<>
+																<PharmacistArchive key={`pharmacist_archive_list_${idx}`} name={ element.name } id={element.id} handleDataChange={handleDataChange}/>			
+																<Divider/>
+																</>
+															)) }
+														</Grid>
+													</Grid>
+												</Grid>
+											</CardContent>
+											
+									</Card>
+									
 								</Grid>
 							</Grid>
 						</div>

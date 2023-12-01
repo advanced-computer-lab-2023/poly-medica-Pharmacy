@@ -24,6 +24,8 @@ export const UNAUTH_REQ_CODE_401 = 401;
 
 export const ADMIN_ENUM = 'pharmacy admin';
 
+export const DUB_MEDICINE_ARCHIVE = 'Already has this medicine';
+
 export const MEDICINE_FOLDER_NAME = 'medicines';
 
 export const PHARMACIST_FOLDER_NAME = 'pharmacists';
