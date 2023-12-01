@@ -16,8 +16,10 @@ import PaymentOptions from 'pages/payment/PaymentOptions';
 import { successfulPayment } from '../../utils/PaymentUtils';
 import Swal from 'sweetalert2';
 import '../../assets/css/swalStyle.css';
+import { usePayment } from 'contexts/PaymentContext';
 
 const Checkout = () => {
+	const { setPaymentDone } = usePayment();
 	const [items, setItems] = useState([]);
 	const [primaryAddress, setPrimaryAddress] = useState(null);
 	const [value, setValue] = useState('credit-card');
@@ -35,7 +37,7 @@ const Checkout = () => {
 				setItems(() => {
 					const itms = medicines.medicines.map((medicine) => {
 						const itm = {
-							medicineId : medicine.medicine._id,
+							medicineId: medicine.medicine._id,
 							name: medicine.medicine.name,
 							quantity: medicine.quantity,
 							price: medicine.medicine.price,
@@ -99,7 +101,7 @@ const Checkout = () => {
 							})
 							.then(
 								Swal.fire('success', 'Payment Succeeded', 'success').then(() => {
-									const callBackUrl = successfulPayment(userId,{
+									const callBackUrl = successfulPayment(userId, {
 										patientId: userId,
 										details: items,
 										amount: totalCost,
@@ -112,6 +114,7 @@ const Checkout = () => {
 										.catch((err) => {
 											console.log(err);
 										});
+										setPaymentDone(true);
 								}),
 							)
 							.catch((error) => {
@@ -161,6 +164,7 @@ const Checkout = () => {
 						});
 						navigate(callBackUrl, { replace: true });
 					});
+					setPaymentDone(true);
 				}
 			}
 		);

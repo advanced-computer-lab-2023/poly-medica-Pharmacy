@@ -1,6 +1,7 @@
 import { patientAxios, pharmacyAxios } from './AxiosConfig';
 import Swal from 'sweetalert2';
 
+
 export const successfulPayment = (userId, order) => {
 	patientAxios
 		.post('/order', { order })

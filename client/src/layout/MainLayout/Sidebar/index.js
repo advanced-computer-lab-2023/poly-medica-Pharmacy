@@ -1,8 +1,9 @@
 import PropTypes from 'prop-types';
-
+import { useUserContext } from 'hooks/useUserContext';
 // material-ui
 import { useTheme } from '@mui/material/styles';
-import { Box, Chip, Drawer, Stack, useMediaQuery } from '@mui/material';
+import { Box, Chip, Drawer, List, Stack, Typography, useMediaQuery } from '@mui/material';
+import { usePayment } from 'contexts/PaymentContext';
 
 // third-party
 import PerfectScrollbar from 'react-perfect-scrollbar';
@@ -12,10 +13,31 @@ import { BrowserView, MobileView } from 'react-device-detect';
 import MenuList from './MenuList';
 import LogoSection from './LogoSection';
 import { drawerWidth } from 'store/constant';
+import { useState, useEffect } from 'react';
+import { patientAxios, pharmacyAxios } from 'utils/AxiosConfig';
 
 // ==============================|| SIDEBAR DRAWER ||============================== //
 
 const Sidebar = ({ drawerOpen, drawerToggle, window }) => {
+	const { user } = useUserContext();
+	const userType = user.type;
+	const userId = user.id;
+
+	const { paymentdone } = usePayment();
+
+	const [amountInWallet, setamountInWallet] = useState(0);
+	useEffect(() => {
+		if (userType === 'patient') {
+			patientAxios.get(`/patients/${userId}/wallet`).then((response) => {
+				setamountInWallet(response.data.walletAmount);
+			});
+		} else if (userType === 'pharmacist') {
+			pharmacyAxios.get(`/pharmacists/${userId}/wallet`).then((response) => {
+				setamountInWallet(response.data.walletAmount);
+			});
+		}
+	}, [paymentdone]);
+
 	const theme = useTheme();
 	const matchUpMd = useMediaQuery(theme.breakpoints.up('md'));
 
@@ -35,7 +57,23 @@ const Sidebar = ({ drawerOpen, drawerToggle, window }) => {
 						paddingRight: '16px'
 					}}
 				>
+
 					<MenuList />
+					<List
+						subheader={
+							userType != 'admin' && (
+								<Typography variant="caption" sx={{ ...theme.typography.menuCaption }} display="block" gutterBottom>
+									{'Poly-Wallet $ ' + amountInWallet}
+									{true && (
+										<Typography variant="caption" sx={{ ...theme.typography.subMenuCaption }} display="block" gutterBottom>
+											{'item.caption'}
+										</Typography>
+									)}
+								</Typography>
+							)
+						}
+					>
+					</List>
 					<Stack direction="row" justifyContent="center" sx={{ mb: 2 }}>
 						<Chip label={process.env.REACT_APP_VERSION} disabled chipcolor="secondary" size="small" sx={{ cursor: 'pointer' }} />
 					</Stack>
@@ -53,6 +91,7 @@ const Sidebar = ({ drawerOpen, drawerToggle, window }) => {
 	);
 
 	const container = window !== undefined ? () => window.document.body : undefined;
+
 
 	return (
 		<Box component="nav" sx={{ flexShrink: { md: 0 }, width: matchUpMd ? drawerWidth : 'auto' }} aria-label="mailbox folders">
