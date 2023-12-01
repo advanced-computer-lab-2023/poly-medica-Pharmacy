@@ -5,14 +5,28 @@
 
 //code
 //make a dropdown menu for months
-import React from 'react';
-import { MenuItem, Select, FormControl, InputLabel } from '@mui/material';
+import React, { useEffect, useState } from 'react'; 
+
+import { pharmacyAxios } from '../../utils/AxiosConfig';
  import MonthPicker from './MonthPicker';
+ import Medicines from './Medicines';
 
 
 const TotalSalesReport = () => {
  
-    const [selectedMonth, setSelectedMonth] = React.useState(1);	
+    const [selectedMonth, setSelectedMonth] = React.useState(1);
+	const [medicines, setMedicines] = useState([]);
+	
+	useEffect(() => {
+		pharmacyAxios
+			.get('/medicines')
+			.then((response) => {
+				setMedicines(response.data.medicines); 
+			})
+			.catch((error) => {
+				console.log(error);
+			});
+	}, []);	
 	const handleMonthChange = (event) => {
 		setSelectedMonth(event.target.value);
 	};											
@@ -21,6 +35,9 @@ const TotalSalesReport = () => {
     return (
 		<div>
 			<MonthPicker selectedMonth={selectedMonth} handleMonthChange={handleMonthChange} />
+			<Medicines style={{ marginTop: '80px' }}  
+			medicines={medicines} month={selectedMonth} />
+			
 		</div>
 	);	
 
