@@ -59,6 +59,13 @@ class PharmacistService {
 	deleteFile(fileName) {
 		return this.repository.deleteFile(fileName);
 	}
+	async getWalletAmount(id){
+		return this.repository.getWalletAmount(id);
+	}
+	async updateWalletAmount(pharamcistId, newAmount){
+		const amountNowInWallet = await this.getWalletAmount(pharamcistId);
+		return this.repository.updateWallet(pharamcistId, amountNowInWallet+newAmount);
+	}
 }
 
 export default PharmacistService;
