@@ -133,15 +133,17 @@ const Checkout = () => {
 											patientId: userId,
 											details: items,
 											amount: totalCost,
-										});
-										pharmacyAxios
-											.delete(`/cart/users/${userId}/medicines`)
-											.then(() => {
-												navigate(callBackUrl, { replace: true });
-											})
-											.catch((err) => {
-												console.log(err);
-											});
+										}, type);
+										if (type === 'cart') {
+											pharmacyAxios
+												.delete(`/cart/users/${userId}/medicines`)
+												.then(() => {
+													navigate(callBackUrl, { replace: true });
+												})
+												.catch((err) => {
+													console.log(err);
+												});
+										}
 									},
 								),
 							)
@@ -189,7 +191,7 @@ const Checkout = () => {
 							patientId: userId,
 							details: items,
 							amount: totalCost,
-						});
+						}, type);
 						navigate(callBackUrl, { replace: true });
 					});
 				}

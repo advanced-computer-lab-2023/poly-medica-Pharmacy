@@ -1,30 +1,32 @@
 import { patientAxios, pharmacyAxios } from './AxiosConfig';
 import Swal from 'sweetalert2';
 
-export const successfulPayment = (userId, order) => {
+export const successfulPayment = (userId, order, type) => {
 	patientAxios
 		.post('/order', { order })
 		.then(() => {
-			pharmacyAxios
-				.get(`/cart/users/${userId}/medicines/`)
-				.then((response) => {
-					const medicines = response.data.medicines;
-					medicines.forEach((medicine) => {
-						pharmacyAxios.patch(
-							`medicines/${medicine.medicine._id}/${
-								medicine.medicine.quantity - medicine.quantity
-							}`,
-						);
-					});
-					pharmacyAxios
-						.delete(`/cart/users/${userId}/medicines`)
-						.catch((err) => {
-							console.log(err);
+			if (type === 'cart') {
+				pharmacyAxios
+					.get(`/cart/users/${userId}/medicines/`)
+					.then((response) => {
+						const medicines = response.data.medicines;
+						medicines.forEach((medicine) => {
+							pharmacyAxios.patch(
+								`medicines/${medicine.medicine._id}/${
+									medicine.medicine.quantity - medicine.quantity
+								}`,
+							);
 						});
-				})
-				.catch((error) => {
-					console.log(error);
-				});
+						pharmacyAxios
+							.delete(`/cart/users/${userId}/medicines`)
+							.catch((err) => {
+								console.log(err);
+							});
+					})
+					.catch((error) => {
+						console.log(error);
+					});
+			}
 		})
 		.catch((error) => {
 			console.log('Error in placing the order', error);
@@ -33,13 +35,13 @@ export const successfulPayment = (userId, order) => {
 	return '/patient/pages/orders';
 };
 
-export const paymentStatus = (navigate, status, item, userId) => {
+export const paymentStatus = (navigate, status, item, userId, type) => {
 	console.log('the status is ', status);
 	switch (status) {
 		case 'succeeded': {
 			Swal.fire('success', 'Payment Succeeded', 'success')
 				.then(() => {
-					const callBackUrl = successfulPayment(userId, item);
+					const callBackUrl = successfulPayment(userId, item, type);
 					navigate(callBackUrl, { replace: true });
 				})
 				.catch((error) => {
