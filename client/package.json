@@ -18,6 +18,7 @@
     "apexcharts": "^3.35.3",
     "axios": "^1.0.0",
     "date-fns": "^2.30.0",
+    "dayjs": "^1.11.10",
     "formik": "^2.2.9",
     "framer-motion": "^6.3.16",
     "material-ui-popup-state": "^4.0.1",
