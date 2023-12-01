@@ -73,7 +73,7 @@ const PatientRoutes = {
 					element: <LazyOrders />,
 				},
 				{
-					path: 'checkout',
+					path: 'checkout/:type/:id',
 					element: <LazyCheckout />,
 				},
 				{

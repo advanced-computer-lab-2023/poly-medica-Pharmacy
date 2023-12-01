@@ -62,8 +62,6 @@ const Prescriptions = () => {
 	};
 
 	const handleSelectingPrescription = (prescription, doctor) => {
-		console.log('prescription 000 === ', prescription);
-		console.log('doctor 0000 === ', doctor);
 		setSelectedPrescription(prescription);
 		setPrescriptionDoctor(doctor);
 	};
@@ -79,7 +77,6 @@ const Prescriptions = () => {
 
 			<PrescriptionDetails
 				selectedPrescription={selectedPrescription}
-				setSelectedPrescription={setSelectedPrescription}
 				prescriptionDoctor={prescriptionDoctor}
 				handleDialogClose={handleDialogClose}
 				medicines={medicines}

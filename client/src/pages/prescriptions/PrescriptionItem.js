@@ -4,10 +4,11 @@ import {
 	ListItemAvatar,
 	ListItemText,
 	Typography,
-	IconButton,
 	Tooltip,
+	IconButton,
 } from '@mui/material';
 
+import { useNavigate } from 'react-router-dom';
 import ShoppingCartCheckoutSharpIcon from '@mui/icons-material/ShoppingCartCheckoutSharp';
 import FileDownloadIcon from '@mui/icons-material/FileDownload';
 import CheckIcon from '@mui/icons-material/Check';
@@ -20,6 +21,7 @@ import { clinicAxios } from '../../utils/AxiosConfig';
 import { PATIENT_BASE_URL } from 'utils/Constants';
 
 const PrescriptionItem = ({ prescription, handleClicking }) => {
+	const navigate = useNavigate();
 	const [doctor, setDoctor] = useState({});
 	const [Loading, setLoading] = useState(true);
 	useEffect(() => {
@@ -93,18 +95,23 @@ const PrescriptionItem = ({ prescription, handleClicking }) => {
 						rel='noreferrer'
 						download={`${prescription._id}.pdf`}
 					>
-						<IconButton
-							edge='end'
-							aria-label='download'
-							sx={{ marginRight: '2%' }}
-						>
+						<IconButton edge='end' aria-label='download'>
 							<FileDownloadIcon />
 						</IconButton>
 					</a>
 				</Tooltip>
 
-				<Tooltip title='check out'>
-					<IconButton edge='end' aria-label='check out'>
+				<Tooltip title='checkout'>
+					<IconButton
+						sx={{ marginLeft: '2%' }}
+						edge='end'
+						aria-label='checkout'
+						onClick={() =>
+							navigate(
+								`/patient/pages/checkout/prescription/${prescription._id}`,
+							)
+						}
+					>
 						<ShoppingCartCheckoutSharpIcon />
 					</IconButton>
 				</Tooltip>
