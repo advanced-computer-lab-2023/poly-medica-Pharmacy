@@ -63,6 +63,14 @@ const pages = {
 			icon: icons.IconVaccineBottle,
 			url: '/admin/pages/medicines',
 		},
+		{
+			id: 'total-sales-report',
+			title: 'Total Sales Report',
+			type: 'item',
+			icon: icons.IconRegistered,
+			url: '/pharmacist/pages/total-sales-report',
+			target: false,
+		},
 	],
 };
 

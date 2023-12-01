@@ -15,6 +15,9 @@ const LazyPharmacists = Loadable(
 	lazy(() => import('pages/pharmacist/Pharmacists')),
 );
 const LazyMedicines = Loadable(lazy(() => import('pages/medicine/Medicines')));
+const LazyTotalSalesReport = Loadable(
+	lazy(() => import('pages/total-sales-report/TotalSalesReport')),
+);
 // utilities routing
 const UtilsTypography = Loadable(
 	lazy(() => import('pages/utilities/Typography')),
@@ -73,6 +76,10 @@ const AdminRoutes = {
 				{
 					path: 'medicines',
 					element: <LazyMedicines />,
+				},
+				{
+					path: 'total-sales-report',
+					element: <LazyTotalSalesReport />,
 				},
 			],
 		},
