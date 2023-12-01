@@ -6,10 +6,11 @@ import {
 	DialogActions,
 	Button,
 } from '@mui/material';
-
+import AltMedicines from './AltMedicines';
 const AltrentivesMedicine = ({
 	isAltDialogOpen,
 	setIsAltDialogOpen,
+	activeIngerdients
 }) => {
     
 
@@ -19,7 +20,7 @@ const AltrentivesMedicine = ({
 		<Dialog open={isAltDialogOpen} onClose={() => setIsAltDialogOpen(false)}>
 			<DialogTitle>Alterentive Medicines</DialogTitle>
 			<DialogContent>
-                
+                <AltMedicines activeIngerdients={activeIngerdients}/>
 			</DialogContent>
 			<DialogActions>
 				<Button onClick={() => setIsAltDialogOpen(false)} color='secondary'>
