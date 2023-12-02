@@ -4,7 +4,12 @@ import MedicineModel from '../models/Medicine.js';
 
 class MedicineRepository {
 	async findAllMedicines() {
-		const medicines = await MedicineModel.find();
+		const medicines = await MedicineModel.find({ archive: false });
+		return medicines;
+	}
+
+	async findAllArchiveMedicine(){
+		const medicines = await MedicineModel.find({ archive: true });
 		return medicines;
 	}
 
@@ -32,6 +37,14 @@ class MedicineRepository {
 			{ new: true },
 		);
 		return updated;
+	}
+
+	async updateMedicineArchiveState(id, archive){
+		await MedicineModel.findByIdAndUpdate(
+			id,
+			{ archive: archive },
+			{ new: true },
+		);
 	}
 
 	getPicture(picName) {

@@ -63,10 +63,6 @@ const Page = () => {
 		pharmacyAxios.get('/medicines').then((response ) => {
 			// response.data.medicines
 			let tmp = [];
-			console.log({ medi:response.data.medicines });
-			// _id
-			// name
-			// pictureName
 			for (let i = 0; i < response.data.medicines.length; i++) {
 				const medicine = response.data.medicines[i];
 				tmp = [...tmp, { label:medicine.name, value: medicine._id, image: medicine.pictureName } ];
@@ -76,15 +72,16 @@ const Page = () => {
 		}).catch((error) => {
 			console.log(error);
 		});
-}, []);
+}, [dataChange]);
 
 useEffect(() => {
-	pharmacyAxios.get(`/archive/${user.id}`).then((response) => {
-		const data = response.data.medicines;
+	pharmacyAxios.get(`/medicines/archive`).then((response) => {
+		const data = response.data;
+		console.log({ data: response.data });
 		let tmp = [];
 		for(let i = 0; i != data.length; i++){
 			const medicine = data[i];
-			tmp = [...tmp, { name: medicine.name, id: medicine.medicineId }];
+			tmp = [...tmp, { name: medicine.name, id: medicine._id }];
 		}
 		setArchiveMedicineList(() => [...tmp]);
 	});
@@ -99,12 +96,12 @@ useEffect(() => {
 
 	const handleAddArchiveMedicine = async () => {
 		// 
-		if(!archiveMedicine) return;
 		console.log({ archiveMedicine });
+		if(!archiveMedicine) return;
 		try{
-			const sendData = { name: archiveMedicine.label };
-			await pharmacyAxios.post(`/archive/${user.id}/medicine/${archiveMedicine.value}`, sendData);
+			await pharmacyAxios.patch(`/medicines/${archiveMedicine.value}/arcive/${true}`);
 			handleDataChange();
+			setArchiveMedicine(null);
 		} catch (error){
 			Swal.fire({
 				icon: 'error',

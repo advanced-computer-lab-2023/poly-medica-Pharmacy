@@ -3,20 +3,19 @@ import { Avatar, ListItem, ListItemAvatar, ListItemText, IconButton } from '@mui
 import { IconTrash } from '@tabler/icons';
 import { PHARMACY_BASE_URL } from 'utils/Constants';
 import { pharmacyAxios } from 'utils/AxiosConfig';
-import { useUserContext } from 'hooks/useUserContext';
 import Swal from 'sweetalert2';
 
 const PharmacistArchive = ({ name, id, handleDataChange }) => {
-  const { user } = useUserContext();
+  
   const onDelete = async () => {
     try{
-      await pharmacyAxios.delete(`/archive/${user.id}/medicine/${id}`);
+      await pharmacyAxios.patch(`/medicines/${id}/arcive/${false}`);
       handleDataChange();
     } catch(error){
       Swal.fire({
 				icon: 'error',
 				title: 'Oops...',
-				text: error.response.data.errMessage,
+				text: error.response.data.message,
 			});
     }
   };

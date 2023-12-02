@@ -9,7 +9,6 @@ import morgan from 'morgan';
 import cookieParser from 'cookie-parser';
 import bodyParser from 'body-parser';
 import { checkUser } from './src/middleware/authMiddleware.js';
-import { archive } from './src/api/ArchiveApi.js';
 
 const app = express();
 
@@ -36,6 +35,5 @@ cart(app);
 pharmacist(app);
 pharmacistRequests(app);
 medicine(app);
-archive(app)
 
 export default app;

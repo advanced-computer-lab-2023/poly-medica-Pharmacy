@@ -32,6 +32,11 @@ const Medicine = mongoose.Schema({
 	activeIngerdients: {
 		type: String,
 		required: true
+	},
+	archive: {
+		type: Boolean,
+		required: true,
+		default: false
 	}
 });
 
