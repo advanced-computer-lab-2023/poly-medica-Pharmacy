@@ -98,7 +98,7 @@ export const medicine = (app) => {
 			console.log('dateee ======== ', date);
 			const month = date.getMonth();
 			const newMonthlySales = oldMedicine.monthlySales;
-			newMonthlySales[month] += (oldMedicine.quantity - quantity);
+			newMonthlySales[month+1] += (oldMedicine.quantity - quantity);
 
 			const updated = await service.updateMedicineQuantity(
 				id,
