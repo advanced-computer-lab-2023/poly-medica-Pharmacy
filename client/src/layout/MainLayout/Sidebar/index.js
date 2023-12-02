@@ -25,11 +25,13 @@ const Sidebar = ({ drawerOpen, drawerToggle, window }) => {
 	const userType = user.type;
 	const userId = user.id;
 
-	const { paymentDone } = usePayment();
+	const { paymentDone, setPaymentDone } = usePayment();
 
 	const [amountInWallet, setamountInWallet] = useState(0);
+	
 
-	console.log(paymentDone);
+	
+		
 
 	useEffect(() => {
 		if (userType === 'patient') {
@@ -41,6 +43,7 @@ const Sidebar = ({ drawerOpen, drawerToggle, window }) => {
 				setamountInWallet(response.data.walletAmount);
 			});
 		}
+		setPaymentDone(false);
 	}, [paymentDone]);
 
 	const theme = useTheme();

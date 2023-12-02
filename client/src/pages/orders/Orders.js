@@ -57,13 +57,10 @@ const Orders = () => {
 					patientAxios
 						.patch(`/patients/${user_Id}/wallet`, { amount: response.data.walletAmount + order.amount })
 						.then(() => {
-							setPaymentDone(true);
+							setPaymentDone((prev) => prev + 1);
 						}).catch((err) => {
 							console.log(err.message);
 						});
-				}).then(() => {
-
-
 				}).
 				catch((err) => {
 					console.log(err.message);

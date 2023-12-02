@@ -7,7 +7,7 @@ export const usePayment = () => {
 };
 
 export const PaymentProvider = ({ children }) => {
-  const [paymentDone, setPaymentDone] = useState(false);
+  const [paymentDone, setPaymentDone] = useState(0);
 
 
   return (
