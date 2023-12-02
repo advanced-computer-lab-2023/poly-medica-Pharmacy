@@ -25,9 +25,12 @@ const Sidebar = ({ drawerOpen, drawerToggle, window }) => {
 	const userType = user.type;
 	const userId = user.id;
 
-	const { paymentdone } = usePayment();
+	const { paymentDone } = usePayment();
 
 	const [amountInWallet, setamountInWallet] = useState(0);
+
+	console.log(paymentDone);
+
 	useEffect(() => {
 		if (userType === 'patient') {
 			patientAxios.get(`/patients/${userId}/wallet`).then((response) => {
@@ -38,7 +41,7 @@ const Sidebar = ({ drawerOpen, drawerToggle, window }) => {
 				setamountInWallet(response.data.walletAmount);
 			});
 		}
-	}, [paymentdone]);
+	}, [paymentDone]);
 
 	const theme = useTheme();
 	const matchUpMd = useMediaQuery(theme.breakpoints.up('md'));
@@ -72,7 +75,6 @@ const Sidebar = ({ drawerOpen, drawerToggle, window }) => {
 										<strong>Poly-Wallet:</strong> $ {amountInWallet}
 									</Typography>
 								</Stack>
-
 							)
 						}
 					>

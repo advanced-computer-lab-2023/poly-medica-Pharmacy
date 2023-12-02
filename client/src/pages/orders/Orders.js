@@ -5,10 +5,14 @@ import OrdersList from './OrdersList.js';
 import OrdersDetails from './OrdersDetails.js';
 import { useUserContext } from 'hooks/useUserContext.js';
 import { CANCELLED_STATUS } from 'utils/Constants.js';
+import { usePayment } from 'contexts/PaymentContext';
+
 
 const Orders = () => {
+	const { setPaymentDone } = usePayment();
 	const [orders, setOrders] = useState([]);
 	const [selectedOrder, setSelectedOrder] = useState(null);
+	// const [amountInWallet, setAmountInWallet] = useState(0);
 
 	const { user } = useUserContext();
 	const userId = user.id;
@@ -74,7 +78,28 @@ const Orders = () => {
 			.catch((err) => {
 				console.log(err);
 			});
+		patientAxios.
+			get(`/patients/${userId}/wallet`).
+			then((response) => {
+				console.log(response.data.walletAmount);
+				patientAxios
+					.patch(`/patients/${userId}/wallet`, { amount: response.data.walletAmount + order.amount })
+					.then(() => {
+						setPaymentDone(true);
+					}).catch((err) => {
+						console.log(err.message);
+					});
+			}).then(() => {
+				
+				
+			}).
+			catch((err) => {
+				console.log(err.message);
+			});
+
 		handleDialogClose();
+
+
 	};
 
 	const handleAcceptOrRejectOrder = (status) => {
