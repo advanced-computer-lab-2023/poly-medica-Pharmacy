@@ -86,11 +86,13 @@ const Checkout = () => {
 								patientId: userId,
 								details: items,
 								amount: totalCost,
+								paymentMethod : 'card'
 							},
 							amountToPay: totalCost,
 						},
 						replace: true,
 					});
+					
 				} else if (value === 'wallet') {
 					console.log('the amount in  wallet is : ', amountInWallet);
 					if (amountInWallet >= amountToPay) {
@@ -105,6 +107,7 @@ const Checkout = () => {
 										patientId: userId,
 										details: items,
 										amount: totalCost,
+										paymentMethod : 'wallet'
 									});
 									pharmacyAxios
 										.delete(`/cart/users/${userId}/medicines`)
@@ -147,6 +150,7 @@ const Checkout = () => {
 											patientId: userId,
 											details: items,
 											amount: totalCost,
+											paymentMethod : 'wallet'
 										},
 										amountToPay: amountToPayByCard,
 									},
@@ -161,6 +165,7 @@ const Checkout = () => {
 							patientId: userId,
 							details: items,
 							amount: totalCost,
+							paymentMethod : 'cash'
 						});
 						navigate(callBackUrl, { replace: true });
 					});

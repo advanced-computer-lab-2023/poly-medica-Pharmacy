@@ -32,6 +32,7 @@ export const ADDRESS_ATTRIBUTES = [
 
 export const PENDING_STATUS = 'pending';
 export const CANCELLED_STATUS = 'cancelled';
+export const REJECTED_STATUS = 'rejected';
 
 export const DATE_FORAMT = 'MMMM Do YYYY, h:mm a';
 
