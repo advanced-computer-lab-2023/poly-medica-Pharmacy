@@ -13,9 +13,10 @@ const LazyPayment = Loadable(lazy(() => import('pages/payment/Payment')));
 const LazyOrders = Loadable(lazy(() => import('pages/orders/Orders')));
 const LazyCheckout = Loadable(lazy(() => import('pages/checkout/Checkout')));
 const LazyAddress = Loadable(lazy(() => import('pages/address/Address')));
+const LazyChat = Loadable(lazy(() => import('pages/chat/Chat')));
 // utilities routing
 const UtilsTypography = Loadable(
-	lazy(() => import('pages/utilities/Typography')),
+    lazy(() => import('pages/utilities/Typography'))
 );
 const UtilsColor = Loadable(lazy(() => import('pages/utilities/Color')));
 const UtilsShadow = Loadable(lazy(() => import('pages/utilities/Shadow')));
@@ -26,82 +27,86 @@ const SamplePage = Loadable(lazy(() => import('pages/sample-page')));
 // ==============================|| MAIN ROUTING ||============================== //
 
 const PatientRoutes = {
-	path: '/patient',
-	element: <MainLayout userType={'patient'} />,
-	children: [
-		{
-			path: 'patient',
-			element: <DashboardDefault />,
-		},
-		{
-			path: 'dashboard',
-			children: [
-				{
-					path: 'default',
-					element: <DashboardDefault />,
-				},
-			],
-		},
-		{
-			path: 'pages',
-			children: [
-				{
-					path: 'profile',
-					element: <Account />,
-				},
-				{
-					path: 'medicines',
-					element: <LazyMedicines />,
-				},
-				{
-					path: 'medicines',
-					element: <LazyMedicines />,
-				},
-				{
-					path: 'cart',
-					element: <LazyCart />,
-				},
-				{
-					path: 'payment',
-					element: <LazyPayment />,
-				},
-				{
-					path: 'orders',
-					element: <LazyOrders />,
-				},
-				{
-					path: 'checkout',
-					element: <LazyCheckout />,
-				},
-				{
-					path: 'address',
-					element: <LazyAddress />,
-				},
-			],
-		},
-		{
-			path: 'utils',
-			children: [
-				{
-					path: 'util-typography',
-					element: <UtilsTypography />,
-				},
-				{
-					path: 'util-color',
-					element: <UtilsColor />,
-				},
-				{
-					path: 'util-shadow',
-					element: <UtilsShadow />,
-				},
-			],
-		},
+    path: '/patient',
+    element: <MainLayout userType={'patient'} />,
+    children: [
+        {
+            path: 'patient',
+            element: <DashboardDefault />,
+        },
+        {
+            path: 'dashboard',
+            children: [
+                {
+                    path: 'default',
+                    element: <DashboardDefault />,
+                },
+            ],
+        },
+        {
+            path: 'pages',
+            children: [
+                {
+                    path: 'profile',
+                    element: <Account />,
+                },
+                {
+                    path: 'medicines',
+                    element: <LazyMedicines />,
+                },
+                {
+                    path: 'medicines',
+                    element: <LazyMedicines />,
+                },
+                {
+                    path: 'cart',
+                    element: <LazyCart />,
+                },
+                {
+                    path: 'payment',
+                    element: <LazyPayment />,
+                },
+                {
+                    path: 'orders',
+                    element: <LazyOrders />,
+                },
+                {
+                    path: 'checkout',
+                    element: <LazyCheckout />,
+                },
+                {
+                    path: 'address',
+                    element: <LazyAddress />,
+                },
+                {
+                    path: 'chat',
+                    element: <LazyChat />,
+                },
+            ],
+        },
+        {
+            path: 'utils',
+            children: [
+                {
+                    path: 'util-typography',
+                    element: <UtilsTypography />,
+                },
+                {
+                    path: 'util-color',
+                    element: <UtilsColor />,
+                },
+                {
+                    path: 'util-shadow',
+                    element: <UtilsShadow />,
+                },
+            ],
+        },
 
-		{
-			path: 'sample-page',
-			element: <SamplePage />,
-		},
-	],
+        {
+            path: 'sample-page',
+            element: <SamplePage />,
+        },
+    ],
 };
 
 export default PatientRoutes;
