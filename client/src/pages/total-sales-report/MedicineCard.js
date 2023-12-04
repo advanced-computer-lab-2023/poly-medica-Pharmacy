@@ -16,12 +16,14 @@ const MedicineCard = ({
 	setSelectedMedicine,
 }) => {
 	const { user } = useUserContext(); 
-	const userType = user.type;
+	const userType = user.type; 
+	const sum = medicine.monthlySales[month].reduce((a, b) => a + b, 0);
+	
 	
 
 	return (
 		<div>
-			{userType !== 'patient' && medicine.monthlySales[month]!=0 && (
+			{userType !== 'patient' && sum!=0 && (
 				<ListItem button onClick={() => setSelectedMedicine(medicine)}>
 					<ListItemAvatar sx={{ paddingRight: '2%' }}>
 						<img
@@ -52,7 +54,7 @@ const MedicineCard = ({
 					/>
 					<ListItemText
 						sx={{ paddingLeft: '2%' }}
-						primary={`${medicine.monthlySales[month] +" items were Sold"}`}
+						primary={`${sum +" items were Sold"}`}
 					/>
 					
 				</ListItem>

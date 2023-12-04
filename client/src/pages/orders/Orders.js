@@ -64,7 +64,8 @@ const Orders = () => {
 							const date = new Date(order.createdAt);
 							console.log('date ===f===== ', date);
 							const month = date.getMonth(); 
-							updatedMedicine.monthlySales[month+1] -= medicine.quantity;
+							const day = date.getDate();
+							updatedMedicine.monthlySales[month+1][day] -= medicine.quantity;
 
 							pharmacyAxios
 								.patch(`/medicines/${updatedMedicine._id}`, { updatedMedicine })

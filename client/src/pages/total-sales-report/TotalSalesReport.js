@@ -1,21 +1,22 @@
 
-//make amonthly report of total sales
-//firstly make a dropdown menu for months
-//then make a table for total sales of each month
-
-//code
-//make a dropdown menu for months
 import React, { useEffect, useState } from 'react'; 
 
 import { pharmacyAxios } from '../../utils/AxiosConfig';
  import MonthPicker from './MonthPicker';
+ import DayPicker from './DayPicker';
  import Medicines from './Medicines';
+
 
 
 const TotalSalesReport = () => {
  
-    const [selectedMonth, setSelectedMonth] = React.useState(1);
+    const [selectedMonth, setSelectedMonth] = useState(0);
 	const [medicines, setMedicines] = useState([]);
+	const [selectedDate, setSelectedDate] = useState(null);
+
+	const handleSelectedDate = (date) => {
+        setSelectedDate(date);
+    };
 	
 	useEffect(() => {
 		pharmacyAxios
@@ -35,8 +36,9 @@ const TotalSalesReport = () => {
     return (
 		<div>
 			<MonthPicker selectedMonth={selectedMonth} handleMonthChange={handleMonthChange} />
+			{selectedMonth&&<DayPicker selectedDate={selectedDate} handleSelectedDate={handleSelectedDate} month={selectedMonth} />}
 			<Medicines style={{ marginTop: '80px' }}  
-			medicines={medicines} month={selectedMonth} />
+			medicines={medicines} month={selectedMonth}  />
 			
 		</div>
 	);	
