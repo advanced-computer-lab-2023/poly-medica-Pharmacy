@@ -4,7 +4,7 @@ import MedicineModel from '../models/Medicine.js';
 
 class MedicineRepository {
 	async findAllMedicines() {
-		const medicines = await MedicineModel.find({ archive: false });
+		const medicines = await MedicineModel.find();
 		return medicines;
 	}
 
