@@ -9,21 +9,30 @@ import {
 import { PHARMACY_BASE_URL } from 'utils/Constants';
 // import { pharmacyAxios } from '../../utils/AxiosConfig';
 import { useUserContext } from 'hooks/useUserContext';
+import { da } from 'date-fns/locale';
 
 const MedicineCard = ({
 	medicine,
 	month,
+	day,
 	setSelectedMedicine,
 }) => {
 	const { user } = useUserContext(); 
 	const userType = user.type; 
-	const sum = medicine.monthlySales[month].reduce((a, b) => a + b, 0);
+	const monthSales = medicine.monthlySales[month].reduce((a, b) => a + b, 0);
+	let daySales = 0;
+	if(day!=null){
+	const currentDay= day.getDate();
+    daySales = medicine.monthlySales[month][currentDay];
+}
+
+	const finalSales = day!=null?daySales:monthSales;
 	
 	
 
 	return (
 		<div>
-			{userType !== 'patient' && sum!=0 && (
+			{userType !== 'patient' && finalSales!=0 && (
 				<ListItem button onClick={() => setSelectedMedicine(medicine)}>
 					<ListItemAvatar sx={{ paddingRight: '2%' }}>
 						<img
@@ -54,7 +63,7 @@ const MedicineCard = ({
 					/>
 					<ListItemText
 						sx={{ paddingLeft: '2%' }}
-						primary={`${sum +" items were Sold"}`}
+						primary={`${finalSales +" items were Sold"}`}
 					/>
 					
 				</ListItem>

@@ -9,7 +9,7 @@ import MedicineDetails from './MedicineDetails';
 // import Message from 'ui-component/Message';
 // import { useUserContext } from 'hooks/useUserContext';
 
-const Medicines = ({ medicines, month }) => {
+const Medicines = ({ medicines, month, day }) => {
 	// const { user } = useUserContext();
 	// const userType = user.type;
 
@@ -26,6 +26,7 @@ const handleDialogClose = () => {
 				medicines={medicines}
 				setSelectedMedicine={setSelectedMedicine}
 				month={month}
+				day={day}
 			/>
 			{/* {addToCartAlert && (
 				<Message

@@ -14,8 +14,7 @@ const MonthPicker = ({ selectedMonth,handleMonthChange }) => {
         <InputLabel id="month-selector-label">Select a Month</InputLabel>
         <Select
         sx={{
-            marginBottom: '20px',
-           
+            marginBottom: '20px', 
          }} 
         style={{ width: '200px' }}
             labelId="month-selector-label"

@@ -1,9 +1,10 @@
 
 import React from 'react';
-import { Fab } from '@mui/material';
+import { Fab,FormControl, InputLabel  } from '@mui/material';
 import { Add } from '@mui/icons-material';
 import { DatePicker } from '@mui/x-date-pickers'; 
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+ 
 
 import { getMaxDate, getMinDate } from '../../utils/DateFormat';
 
@@ -11,21 +12,31 @@ import { getMaxDate, getMinDate } from '../../utils/DateFormat';
 
 
 const DayPicker = ({ selectedDate, handleSelectedDate,month }) => {
-
+    const handleKeyDown = (event) => {
+        // Prevent any keyboard input
+        event.preventDefault();
+      };
    
-    return (
-        <DatePicker 
-        //set margin for date picker
+    return ( 
+        <DatePicker  
+        
 
              sx={{
                 marginLeft: '20px',
                 marginBottom: '20px',
                
-             }} 
+             }}  
+                label="Select a Day" 
+               //only allow to select days in the selected month
+             
              
               dateAdapter={AdapterDayjs}
               
              value={selectedDate} 
+             onKeyDown={handleKeyDown} 
+             KeyboardButtonProps={{
+                'aria-label': 'change date',
+              }}
              
 
              onChange={(date) => handleSelectedDate(date)}
@@ -38,6 +49,7 @@ const DayPicker = ({ selectedDate, handleSelectedDate,month }) => {
             </Fab> 
             <input type="text" required />
             </DatePicker>
+             
     );
 };
 

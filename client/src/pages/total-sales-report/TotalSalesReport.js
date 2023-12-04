@@ -13,6 +13,9 @@ const TotalSalesReport = () => {
     const [selectedMonth, setSelectedMonth] = useState(0);
 	const [medicines, setMedicines] = useState([]);
 	const [selectedDate, setSelectedDate] = useState(null);
+	//return the day from the date
+	
+	const render =selectedMonth!=0; 
 
 	const handleSelectedDate = (date) => {
         setSelectedDate(date);
@@ -36,9 +39,9 @@ const TotalSalesReport = () => {
     return (
 		<div>
 			<MonthPicker selectedMonth={selectedMonth} handleMonthChange={handleMonthChange} />
-			{selectedMonth&&<DayPicker selectedDate={selectedDate} handleSelectedDate={handleSelectedDate} month={selectedMonth} />}
+			{render&&<DayPicker selectedDate={selectedDate} handleSelectedDate={handleSelectedDate} month={selectedMonth} />}
 			<Medicines style={{ marginTop: '80px' }}  
-			medicines={medicines} month={selectedMonth}  />
+			medicines={medicines} month={selectedMonth} day={selectedDate}  />
 			
 		</div>
 	);	

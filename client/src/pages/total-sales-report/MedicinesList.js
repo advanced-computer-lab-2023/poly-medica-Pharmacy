@@ -5,6 +5,7 @@ import MedicineCard from './MedicineCard';
 const MedicinesList = ({
 	medicines,
 	month,
+	day,
 	setSelectedMedicine
 
 }) => {
@@ -17,6 +18,7 @@ const MedicinesList = ({
 							<MedicineCard
 								medicine={medicine}
 								month={month}
+								day={day}
 								setSelectedMedicine={setSelectedMedicine}
 							></MedicineCard>
 						</div>
