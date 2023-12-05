@@ -17,7 +17,7 @@ const AltrentivesMedicine = ({
     
 
 	return (
-		<Dialog open={isAltDialogOpen} onClose={() => setIsAltDialogOpen(false)}>
+		<Dialog open={isAltDialogOpen} onClose={() => setIsAltDialogOpen(false)} fullWidth>
 			<DialogTitle>Alterentive Medicines</DialogTitle>
 			<DialogContent>
                 <AltMedicines activeIngerdients={activeIngerdients}/>
