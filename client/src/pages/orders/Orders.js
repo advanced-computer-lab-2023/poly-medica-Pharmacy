@@ -4,13 +4,17 @@ import MainCard from 'ui-component/cards/MainCard';
 import OrdersList from './OrdersList.js';
 import OrdersDetails from './OrdersDetails.js';
 import { useUserContext } from 'hooks/useUserContext.js';
-import { CANCELLED_STATUS, REJECTED_STATUS } from 'utils/Constants.js';
+import { REJECTED_STATUS, CANCELLED_STATUS } from 'utils/Constants.js';
+import { usePayment } from 'contexts/PaymentContext';
+
 
 const Orders = () => {
+	const { setPaymentDone } = usePayment();
 	const [orders, setOrders] = useState([]);
 	const [selectedOrder, setSelectedOrder] = useState(null);
 
 	const { user } = useUserContext();
+	const userType = user.type;
 	const userId = user.id;
 	useEffect(() => {
 		if (user.type === 'patient') {
@@ -36,6 +40,32 @@ const Orders = () => {
 
 	const handleDialogClose = () => {
 		setSelectedOrder(null);
+	};
+
+	const handleAmountRefund = (order) => {
+		if (order.paymentMethod != 'cash') {
+			let user_Id;
+			if(userType != 'patient'){
+				user_Id = order.patientId;
+			}else if (userType === 'patient'){
+				user_Id = userId;
+			}
+			patientAxios.
+				get(`/patients/${user_Id}/wallet`).
+				then((response) => {
+					console.log(response.data.walletAmount);
+					patientAxios
+						.patch(`/patients/${user_Id}/wallet`, { amount: response.data.walletAmount + order.amount })
+						.then(() => {
+							setPaymentDone((prev) => prev + 1);
+						}).catch((err) => {
+							console.log(err.message);
+						});
+				}).
+				catch((err) => {
+					console.log(err.message);
+				});
+		}
 	};
 
 	const handleCancleOrder = (order) => {
@@ -74,7 +104,10 @@ const Orders = () => {
 			.catch((err) => {
 				console.log(err);
 			});
+
+		handleAmountRefund(order);
 		handleDialogClose();
+
 	};
 
 	const handleAcceptOrRejectOrder = (status) => {
@@ -89,6 +122,10 @@ const Orders = () => {
 					});
 					return updateOrders;
 				});
+				if (status === REJECTED_STATUS){
+					console.log('was hererererer');
+					handleAmountRefund(order);
+				}
 			})
 			.then(() => {
 				if(selectedOrder.status === REJECTED_STATUS) { 
@@ -114,7 +151,7 @@ const Orders = () => {
 			.catch((err) => {
 				console.log(err);
 			});
-		handleDialogClose();
+			handleDialogClose();
 	};
 
 	return (

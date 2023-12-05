@@ -18,6 +18,7 @@ import { SearchProvider } from 'contexts/SearchContext';
 import { FilterProvider } from 'contexts/FilterContext';
 import { useUserContext } from 'hooks/useUserContext';
 import { useEffect } from 'react';
+import { PaymentProvider } from 'contexts/PaymentContext';
 
 // assets
 // import { IconChevronRight } from '@tabler/icons';
@@ -92,6 +93,7 @@ const MainLayout = ({ userType }) => {
 	return (
 		<FilterProvider>
 		<SearchProvider>
+		<PaymentProvider>
 		<Box sx={{ display: 'flex' }}>
 			<CssBaseline />
 			{/* header */}
@@ -120,6 +122,7 @@ const MainLayout = ({ userType }) => {
 			</Main>
 			{/* <Customization /> */}
 		</Box>
+		</PaymentProvider>
 		</SearchProvider>
 		</FilterProvider>
 	);
