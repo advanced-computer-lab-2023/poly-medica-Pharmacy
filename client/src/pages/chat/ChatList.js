@@ -8,7 +8,7 @@ import {
     Paper,
 } from '@mui/material';
 import { useUserContext } from 'hooks/useUserContext';
-import { communicationAxios, clinicAxios } from '../../utils/AxiosConfig';
+import { communicationAxios } from '../../utils/AxiosConfig';
 import ChatCard from './ChatCard';
 import { useChat } from 'contexts/ChatContext';
 import {
@@ -26,53 +26,6 @@ const ChatList = () => {
         userType = user.type;
     const { socket, setSelectedChat, chats, setChats } = useChat();
     const socketRef = useRef(socket);
-
-    const fetchDoctors = async () => {
-        setChats((prevChats) => {
-            clinicAxios
-                .get('/doctors')
-                .then((response) => {
-                    const doctors = response.data;
-                    for (let i = 0; i < doctors.length; i++) {
-                        if (
-                            !chatExist(
-                                prevChats,
-                                PHARMACY_MONGO_ID,
-                                doctors[i]._id
-                            ) &&
-                            !chatExist(
-                                prevChats,
-                                doctors[i]._id,
-                                PHARMACY_MONGO_ID
-                            )
-                        ) {
-                            communicationAxios
-                                .post('/chat', {
-                                    chat: {
-                                        chatName: 'Pharmacy',
-                                        users: [
-                                            {
-                                                id: PHARMACY_MONGO_ID,
-                                                userType: PHARMACIST_TYPE_ENUM,
-                                            },
-                                            {
-                                                id: doctors[i]._id,
-                                                userType: DOCTOR_TYPE_ENUM,
-                                            },
-                                        ],
-                                    },
-                                })
-                                .then((res) => {
-                                    prevChats.push(res.data);
-                                })
-                                .catch((err) => console.log(err));
-                        }
-                    }
-                })
-                .catch((err) => console.log(err));
-            return prevChats;
-        });
-    };
 
     useEffect(() => {
         const fetchData = async () => {
@@ -101,24 +54,21 @@ const ChatList = () => {
                             ],
                         },
                     });
-                
-                        setChats((prevChats) => {
-                            if (
-                                prevChats.some((c) =>
-                                    areUsersEqual(c.users, res.data.users)
-                                )
-                            ) {
-                                return prevChats;
-                            }
-                            return [...prevChats, res.data];
-                        });
+
+                    setChats((prevChats) => {
+                        if (
+                            prevChats.some((c) =>
+                                areUsersEqual(c.users, res.data.users)
+                            )
+                        ) {
+                            return prevChats;
+                        }
+                        return [...prevChats, res.data];
+                    });
                 } else {
                     if (!isEqual(response.data, chats)) {
                         setChats(response.data);
                     }
-                }
-                if (userType === PHARMACIST_TYPE_ENUM) {
-                    await fetchDoctors(response.data);
                 }
             } catch (error) {
                 console.error(error);

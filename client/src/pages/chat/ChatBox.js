@@ -4,15 +4,18 @@ import { Paper, InputBase, List, ListItem, Typography } from '@mui/material';
 import { useUserContext } from 'hooks/useUserContext';
 import { isSender, getReceiverId } from '../../utils/ChatUtils.js';
 import { useChat } from 'contexts/ChatContext.js';
+import { PHARMACIST_TYPE_ENUM, PHARMACY_MONGO_ID } from 'utils/Constants';
 
 const ChatBox = () => {
     const [chatMessages, setChatMessages] = useState([]);
     const [newMessage, setNewMessage] = useState('');
 
     const { user } = useUserContext();
-    const userId = user.id;
+    const userId = user.type === PHARMACIST_TYPE_ENUM ? PHARMACY_MONGO_ID : user.id;
     const { socket, selectedChat, updateChat } = useChat();
     const socketRef = useRef(socket);
+    const inputRef = useRef(null);
+
     useEffect(() => {
         if (!selectedChat) return;
         communicationAxios
@@ -23,6 +26,7 @@ const ChatBox = () => {
             .catch((err) => {
                 console.log(err);
             });
+        inputRef.current && inputRef.current.focus();
     }, [selectedChat]);
 
     const sendMessage = (data) => {
@@ -144,6 +148,8 @@ const ChatBox = () => {
                             width: '95%',
                             backgroundColor: '#f5f5f5',
                         }}
+                        autoFocus={true}
+                        ref={inputRef}
                         value={newMessage}
                         onChange={(e) => setNewMessage(e.target.value)}
                         placeholder=' Type a message'
