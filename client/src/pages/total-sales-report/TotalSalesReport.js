@@ -5,6 +5,8 @@ import { pharmacyAxios } from '../../utils/AxiosConfig';
  import MonthPicker from './MonthPicker';
  import DayPicker from './DayPicker';
  import Medicines from './Medicines';
+ //import barchart from './barchart'; 
+ import Chart from './Chart';
 
 
 
@@ -13,7 +15,7 @@ const TotalSalesReport = () => {
     const [selectedMonth, setSelectedMonth] = useState(0);
 	const [medicines, setMedicines] = useState([]);
 	const [selectedDate, setSelectedDate] = useState(null);
-	//return the day from the date
+	const [chartDate, setChartDate] = useState([]);
 	
 	const render =selectedMonth!=0; 
 
@@ -35,13 +37,14 @@ const TotalSalesReport = () => {
 		setSelectedMonth(event.target.value);
 	};											
 
-	
+	console.log("chartDate total",chartDate);
     return (
 		<div>
-			<MonthPicker selectedMonth={selectedMonth} handleMonthChange={handleMonthChange} />
-			{render&&<DayPicker selectedDate={selectedDate} handleSelectedDate={handleSelectedDate} month={selectedMonth} />}
+			<MonthPicker selectedMonth={selectedMonth} handleMonthChange={handleMonthChange} setChartDate={setChartDate} />
+			{render&&<DayPicker selectedDate={selectedDate} handleSelectedDate={handleSelectedDate} month={selectedMonth} setChartDate={setChartDate}/>}
 			<Medicines style={{ marginTop: '80px' }}  
-			medicines={medicines} month={selectedMonth} day={selectedDate}  />
+			medicines={medicines} month={selectedMonth} day={selectedDate} data={chartDate}  />
+			<Chart data={chartDate} />  
 			
 		</div>
 	);	

@@ -6,7 +6,8 @@ const MedicinesList = ({
 	medicines,
 	month,
 	day,
-	setSelectedMedicine
+	setSelectedMedicine,
+	data
 
 }) => {
 	return (
@@ -20,6 +21,7 @@ const MedicinesList = ({
 								month={month}
 								day={day}
 								setSelectedMedicine={setSelectedMedicine}
+								data={data}
 							></MedicineCard>
 						</div>
 					</div>

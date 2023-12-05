@@ -9,13 +9,14 @@ import {
 import { PHARMACY_BASE_URL } from 'utils/Constants';
 // import { pharmacyAxios } from '../../utils/AxiosConfig';
 import { useUserContext } from 'hooks/useUserContext';
-import { da } from 'date-fns/locale';
+import { useEffect } from 'react';
 
 const MedicineCard = ({
 	medicine,
 	month,
 	day,
 	setSelectedMedicine,
+	data
 }) => {
 	const { user } = useUserContext(); 
 	const userType = user.type; 
@@ -24,12 +25,20 @@ const MedicineCard = ({
 	if(day!=null){
 	const currentDay= day.getDate();
     daySales = medicine.monthlySales[month][currentDay];
+	
 }
 
 	const finalSales = day!=null?daySales:monthSales;
 	
 	
-
+	useEffect(() => {
+		if(finalSales!=0){
+		data.push({ name:medicine.name, sales:finalSales });
+	}
+	console.log("dataa",data);
+	
+	}, [month,day]);
+	
 	return (
 		<div>
 			{userType !== 'patient' && finalSales!=0 && (
@@ -64,6 +73,8 @@ const MedicineCard = ({
 					<ListItemText
 						sx={{ paddingLeft: '2%' }}
 						primary={`${finalSales +" items were Sold"}`}
+						//make a function that is executed when new item is to the list
+
 					/>
 					
 				</ListItem>

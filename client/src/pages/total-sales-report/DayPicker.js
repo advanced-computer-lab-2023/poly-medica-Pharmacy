@@ -1,6 +1,5 @@
-
 import React from 'react';
-import { Fab,FormControl, InputLabel  } from '@mui/material';
+import { Fab } from '@mui/material';
 import { Add } from '@mui/icons-material';
 import { DatePicker } from '@mui/x-date-pickers'; 
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
@@ -11,7 +10,7 @@ import { getMaxDate, getMinDate } from '../../utils/DateFormat';
 
 
 
-const DayPicker = ({ selectedDate, handleSelectedDate,month }) => {
+const DayPicker = ({ selectedDate, handleSelectedDate,month,setChartDate }) => {
     const handleKeyDown = (event) => {
         // Prevent any keyboard input
         event.preventDefault();
@@ -39,7 +38,10 @@ const DayPicker = ({ selectedDate, handleSelectedDate,month }) => {
               }}
              
 
-             onChange={(date) => handleSelectedDate(date)}
+             onChange={(date) => {
+                handleSelectedDate(date);
+                setChartDate([]);}
+            }
 			minDate={getMinDate(month-1)}
             maxDate={getMaxDate(month-1)}
             >
