@@ -13,6 +13,7 @@ const Chart = (data, month) => {
     //                 { name: 'Page G', uv: 400, pv: 2400, amt: 2400 }
     // ];
     console.log("data from chart",data);
+    console.log("month from chart",month);
     const isDataAvailable = data && data.data.length > 0; 
     return (
       <div>
@@ -25,19 +26,10 @@ const Chart = (data, month) => {
             <CartesianGrid stroke="#ccc" strokeDasharray="5 5" />
             <Bar dataKey="sales" fill="#8884d8" barSize={30} />
           </BarChart>
-        ) : month > 0 ? (
-           
-            <Typography variant="h5" component="h6" gutterBottom>
-                No data available.
-            </Typography>
-          
-        ):
-        (  
-              <Typography variant="h5" component="h6" gutterBottom>
-                  Please select a month to display the monthly-sales report.
-              </Typography>
-             
-          )
+        ) :  (<Typography variant="h5" component="h6" gutterBottom>
+        No data available.
+              </Typography>)
+        
 
         }
       </div>

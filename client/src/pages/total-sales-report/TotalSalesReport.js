@@ -16,13 +16,7 @@ const TotalSalesReport = () => {
 	const [medicines, setMedicines] = useState([]);
 	const [selectedDate, setSelectedDate] = useState(null);
 	const [chartDate, setChartDate] = useState([]);
-	
-	const render =selectedMonth!=0; 
 
-	const handleSelectedDate = (date) => {
-        setSelectedDate(date);
-    };
-	
 	useEffect(() => {
 		pharmacyAxios
 			.get('/medicines')
@@ -33,6 +27,14 @@ const TotalSalesReport = () => {
 				console.log(error);
 			});
 	}, []);	
+	
+	const render =selectedMonth!=0; 
+
+	const handleSelectedDate = (date) => {
+        setSelectedDate(date);
+    };
+	
+	
 	const handleMonthChange = (event) => {
 		setSelectedMonth(event.target.value);
 		setSelectedDate(null);
