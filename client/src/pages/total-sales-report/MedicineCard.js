@@ -16,7 +16,8 @@ const MedicineCard = ({
 	month,
 	day,
 	setSelectedMedicine,
-	data
+	data,
+	setDate
 }) => {
 	const { user } = useUserContext(); 
 	const userType = user.type; 
@@ -32,11 +33,12 @@ const MedicineCard = ({
 	
 	
 	useEffect(() => {
-		if(finalSales!=0){
-		data.push({ name:medicine.name, sales:finalSales });
+		if(finalSales!=0){ 
+			setDate((prevData) => {
+				const updateData = [...prevData, { name:medicine.name, sales:finalSales }];
+				return updateData;
+			});
 	}
-	console.log("dataa",data);
-	
 	}, [month,day]);
 	
 	return (

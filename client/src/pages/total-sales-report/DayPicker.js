@@ -11,8 +11,7 @@ import { getMaxDate, getMinDate } from '../../utils/DateFormat';
 
 
 const DayPicker = ({ selectedDate, handleSelectedDate,month,setChartDate }) => {
-    const handleKeyDown = (event) => {
-        // Prevent any keyboard input
+    const handleKeyDown = (event) => { 
         event.preventDefault();
       };
    
@@ -26,8 +25,6 @@ const DayPicker = ({ selectedDate, handleSelectedDate,month,setChartDate }) => {
                
              }}  
                 label="Select a Day" 
-               //only allow to select days in the selected month
-             
              
               dateAdapter={AdapterDayjs}
               
