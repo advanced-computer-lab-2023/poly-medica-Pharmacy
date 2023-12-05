@@ -186,11 +186,15 @@ const MedicineCard = ({
 						<Grid item sx={{ alignSelf: 'center' }} xs={2}>
 							{medicine.quantity === 0 ? (
 								<Box sx={{ width: '100%' }}>
-									<Stack spacing={2}>
-										<Typography variant='body1' color='error' ml={0}>
+									<Stack alignItems="center">
+										<Typography variant='body2' color='error'>
 											Out of Stock
 										</Typography>
-										<Button variant="text" onClick={handleAltDialogOpen}>View Altrentives</Button>
+										<Typography >
+											<Button variant="text" sx={{ fontSize: 10 }} onClick={handleAltDialogOpen}>
+												View Alternatives
+											</Button>
+										</Typography>
 									</Stack>
 								</Box>
 							) : (
