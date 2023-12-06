@@ -68,14 +68,6 @@ const pages = {
 			target: false,
 		},
 		{
-			id: 'Checkout',
-			title: 'Checkout',
-			type: 'item',
-			icon: icons.PointOfSaleIcon,
-			url: '/patient/pages/checkout',
-			target: false,
-		},
-		{
 			id: 'addresses',
 			title: 'Address',
 			type: 'item',

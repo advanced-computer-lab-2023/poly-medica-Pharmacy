@@ -113,6 +113,8 @@ const Checkout = () => {
 								patientId: userId,
 								details: items,
 								amount: totalCost,
+								type: type,
+								typeId: id,
 							},
 							amountToPay: totalCost,
 						},
@@ -133,7 +135,9 @@ const Checkout = () => {
 											patientId: userId,
 											details: items,
 											amount: totalCost,
-										}, type);
+											type: type,
+											typeId: id,
+										});
 										if (type === 'cart') {
 											pharmacyAxios
 												.delete(`/cart/users/${userId}/medicines`)
@@ -177,6 +181,8 @@ const Checkout = () => {
 											patientId: userId,
 											details: items,
 											amount: totalCost,
+											type: type,
+											typeId: id,
 										},
 										amountToPay: amountToPayByCard,
 									},
@@ -191,7 +197,9 @@ const Checkout = () => {
 							patientId: userId,
 							details: items,
 							amount: totalCost,
-						}, type);
+							type: type,
+							typeId: id,
+						});
 						navigate(callBackUrl, { replace: true });
 					});
 				}

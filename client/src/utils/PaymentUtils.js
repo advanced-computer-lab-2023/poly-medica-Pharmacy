@@ -1,7 +1,8 @@
 import { patientAxios, pharmacyAxios } from './AxiosConfig';
 import Swal from 'sweetalert2';
 
-export const successfulPayment = (userId, order, type) => {
+export const successfulPayment = (userId, order) => {
+	const { type } = order;
 	patientAxios
 		.post('/order', { order })
 		.then(() => {
@@ -26,6 +27,15 @@ export const successfulPayment = (userId, order, type) => {
 					.catch((error) => {
 						console.log(error);
 					});
+			} else if (type === 'prescription') {
+				const { typeId } = order;
+				patientAxios
+					.patch(`/prescriptions/${typeId}`, {
+						prescription: { purchased: true },
+					})
+					.catch((error) => {
+						console.log(error);
+					});
 			}
 		})
 		.catch((error) => {
@@ -35,13 +45,14 @@ export const successfulPayment = (userId, order, type) => {
 	return '/patient/pages/orders';
 };
 
-export const paymentStatus = (navigate, status, item, userId, type) => {
+export const paymentStatus = (navigate, status, item, userId) => {
 	console.log('the status is ', status);
+	console.log('Payment item is ', item);
 	switch (status) {
 		case 'succeeded': {
 			Swal.fire('success', 'Payment Succeeded', 'success')
 				.then(() => {
-					const callBackUrl = successfulPayment(userId, item, type);
+					const callBackUrl = successfulPayment(userId, item);
 					navigate(callBackUrl, { replace: true });
 				})
 				.catch((error) => {

@@ -95,7 +95,11 @@ const PrescriptionItem = ({ prescription, handleClicking }) => {
 						rel='noreferrer'
 						download={`${prescription._id}.pdf`}
 					>
-						<IconButton edge='end' aria-label='download'>
+						<IconButton
+							edge='end'
+							aria-label='download'
+							onClick={(e) => e.stopPropagation()}
+						>
 							<FileDownloadIcon />
 						</IconButton>
 					</a>

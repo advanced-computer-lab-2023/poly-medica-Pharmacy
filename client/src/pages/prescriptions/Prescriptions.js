@@ -33,7 +33,12 @@ const Prescriptions = () => {
 					);
 					patientResponses.data = filteredPrescriptions;
 				}
-				setPrescriptions(patientResponses.data);
+
+				const prescriptions = patientResponses.data.filter(
+					(prescription) => prescription.purchased === false,
+				);
+
+				setPrescriptions(prescriptions);
 				setLoadingPrescription(false);
 				console.log('prescription now false');
 			} catch (err) {
