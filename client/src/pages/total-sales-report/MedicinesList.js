@@ -10,6 +10,7 @@ const MedicinesList = ({
 	data,
 	setDate
 
+
 }) => {
 	return (
 		<List>
@@ -18,6 +19,7 @@ const MedicinesList = ({
 					<div key={index}>
 						<div key={index}>
 							<MedicineCard
+							medicines={medicines} 
 								medicine={medicine}
 								month={month}
 								day={day}

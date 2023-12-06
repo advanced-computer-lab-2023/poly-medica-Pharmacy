@@ -14,6 +14,8 @@ const DayPicker = ({ selectedDate, handleSelectedDate,month,setChartDate }) => {
     const handleKeyDown = (event) => { 
         event.preventDefault();
       };
+
+       
    
     return ( 
         <DatePicker  
@@ -24,7 +26,9 @@ const DayPicker = ({ selectedDate, handleSelectedDate,month,setChartDate }) => {
                 marginBottom: '20px',
                
              }}  
-                label="Select a Day" 
+                label="Select a Day"
+                clearable
+                
              
               dateAdapter={AdapterDayjs}
               

@@ -1,13 +1,10 @@
 
 import React from 'react';
 import { MenuItem, Select, FormControl, InputLabel } from '@mui/material';
+import { months } from '../../utils/DateFormat';
 
 
 const MonthPicker = ({ selectedMonth,handleMonthChange,setChartDate }) => {    
-    const months = [
-        'January', 'February', 'March', 'April', 'May', 'June',
-        'July', 'August', 'September', 'October', 'November', 'December'
-    ];
     const handelDateChange=  (event) => {
         handleMonthChange(event);
         setChartDate([]);

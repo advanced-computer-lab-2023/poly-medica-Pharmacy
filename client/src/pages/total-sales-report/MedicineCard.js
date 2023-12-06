@@ -12,11 +12,12 @@ import { useUserContext } from 'hooks/useUserContext';
 import { useEffect } from 'react';
 
 const MedicineCard = ({
+	medicines,
 	medicine,
 	month,
 	day,
 	setSelectedMedicine,
-	data,
+	// data,
 	setDate
 }) => {
 	const { user } = useUserContext(); 
@@ -40,6 +41,29 @@ const MedicineCard = ({
 			});
 	}
 	}, [month,day]);
+
+	useEffect(() => { 
+			setDate(() => { 
+				const updateData=[];
+				medicines.forEach((medicine) => {
+					const monthSales = medicine.monthlySales[month].reduce((a, b) => a + b, 0);
+					let daySales = 0;
+					if(day!=null){
+					const currentDay= day.getDate();
+					daySales = medicine.monthlySales[month][currentDay];
+					
+				}
+				
+					const finalSales = day!=null?daySales:monthSales;
+					if(finalSales!=0){
+					updateData.push({ name:medicine.name, sales:finalSales });
+				}
+				});
+				return updateData;
+			});
+	
+	}
+	, [medicines]) ;
 	
 	return (
 		<div>
