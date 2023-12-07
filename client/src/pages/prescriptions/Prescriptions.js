@@ -35,7 +35,8 @@ const Prescriptions = () => {
 				}
 
 				const prescriptions = patientResponses.data.filter(
-					(prescription) => prescription.purchased === false,
+					(prescription) =>
+						prescription.purchased === false && prescription.filled === true,
 				);
 
 				setPrescriptions(prescriptions);

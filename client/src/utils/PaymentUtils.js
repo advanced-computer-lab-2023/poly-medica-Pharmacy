@@ -33,6 +33,25 @@ export const successfulPayment = (userId, order) => {
 					.patch(`/prescriptions/${typeId}`, {
 						prescription: { purchased: true },
 					})
+					.then(() => {
+						patientAxios
+							.get(`/prescriptions/${typeId}/medicines`)
+							.then((response) => {
+								const medicines = response.data;
+								console.log('MEDICINES == ', medicines);
+								medicines.forEach((medicine) => {
+									pharmacyAxios
+										.get(`/medicines/${medicine.medicineId}`)
+										.then((response) => {
+											pharmacyAxios.patch(
+												`medicines/${medicine.medicineId}/${
+													response.data.medicine.quantity - medicine.amount
+												}`,
+											);
+										});
+								});
+							});
+					})
 					.catch((error) => {
 						console.log(error);
 					});
