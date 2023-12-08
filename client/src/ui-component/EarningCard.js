@@ -10,7 +10,7 @@ import MainCard from 'ui-component/cards/MainCard';
 import SkeletonEarningCard from 'ui-component/cards/loadingShapes/EarningCardLoader';
 
 // assets
-//import EarningIcon from 'assets/images/icons/earning.svg';
+import EarningIcon from 'assets/images/icons/earning.svg';
 //import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
 import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
 //import GetAppTwoToneIcon from '@mui/icons-material/GetAppOutlined';
@@ -65,13 +65,24 @@ const EarningCard = ({ isLoading, earning, value }) => {
 			{isLoading ? (
 				<SkeletonEarningCard />
 			) : (
-				<CardWrapper border={false} content={false} sx={{ width: '210px' }}>
+				<CardWrapper border={false} content={false} sx={{ width: '220px' }}>
 					<Box sx={{ p: 2.25 }}>
 						<Grid container direction="column">
-							<Grid item sx={{ mb: 0.25 }}>
+							<Grid item >
+								<Avatar
+									sx={{
+										...theme.typography.largeAvatar,
+										backgroundColor: theme.palette.secondary[800],
+										mt: 1
+									}}
+								>
+									<img src={EarningIcon} />
+								</Avatar>
+							</Grid>
+							<Grid item sx={{ mt : 1.5 , mb: 0.25 }}>
 								<Typography
 									sx={{
-										zIndex : 12,
+										zIndex: 12,
 										fontSize: '1.12rem',
 										fontWeight: 700,
 										color: theme.palette.secondary[200]
@@ -83,7 +94,7 @@ const EarningCard = ({ isLoading, earning, value }) => {
 							<Grid item>
 								<Grid container alignItems="center">
 									<Grid item>
-										<Typography sx={{ fontSize: '2.125rem', fontWeight: 500, mr: 1, mt: 1.75, mb: 0.75 }}>${value}</Typography>
+										<Typography sx={{ fontSize: '2.0rem', fontWeight: 500, mr: 1, mt: 0.75, mb: 0.75 }}>${value}</Typography>
 									</Grid>
 									<Grid item>
 										<Avatar
