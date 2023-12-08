@@ -2,10 +2,9 @@ import PropTypes from 'prop-types';
 import { useUserContext } from 'hooks/useUserContext';
 // material-ui
 import { useTheme } from '@mui/material/styles';
-import { Avatar, Box, Chip, Drawer, List, Stack, Typography, useMediaQuery } from '@mui/material';
+import {  Box, Chip, Drawer, List, Stack, useMediaQuery } from '@mui/material';
 import { usePayment } from 'contexts/PaymentContext';
-
-import AccountBalanceWalletIcon from '@mui/icons-material/AccountBalanceWallet';
+import EarningCard from 'ui-component/EarningCard';
 
 // third-party
 import PerfectScrollbar from 'react-perfect-scrollbar';
@@ -70,14 +69,7 @@ const Sidebar = ({ drawerOpen, drawerToggle, window }) => {
 					<List
 						subheader={
 							userType != 'admin' && (
-								<Stack direction="row" alignItems="center" spacing={2} mb={2}>
-									<Avatar sx={{ backgroundColor: 'white', color: '#000' }}>
-										<AccountBalanceWalletIcon />
-									</Avatar>
-									<Typography variant="caption" sx={{ ...theme.typography.menuCaption }} display="block" gutterBottom>
-										<strong>Poly-Wallet:</strong> $ {amountInWallet}
-									</Typography>
-								</Stack>
+								<EarningCard isLoading={false} earning={'Poly-Wallet'} value={amountInWallet}/>
 							)
 						}
 					>
