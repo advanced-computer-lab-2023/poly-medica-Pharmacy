@@ -7,7 +7,9 @@ import {
 	Button,
 	TextField,
 	FormControl,
+	FormControlLabel,
 	Input,
+	Checkbox
 } from '@mui/material';
 
 const AddMedicine = ({
@@ -17,6 +19,7 @@ const AddMedicine = ({
 	handleImageUpload,
 	handleAddMedicine,
 	newMedicine,
+	setNewMedicine
 }) => {
 
 	const handleInputChange = (e) => {
@@ -29,6 +32,14 @@ const AddMedicine = ({
 
 		handleFormInputChange(e);
 	};
+
+	const handleCheckboxChange = (e) => {
+		setNewMedicine({
+			...newMedicine,
+			prescriptionMedicine: e.target.checked,
+		});
+	};
+
 	return (
 		<Dialog open={isAddDialogOpen} onClose={handleAddDialogClose}>
 			<DialogTitle>Add New Medicine</DialogTitle>
@@ -109,6 +120,14 @@ const AddMedicine = ({
 							required
 						/>
 					</FormControl>
+					<FormControl required fullWidth>
+						<FormControlLabel control={<Checkbox
+							checked={newMedicine.prescriptionMedicine}
+							onChange={handleCheckboxChange}
+							name='prescriptionMedicine'
+							color='primary' />} label="Prescription Medicine" />
+					</FormControl>
+
 					<FormControl fullWidth margin='normal'>
 						<Input type='file' name='image' onChange={handleImageUpload} />
 					</FormControl>

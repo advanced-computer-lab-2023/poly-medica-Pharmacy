@@ -98,6 +98,15 @@ class PharmacyRepository {
 	deleteFile(fileName) {
 		return deleteFile(PHARMACIST_FOLDER_NAME, fileName);
 	}
+	async getWalletAmount(id) {
+		const user = await PharmacistModel.findById(id);
+		return user.walletAmount;
+	}
+	async updateWallet(pharmacistId, newWalletAmount){
+		const pharmacist = await PharmacistModel.findById(pharmacistId);
+		pharmacist.walletAmount = newWalletAmount;
+		return await pharmacist.save();
+	}
 }
 
 export default PharmacyRepository;

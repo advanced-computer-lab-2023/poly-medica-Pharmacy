@@ -1,5 +1,6 @@
 import mongoose from 'mongoose';
 import UserSchema from './UserSchema.js';
+import { ZERO_INDEX_ARR } from '../../utils/Constants.js';
 
 const Pharmacist = mongoose.Schema({
 	userData: {
@@ -20,6 +21,16 @@ const Pharmacist = mongoose.Schema({
 	},
 	documentsNames: {
 		type: [String],
+	},
+	walletAmount: {
+		type: Number,
+		default: 0,
+		validate: {
+			validator: function (v) {
+				return v >= ZERO_INDEX_ARR;
+			},
+			message: (props) => `${props.value} is not a valid wallet amount!`,
+		},
 	},
 	//.....
 });

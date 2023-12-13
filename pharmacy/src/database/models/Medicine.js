@@ -33,6 +33,10 @@ const Medicine = mongoose.Schema({
 		type: String,
 		required: true
 	},
+	prescriptionMedicine: {
+		type: Boolean,
+		required: true
+	},
 	archive: {
 		type: Boolean,
 		required: true,
