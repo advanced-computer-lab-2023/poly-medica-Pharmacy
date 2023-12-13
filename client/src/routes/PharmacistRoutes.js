@@ -13,6 +13,9 @@ const LazyPatientsInfo = Loadable(
 const LazyPharmacistsInfo = Loadable(
 	lazy(() => import('pages/pharmacist/PharmacistInfo')),
 );
+const LazyTotalSalesReport = Loadable(
+	lazy(() => import('pages/total-sales-report/TotalSalesReport')),
+);
 const Account = Loadable(lazy(() => import('pages/profile/Account')));
 const LazyOrders = Loadable(lazy(() => import('pages/orders/Orders')));
 // utilities routing
@@ -21,6 +24,7 @@ const UtilsTypography = Loadable(
 );
 const UtilsColor = Loadable(lazy(() => import('pages/utilities/Color')));
 const UtilsShadow = Loadable(lazy(() => import('pages/utilities/Shadow')));
+
 
 // sample page routing
 const SamplePage = Loadable(lazy(() => import('pages/sample-page')));
@@ -58,6 +62,10 @@ const PharmacistRoutes = {
 				{
 					path: 'orders',
 					element: <LazyOrders />,
+				},
+				{
+					path: 'total-sales-report',
+					element: <LazyTotalSalesReport />,
 				},
 			],
 		},

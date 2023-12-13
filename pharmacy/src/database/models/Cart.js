@@ -45,6 +45,11 @@ const Cart = mongoose.Schema({
 					type: String,
 					required: true,
 				},
+				monthlySales:{
+					type: [[Number]],
+					required: true,
+					default:() => Array.from({ length: 13 }, () => new Array(32).fill(0)) 
+				},
 			},
 			quantity: {
 				type: Number,

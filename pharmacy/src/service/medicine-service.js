@@ -20,11 +20,12 @@ class MedicineService {
 		return medicine;
 	}
 
-	async updateMedicineQuantity(id, newQuantity, newSales) {
+	async updateMedicineQuantity(id, newQuantity, newSales,newMonthlySales) {
 		const updated = await this.repository.updateMedicineQuantity(
 			id,
 			newQuantity,
 			newSales,
+			newMonthlySales,
 		);
 		return updated;
 	}
