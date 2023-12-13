@@ -6,9 +6,7 @@ import { useTheme } from '@mui/material/styles';
 import {
 	Avatar,
 	Box,
-	Button,
 	ButtonBase,
-	CardActions,
 	Chip,
 	ClickAwayListener,
 	Divider,
@@ -31,8 +29,11 @@ import NotificationList from './NotificationList';
 
 // assets
 import { IconBell } from '@tabler/icons';
+import { useUserContext } from 'hooks/useUserContext';
+import Swal from 'sweetalert2';
+import { communicationAxios } from 'utils/AxiosConfig';
 
-// notification status options
+// notification status options //TODO: filter tags
 const status = [
 	{
 		value: 'all',
@@ -60,6 +61,14 @@ const NotificationSection = () => {
 
 	const [open, setOpen] = useState(false);
 	const [value, setValue] = useState('');
+	const { user } = useUserContext(); 
+	const [notifications, setNotifications] = useState([]);
+	const [numberOfUnseenNotification, setNumberOfUnseenNotification] = useState(0);
+	const [dataChange, setDataChange] = useState(false);
+
+	const handledataChange = () => {
+		setDataChange(!dataChange);
+	};
 	/**
    * anchorRef is used on different componets and specifying one type leads to other components throwing an error
    * */
@@ -80,11 +89,32 @@ const NotificationSection = () => {
 	useEffect(() => {
 		if (prevOpen.current === true && open === false) {
 			anchorRef.current.focus();
+		} else if( prevOpen.current === false && open === true ){
+			communicationAxios.get(`/notifications/${user.id}`).then( response => {
+				setNotifications( () => [ ...response.data ]);
+				let counter = 0;
+				response.data.map( notification => {
+					if(!notification.notificationState)
+						counter++;
+				});
+				setNumberOfUnseenNotification(counter);
+			}).catch( error => {
+				console.log(error);
+				Swal.fire({
+					icon: 'error',
+					title: 'Oops...',
+					text: error.response.data.errMessage,
+				});
+			});
 		}
 		prevOpen.current = open;
-	}, [open]);
+	}, [open, dataChange]);
+
+	
+	
 
 	const handleChange = (event) => {
+		//TODO: this help in filter
 		if (event?.target.value) setValue(event?.target.value);
 	};
 
@@ -150,20 +180,33 @@ const NotificationSection = () => {
 										<Grid item xs={12}>
 											<Grid container alignItems="center" justifyContent="space-between" sx={{ pt: 2, px: 2 }}>
 												<Grid item>
-													<Stack direction="row" spacing={2}>
+													<Stack direction="row" spacing={4}>
 														<Typography variant="subtitle1">All Notification</Typography>
 														<Chip
 															size="small"
-															label="01"
+															label={numberOfUnseenNotification}
 															sx={{
 																color: theme.palette.background.default,
-																bgcolor: theme.palette.warning.dark
+																bgcolor: theme.palette.warning.dark,
 															}}
 														/>
 													</Stack>
 												</Grid>
 												<Grid item>
-													<Typography component={Link} to="#" variant="subtitle2" color="primary">
+													<Typography onClick={ () => {
+														
+														communicationAxios.patch(`/notifications/${user.id}`).then( () => {
+															setNumberOfUnseenNotification(0);
+															handledataChange();
+														}).catch( error => {
+															console.log(error);
+															Swal.fire({
+																icon: 'error',
+																title: 'Oops...',
+																text: error.response.data.errMessage,
+															});
+														});
+													} } sx={{ marginLeft: 1 }} component={Link} to="#" variant="subtitle2" color="primary">
                             Mark as all read
 													</Typography>
 												</Grid>
@@ -196,16 +239,10 @@ const NotificationSection = () => {
 														<Divider sx={{ my: 0 }} />
 													</Grid>
 												</Grid>
-												<NotificationList />
+												<NotificationList notifications={notifications} />
 											</PerfectScrollbar>
 										</Grid>
 									</Grid>
-									<Divider />
-									<CardActions sx={{ p: 1.25, justifyContent: 'center' }}>
-										<Button size="small" disableElevation>
-                      View All
-										</Button>
-									</CardActions>
 								</MainCard>
 							</ClickAwayListener>
 						</Paper>
