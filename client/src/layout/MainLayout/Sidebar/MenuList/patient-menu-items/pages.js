@@ -5,6 +5,7 @@ import {
 	IconEmergencyBed,
 	IconMedicineSyrup,
 	IconRegistered,
+	IconPrescription,
 } from '@tabler/icons';
 import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
 import AdminPanelSettingsOutlinedIcon from '@mui/icons-material/AdminPanelSettingsOutlined';
@@ -22,6 +23,7 @@ const icons = {
 	ShoppingCartOutlinedIcon,
 	PointOfSaleIcon,
 	ReceiptLongIcon,
+	IconPrescription,
 	HomeIcon,
 };
 
@@ -33,6 +35,14 @@ const pages = {
 	caption: 'Pages Caption',
 	type: 'group',
 	children: [
+		{
+			id: 'prescriptions',
+			title: 'Prescriptions',
+			type: 'item',
+			icon: icons.IconPrescription,
+			url: '/patient/pages/prescriptions',
+			target: false,
+		},
 		{
 			id: 'medicines',
 			title: 'Medicines',
@@ -55,14 +65,6 @@ const pages = {
 			type: 'item',
 			icon: icons.ReceiptLongIcon,
 			url: '/patient/pages/orders',
-			target: false,
-		},
-		{
-			id: 'Checkout',
-			title: 'Checkout',
-			type: 'item',
-			icon: icons.PointOfSaleIcon,
-			url: '/patient/pages/checkout',
 			target: false,
 		},
 		{

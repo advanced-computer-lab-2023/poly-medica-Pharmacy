@@ -37,6 +37,11 @@ const Medicine = mongoose.Schema({
 		type: [[Number]],//12 months * 32 days
 		required: true,
 		default:() => Array.from({ length: 13 }, () => new Array(32).fill(0))
+	},
+	archive: {
+		type: Boolean,
+		required: true,
+		default: false
 	}
 });
 

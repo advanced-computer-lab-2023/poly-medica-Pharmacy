@@ -17,6 +17,7 @@ import { DatePicker } from '@mui/x-date-pickers';
 import { strengthColor, strengthIndicator } from 'utils/password-strength';
 import Swal from 'sweetalert2';
 import { authenticationAxios, pharmacyAxios } from 'utils/AxiosConfig';
+import { useNavigate } from 'react-router';
 
 // ===========================|| FIREBASE - REGISTER ||=========================== //
 
@@ -33,6 +34,7 @@ const FirebaseRegister = ({ type }) => {
     const [selectedDate, setSelectedDate] = useState(new Date());
     const [affiliation, setAffiliation] = useState('');
     const [uploadedFiles, setUploadedFiles] = useState([]);
+    const navigate = useNavigate();
 
     const handleUploadedFiles = (files) => {
         const uploaded = [...uploadedFiles];
@@ -135,6 +137,7 @@ const FirebaseRegister = ({ type }) => {
                 setSelectedDate(new Date());
                 setAffiliation('');
                 setUploadedFiles([]);
+                navigate('/login/login3');
             } catch(err) {
                 Swal.fire({
                     icon: 'error',

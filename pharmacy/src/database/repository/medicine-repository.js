@@ -8,6 +8,11 @@ class MedicineRepository {
 		return medicines;
 	}
 
+	async findAllArchiveMedicine(){
+		const medicines = await MedicineModel.find({ archive: true });
+		return medicines;
+	}
+
 	async getOneMedicine(id) {
 		const medicine = await MedicineModel.findById(id);
 		return medicine;
@@ -32,6 +37,14 @@ class MedicineRepository {
 			{ new: true },
 		);
 		return updated;
+	}
+
+	async updateMedicineArchiveState(id, archive){
+		await MedicineModel.findByIdAndUpdate(
+			id,
+			{ archive: archive },
+			{ new: true },
+		);
 	}
 
 	getPicture(picName) {

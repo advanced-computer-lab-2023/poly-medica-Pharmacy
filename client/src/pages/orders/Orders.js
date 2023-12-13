@@ -4,7 +4,7 @@ import MainCard from 'ui-component/cards/MainCard';
 import OrdersList from './OrdersList.js';
 import OrdersDetails from './OrdersDetails.js';
 import { useUserContext } from 'hooks/useUserContext.js';
-import { CANCELLED_STATUS } from 'utils/Constants.js';
+import { CANCELLED_STATUS, REJECTED_STATUS } from 'utils/Constants.js';
 
 const Orders = () => {
 	const [orders, setOrders] = useState([]);
@@ -24,7 +24,7 @@ const Orders = () => {
 				});
 		} else {
 			patientAxios
-				.get(`/order/pending/`)
+				.get(`/order/pending`)
 				.then((response) => {
 					setOrders(response.data);
 				})
@@ -96,6 +96,27 @@ const Orders = () => {
 					});
 					return updateOrders;
 				});
+			})
+			.then(() => {
+				if(selectedOrder.status === REJECTED_STATUS) { 
+					selectedOrder.details.forEach((medicine) => {
+						pharmacyAxios
+							.get(`/medicines/${medicine.medicineId}`)
+							.then((response) => {
+								const updatedMedicine = response.data.medicine;
+								updatedMedicine.quantity += medicine.quantity;
+								updatedMedicine.sales -= medicine.quantity;
+								pharmacyAxios
+									.patch(`/medicines/${updatedMedicine._id}`, { updatedMedicine })
+									.then((response) => {
+										console.log(response);
+									})
+									.catch((err) => {
+										console.log(err);
+									});
+							});
+					});
+				}
 			})
 			.catch((err) => {
 				console.log(err);

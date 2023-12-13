@@ -121,7 +121,7 @@ const Cart = () => {
                                     <Button
                                         color='primary'
                                         onClick={() =>
-                                            navigate('/patient/pages/checkout')
+                                            navigate(`/patient/pages/checkout/cart/${userId}`)
                                         }
                                         sx={{
                                             border: '1px solid #3f51b5',

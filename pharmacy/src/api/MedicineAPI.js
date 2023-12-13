@@ -4,6 +4,7 @@ import {
 	ERROR_STATUS_CODE,
 	MEDICINE_FOLDER_NAME,
 	NOT_FOUND_STATUS_CODE,
+	OK_REQUEST_CODE_200,
 	OK_STATUS_CODE,
 } from '../utils/Constants.js';
 
@@ -24,6 +25,15 @@ export const medicine = (app) => {
 			res.status(ERROR_STATUS_CODE).json({ err: err.message });
 		}
 	});
+
+	app.get('/medicines/archive', async (req, res) => {
+		try{
+			const medicines = await service.getAllArchiveMedicines();
+			res.send(medicines);
+		} catch(error) {
+			res.status(ERROR_STATUS_CODE).json({ err: error.message });
+		}
+	})
 
 	app.get('/medicines/:id', async (req, res) => {
 		try {
@@ -115,6 +125,17 @@ export const medicine = (app) => {
 			res.status(ERROR_STATUS_CODE).json({ message: error.message });
 		}
 	});
+
+	app.patch('/medicines/:id/arcive/:archive', async (req, res) => {
+		try{
+			const medicineId = req.params.id;
+			const archive = req.params.archive;
+			await service.updateMedicineArchiveState(medicineId, archive);
+			res.status(OK_REQUEST_CODE_200).end();
+		} catch (error){
+			res.status(ERROR_STATUS_CODE).json({ message: error.message });
+		}
+	})
 
 	app.post(
 		'/medicines',
