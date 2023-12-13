@@ -15,6 +15,9 @@ import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
 import { PHARMACY_BASE_URL } from 'utils/Constants';
 import { pharmacyAxios } from '../../utils/AxiosConfig';
 import { useUserContext } from 'hooks/useUserContext';
+import { IconArchive, IconArchiveOff } from '@tabler/icons';
+import Swal from 'sweetalert2';
+
 
 const MedicineCard = ({
 	medicine,
@@ -22,6 +25,7 @@ const MedicineCard = ({
 	handleEditButtonClick,
 	handleAddToCart,
 	medicineIsBeingAddedToCart,
+	handleDataChange
 }) => {
 	const { user } = useUserContext();
 	const userId = user.id;
@@ -43,6 +47,20 @@ const MedicineCard = ({
 				console.log(error);
 			});
 	}, []);
+
+	const handleArciveButtonClick = async (medicine, event) => {
+		event.stopPropagation();
+		try{
+			await pharmacyAxios.patch(`/medicines/${medicine._id}/arcive/${!medicine.archive}`);
+			handleDataChange();
+		} catch(error){
+			Swal.fire({
+					icon: 'error',
+					title: 'Oops...',
+					text: error.response.data.message,
+					});
+				}
+	};
 
 	const addToCart = (medicine) => {
 		handleAddToCart(medicine);
@@ -89,8 +107,18 @@ const MedicineCard = ({
 							edge='end'
 							aria-label='edit'
 							onClick={(event) => handleEditButtonClick(medicine, event)}
+							sx={{ marginRight: 1 }}
 						>
 							<EditIcon />
+						</IconButton>
+					)}
+					{userType === 'pharmacist' && (
+						<IconButton
+							edge='end'
+							aria-label='edit'
+							onClick={(event) => handleArciveButtonClick(medicine, event)}
+						>
+							{medicine.archive?<IconArchiveOff />:<IconArchive />}
 						</IconButton>
 					)}
 				</ListItem>
