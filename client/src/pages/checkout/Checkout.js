@@ -16,9 +16,10 @@ import PaymentOptions from 'pages/payment/PaymentOptions';
 import { successfulPayment } from '../../utils/PaymentUtils';
 import Swal from 'sweetalert2';
 import '../../assets/css/swalStyle.css';
+import { usePayment } from 'contexts/PaymentContext';
 
 const Checkout = () => {
-	const { type, id } = useParams();
+	const { setPaymentDone } = usePayment();
 	const [items, setItems] = useState([]);
 	const [primaryAddress, setPrimaryAddress] = useState(null);
 	const [value, setValue] = useState('credit-card');
@@ -113,6 +114,7 @@ const Checkout = () => {
 								patientId: userId,
 								details: items,
 								amount: totalCost,
+								paymentMethod : 'card',
 								type: type,
 								typeId: id,
 							},
@@ -120,6 +122,7 @@ const Checkout = () => {
 						},
 						replace: true,
 					});
+					
 				} else if (value === 'wallet') {
 					console.log('the amount in  wallet is : ', amountInWallet);
 					if (amountInWallet >= amountToPay) {
@@ -137,6 +140,8 @@ const Checkout = () => {
 											amount: totalCost,
 											type: type,
 											typeId: id,
+											paymentMethod : 'wallet'
+
 										});
 										if (type === 'cart') {
 											pharmacyAxios
@@ -181,6 +186,7 @@ const Checkout = () => {
 											patientId: userId,
 											details: items,
 											amount: totalCost,
+											paymentMethod : 'wallet',
 											type: type,
 											typeId: id,
 										},
@@ -197,11 +203,13 @@ const Checkout = () => {
 							patientId: userId,
 							details: items,
 							amount: totalCost,
+							paymentMethod : 'cash',
 							type: type,
 							typeId: id,
 						});
 						navigate(callBackUrl, { replace: true });
 					});
+					setPaymentDone(true);
 				}
 			});
 	};

@@ -38,6 +38,10 @@ const Medicine = mongoose.Schema({
 		required: true,
 		default:() => Array.from({ length: 13 }, () => new Array(32).fill(0))
 	},
+	prescriptionMedicine: {
+		type: Boolean,
+		required: true
+	},
 	archive: {
 		type: Boolean,
 		required: true,
