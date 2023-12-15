@@ -58,7 +58,7 @@ export default function CheckoutForm({ item }) {
     const { error } = await stripe.confirmPayment({
       elements,
       confirmParams: {
-        return_url: `http://localhost:3000/patient/pages/payment?item=${encodeURIComponent(serializedItem)}`,
+        return_url: `http://localhost:3001/patient/pages/payment?item=${encodeURIComponent(serializedItem)}`,
       },
     });
 
@@ -72,14 +72,18 @@ export default function CheckoutForm({ item }) {
     setIsLoading(false);
   };
 
-
+  const handleCancel = async () => {
+      navigate('/patient/pages/checkout');
+  };
 
 
   return (
     <form id='payment-form' onSubmit={handleSubmit}>
 
       <PaymentElement id='payment-element' options={paymentElementOptions} />
-      <Button disabled={isLoading || !stripe || !elements} fullWidth variant="contained" onClick={handleSubmit}>
+      <Button disabled={isLoading || !stripe || !elements} fullWidth variant="contained" onClick={handleSubmit}
+        sx={{ mt: 0.5 }}
+      >
         {'Pay now'}
       </Button>
       {/* Show any error or success messages */}
@@ -92,6 +96,12 @@ export default function CheckoutForm({ item }) {
           textAlign: 'center',
         }
       }>{message}</div>}
+      <Button disabled={isLoading || !stripe || !elements} fullWidth variant="outlined" onClick={handleCancel}
+        color='secondary'
+        sx={{ mt: 1 }}
+      >
+        {'Cancel'}
+      </Button>
     </form>
   );
 }
