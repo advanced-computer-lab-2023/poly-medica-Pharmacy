@@ -31,7 +31,7 @@ const MedicineCard = ({
 	handleDataChange,
 	addToCartAlert,
 	errorAddingToCart,
-	
+
 }) => {
 	const { user } = useUserContext();
 	const userId = user.id;
@@ -43,6 +43,25 @@ const MedicineCard = ({
 	const [foundInPrescription, setFoundInPrescription] = useState(false);
 
 	useEffect(() => {
+		if (medicine.prescriptionMedicine === true) {
+			patientAxios
+				.get(`/patient/${userId}/prescriptions`)
+				.then((response) => response.data)
+				.then((data) => {
+					for (let i = 0; i < data.length; i++) {
+						for (let j = 0; j < data[i].medicines.length; j++) {
+							if (medicine._id === data[i].medicines[j].medicineId) {
+								setFoundInPrescription(true);
+							}
+						}
+					}
+				})
+				.catch((error) => {
+					console.error('Error fetching data:', error);
+					Swal.fire('error', error.message, 'error');
+					setIsLoading(false);
+				});
+		}
 		pharmacyAxios
 			.get(`/cart/users/${userId}/medicines/${medicine._id}`)
 			.then((response) => {
