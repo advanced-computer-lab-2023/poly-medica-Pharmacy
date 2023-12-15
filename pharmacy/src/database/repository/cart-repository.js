@@ -83,6 +83,13 @@ class CartRepository {
 		}
 		return cart;
 	}
+
+	async getCartItemsLength(userId) {
+		const cart = await this.getCart(userId);
+		const quantities = cart.medicines.map((item) => item.quantity);
+		const length = quantities.reduce((a, b) => a + b, 0);
+		return length;
+	}
 }
 
 export default CartRepository;

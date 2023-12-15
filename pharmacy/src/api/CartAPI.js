@@ -220,4 +220,25 @@ export const cart = (app) => {
 			res.status(ERROR_STATUS_CODE).json({ err: err.message });
 		}
 	});
+
+	app.get('/cart/users/:userId/items/length', async (req, res) => {
+		try {
+			const { userId } = req.params;
+			if (!isValidMongoId(userId)) {
+				return res.status(ERROR_STATUS_CODE).json({ err: 'Invalid user id!' });
+			}
+
+			const cart = await service.getCart(userId);
+			if (!cart) {
+				return res
+					.status(NOT_FOUND_STATUS_CODE)
+					.json({ err: 'No cart for this user' });
+			}
+
+			const length = await service.getCartItemsLength(userId);
+			res.status(OK_STATUS_CODE).json({ length });
+		} catch (err) {
+			res.status(ERROR_STATUS_CODE).json({ err: err.message });
+		}
+	});
 };

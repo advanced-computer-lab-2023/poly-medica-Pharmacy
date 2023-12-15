@@ -17,8 +17,10 @@ import { successfulPayment } from '../../utils/PaymentUtils';
 import Swal from 'sweetalert2';
 import '../../assets/css/swalStyle.css';
 import { usePayment } from 'contexts/PaymentContext';
+import { useCartContext } from 'contexts/CartContext';
 
 const Checkout = () => {
+	const { type, id } = useParams();
 	const { setPaymentDone } = usePayment();
 	const [items, setItems] = useState([]);
 	const [primaryAddress, setPrimaryAddress] = useState(null);
@@ -27,6 +29,7 @@ const Checkout = () => {
 	const { user } = useUserContext();
 	const userId = user.id;
 	const navigate = useNavigate();
+	const { updateCartLength } = useCartContext();
 	primaryAddress;
 	useEffect(() => {
 		if (type == 'cart') {
@@ -114,7 +117,7 @@ const Checkout = () => {
 								patientId: userId,
 								details: items,
 								amount: totalCost,
-								paymentMethod : 'card',
+								paymentMethod: 'card',
 								type: type,
 								typeId: id,
 							},
@@ -122,7 +125,6 @@ const Checkout = () => {
 						},
 						replace: true,
 					});
-					
 				} else if (value === 'wallet') {
 					console.log('the amount in  wallet is : ', amountInWallet);
 					if (amountInWallet >= amountToPay) {
@@ -134,19 +136,23 @@ const Checkout = () => {
 							.then(
 								Swal.fire('success', 'Payment Succeeded', 'success').then(
 									() => {
-										const callBackUrl = successfulPayment(userId, {
-											patientId: userId,
-											details: items,
-											amount: totalCost,
-											type: type,
-											typeId: id,
-											paymentMethod : 'wallet'
-
-										});
+										const callBackUrl = successfulPayment(
+											userId,
+											{
+												patientId: userId,
+												details: items,
+												amount: totalCost,
+												type: type,
+												typeId: id,
+												paymentMethod: 'wallet',
+											},
+											updateCartLength,
+										);
 										if (type === 'cart') {
 											pharmacyAxios
 												.delete(`/cart/users/${userId}/medicines`)
 												.then(() => {
+													updateCartLength();
 													navigate(callBackUrl, { replace: true });
 												})
 												.catch((err) => {
@@ -186,7 +192,7 @@ const Checkout = () => {
 											patientId: userId,
 											details: items,
 											amount: totalCost,
-											paymentMethod : 'wallet',
+											paymentMethod: 'wallet',
 											type: type,
 											typeId: id,
 										},
@@ -199,14 +205,18 @@ const Checkout = () => {
 					}
 				} else {
 					Swal.fire('success', 'Payment Succeeded', 'success').then(() => {
-						const callBackUrl = successfulPayment(userId, {
-							patientId: userId,
-							details: items,
-							amount: totalCost,
-							paymentMethod : 'cash',
-							type: type,
-							typeId: id,
-						});
+						const callBackUrl = successfulPayment(
+							userId,
+							{
+								patientId: userId,
+								details: items,
+								amount: totalCost,
+								paymentMethod: 'cash',
+								type: type,
+								typeId: id,
+							},
+							updateCartLength,
+						);
 						navigate(callBackUrl, { replace: true });
 					});
 					setPaymentDone(true);
