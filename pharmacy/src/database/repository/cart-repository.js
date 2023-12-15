@@ -86,7 +86,9 @@ class CartRepository {
 
 	async getCartItemsLength(userId) {
 		const cart = await this.getCart(userId);
-		return cart.medicines.length;
+		const quantities = cart.medicines.map((item) => item.quantity);
+		const length = quantities.reduce((a, b) => a + b, 0);
+		return length;
 	}
 }
 
