@@ -19,7 +19,7 @@ const CartSection = () => {
 			.get(`/cart/users/${userId}/items/length`)
 			.then((response) => {
 				console.log(response.data);
-				updateCartLength(response.data.length);
+				updateCartLength();
 			})
 			.catch((error) => {
 				console.log(error);

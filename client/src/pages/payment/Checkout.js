@@ -9,9 +9,11 @@ import { Button } from '@mui/material';
 import Swal from 'sweetalert2';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useUserContext } from 'hooks/useUserContext';
+import { useCartContext } from 'contexts/CartContext';
 
 export default function CheckoutForm({ item }) {
 	const { user } = useUserContext();
+	const { updateCartLength } = useCartContext();
 	const stripe = useStripe();
 	const elements = useElements();
 	const [message, setMessage] = useState(null);
@@ -37,7 +39,15 @@ export default function CheckoutForm({ item }) {
 			const deserializedItem = queryParams.get('item');
 			item = JSON.parse(decodeURIComponent(deserializedItem));
 			console.log(user);
-			setMessage(paymentStatus(navigate, paymentIntent.status, item, user.id));
+			setMessage(
+				paymentStatus(
+					navigate,
+					paymentIntent.status,
+					item,
+					user.id,
+					updateCartLength,
+				),
+			);
 		});
 	}, [stripe]);
 

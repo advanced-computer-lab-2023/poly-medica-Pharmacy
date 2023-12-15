@@ -43,7 +43,7 @@ const Cart = () => {
 					cartItems.filter((item) => item.medicine._id !== medicineId),
 				);
 				setItemsLength(itemsLength - 1);
-				updateCartItemsLength();
+				updateCartLength();
 			})
 			.catch((error) => {
 				console.log(error);
@@ -55,19 +55,7 @@ const Cart = () => {
 			.patch(`/cart/users/${userId}/medicines/${id}?quantity=${quantity}`)
 			.then((response) => {
 				console.log(response.data);
-				updateCartItemsLength();
-			})
-			.catch((error) => {
-				console.log(error);
-			});
-	};
-
-	const updateCartItemsLength = () => {
-		pharmacyAxios
-			.get(`/cart/users/${userId}/items/length`)
-			.then((response) => {
-				console.log(response.data);
-				updateCartLength(response.data.length);
+				updateCartLength();
 			})
 			.catch((error) => {
 				console.log(error);

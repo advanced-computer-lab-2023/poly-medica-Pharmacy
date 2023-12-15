@@ -1,8 +1,7 @@
 import { patientAxios, pharmacyAxios } from './AxiosConfig';
 import Swal from 'sweetalert2';
 
-
-export const successfulPayment = (userId, order) => {
+export const successfulPayment = (userId, order, updateCartLength) => {
 	const { type } = order;
 	patientAxios
 		.post('/order', { order })
@@ -21,6 +20,7 @@ export const successfulPayment = (userId, order) => {
 						});
 						pharmacyAxios
 							.delete(`/cart/users/${userId}/medicines`)
+							.then(() => updateCartLength())
 							.catch((err) => {
 								console.log(err);
 							});
@@ -65,14 +65,20 @@ export const successfulPayment = (userId, order) => {
 	return '/patient/pages/orders';
 };
 
-export const paymentStatus = (navigate, status, item, userId) => {
+export const paymentStatus = (
+	navigate,
+	status,
+	item,
+	userId,
+	updateCartLength,
+) => {
 	console.log('the status is ', status);
 	console.log('Payment item is ', item);
 	switch (status) {
 		case 'succeeded': {
 			Swal.fire('success', 'Payment Succeeded', 'success')
 				.then(() => {
-					const callBackUrl = successfulPayment(userId, item);
+					const callBackUrl = successfulPayment(userId, item, updateCartLength);
 					navigate(callBackUrl, { replace: true });
 				})
 				.catch((error) => {
