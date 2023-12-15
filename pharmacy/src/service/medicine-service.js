@@ -10,6 +10,11 @@ class MedicineService {
 		return medicines;
 	}
 
+	async getAllArchiveMedicines() {
+		const medicines = await this.repository.findAllArchiveMedicine();
+		return medicines;
+	}
+
 	async getOneMedicine(id) {
 		const medicine = await this.repository.getOneMedicine(id);
 		return medicine;
@@ -30,6 +35,9 @@ class MedicineService {
 			updatedMedicine,
 		);
 		return updated;
+	}
+	async updateMedicineArchiveState(id, archive){
+		await this.repository.updateMedicineArchiveState(id, archive);
 	}
 
 	async addMedicine(newMedicine) {

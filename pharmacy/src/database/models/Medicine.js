@@ -36,6 +36,11 @@ const Medicine = mongoose.Schema({
 	prescriptionMedicine: {
 		type: Boolean,
 		required: true
+	},
+	archive: {
+		type: Boolean,
+		required: true,
+		default: false
 	}
 });
 

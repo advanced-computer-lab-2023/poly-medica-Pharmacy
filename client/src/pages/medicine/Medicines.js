@@ -40,6 +40,11 @@ const Medicines = () => {
 	const [medicineIsBeingAddedToCart, setMedicineIsBeingAddedToCart] =
 		useState(false);
 	const [errorAddingToCart, setErrorAddingToCart] = useState(false);
+	const [dataChange, setDataChange] = useState(false);
+
+	const handleDataChange= () => {
+		setDataChange(!dataChange);
+	};
 
 	useEffect(() => {
 		pharmacyAxios
@@ -62,7 +67,7 @@ const Medicines = () => {
 			.catch((error) => {
 				console.log(error);
 			});
-	}, []);
+	}, [dataChange]);
 
 	useEffect(() => {
 		const filteredMedicines = originalMedicines.filter(
@@ -187,6 +192,7 @@ const Medicines = () => {
 				handleEditButtonClick={handleEditButtonClick}
 				handleAddToCart={handleAddToCart}
 				medicineIsBeingAddedToCart={medicineIsBeingAddedToCart}
+				handleDataChange={handleDataChange}
 			/>
 			{addToCartAlert && (
 				<Message

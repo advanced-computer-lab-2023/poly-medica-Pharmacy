@@ -11,7 +11,6 @@ import { strengthColor, strengthIndicator } from 'utils/password-strength';
 
 const Page = () => {
     
-    
     const { user } = useUserContext();
 	const [password, setPassword] = useState('');
 	const [loading, setLoading] = useState(false);
@@ -49,6 +48,7 @@ const Page = () => {
 			setLoading(false);
 		}	
 	};
+
 
 	const handleChangePassword = (e) => {
 		setPassword(e.target.value);
@@ -144,9 +144,13 @@ const Page = () => {
 													</Button>
 												</CardActions>
 									</Card>
-									{/* {user.type == ADMIN_TYPE_ENUM &&<PatientAccountProfileDetails />} */}
-									{/* TODO: admin !! */}
-									{/* here will be the gener */}
+
+									<Card sx={{ mt:5 }} >
+										<CardHeader
+											title='Archive medicines'
+										/>	
+									</Card>
+									
 								</Grid>
 							</Grid>
 						</div>
