@@ -5,19 +5,13 @@ import { pharmacyAxios } from '../../utils/AxiosConfig';
 import AltMedicinesList from './AltMedicinesList';
 import MedicineDetails from './MedicineDetails';
 import Message from 'ui-component/Message';
-import { useUserContext } from 'hooks/useUserContext';
 
-const AltMedicines = ({ activeIngerdients }) => {
-    const { user } = useUserContext();
-    const userId = user.id;
+const AltMedicines = ({ activeIngerdients, handleAddToCart, addToCartAlert, medicineIsBeingAddedToCart, errorAddingToCart }) => {
 
     const [medicines, setMedicines] = useState([]);
     const [selectedMedicine, setSelectedMedicine] = useState(null);
     const medicinalUses = [];
-    const [addToCartAlert, setAddToCartAlert] = useState(false);
-    const [medicineIsBeingAddedToCart, setMedicineIsBeingAddedToCart] =
-        useState(false);
-    const [errorAddingToCart, setErrorAddingToCart] = useState(false);
+
 
     useEffect(() => {
         pharmacyAxios
@@ -44,25 +38,25 @@ const AltMedicines = ({ activeIngerdients }) => {
         setSelectedMedicine(null);
     };
 
-    const handleAddToCart = (medicine) => {
-        setErrorAddingToCart(false);
-        setMedicineIsBeingAddedToCart(true);
-        pharmacyAxios
-            .post(`/cart/users/${userId}/medicines`, { medicine })
-            .then((response) => {
-                console.log(response.data);
-                setMedicineIsBeingAddedToCart(false);
-                setAddToCartAlert(true);
-                setTimeout(() => {
-                    setAddToCartAlert(false);
-                }, 1000);
-            })
-            .catch((error) => {
-                setMedicineIsBeingAddedToCart(false);
-                errorAddingToCart(true);
-                console.log(error);
-            });
-    };
+    // const handleAddToCart = (medicine) => {
+    //     setErrorAddingToCart(false);
+    //     setMedicineIsBeingAddedToCart(true);
+    //     pharmacyAxios
+    //         .post(`/cart/users/${userId}/medicines`, { medicine })
+    //         .then((response) => {
+    //             console.log(response.data);
+    //             setMedicineIsBeingAddedToCart(false);
+    //             setAddToCartAlert(true);
+    //             setTimeout(() => {
+    //                 setAddToCartAlert(false);
+    //             }, 1000);
+    //         })
+    //         .catch((error) => {
+    //             setMedicineIsBeingAddedToCart(false);
+    //             errorAddingToCart(true);
+    //             console.log(error);
+    //         });
+    // };
 
     return (
         <MainCard title='Alternative Medicines'>

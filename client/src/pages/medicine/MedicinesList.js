@@ -10,7 +10,9 @@ const MedicinesList = ({
 	handleEditButtonClick,
 	handleAddToCart,
 	medicineIsBeingAddedToCart,
-	handleDataChange
+	handleDataChange,
+	addToCartAlert,
+	errorAddingToCart,
 }) => {
 
 	const { user } = useUserContext();
@@ -28,6 +30,8 @@ const MedicinesList = ({
 								handleAddToCart={handleAddToCart}
 								medicineIsBeingAddedToCart={medicineIsBeingAddedToCart}
 								handleDataChange={handleDataChange}
+								addToCartAlert={addToCartAlert}
+								errorAddingToCart={errorAddingToCart}
 							></MedicineCard>
 						</div>
 					</div>

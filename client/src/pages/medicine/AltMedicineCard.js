@@ -23,12 +23,14 @@ const AltMedicineCard = ({
 	setSelectedMedicine,
 	handleAddToCart,
 	medicineIsBeingAddedToCart,
+	foundInPrescription
 }) => {
 	const { user } = useUserContext();
 	const userId = user.id;
 	const userType = user.type;
 	const [addToCartStatus, setAddToCartStatus] = useState(true);
 	const [isLoading, setIsLoading] = useState(true);
+
 
 	useEffect(() => {
 		pharmacyAxios
@@ -103,6 +105,12 @@ const AltMedicineCard = ({
 											Out of Stock
 										</Typography>
 									</Stack>
+								</Box>
+							) : (medicine.prescriptionMedicine && !foundInPrescription) ? (
+								<Box sx={{ width: '100%' }}>
+									<Typography variant='body2' color='error' align='center'>
+										Prescription Medicine
+									</Typography>
 								</Box>
 							) : (
 								<>

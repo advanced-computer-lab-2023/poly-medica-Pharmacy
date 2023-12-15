@@ -28,7 +28,10 @@ const MedicineCard = ({
 	handleEditButtonClick,
 	handleAddToCart,
 	medicineIsBeingAddedToCart,
-	handleDataChange
+	handleDataChange,
+	addToCartAlert,
+	errorAddingToCart,
+	
 }) => {
 	const { user } = useUserContext();
 	const userId = user.id;
@@ -37,6 +40,7 @@ const MedicineCard = ({
 	const [addToCartStatus, setAddToCartStatus] = useState(true);
 	const [isLoading, setIsLoading] = useState(true);
 	const [activeIngerdients, setActiveIngerdients] = useState(null);
+	const [foundInPrescription, setFoundInPrescription] = useState(false);
 
 	useEffect(() => {
 		pharmacyAxios
@@ -55,22 +59,21 @@ const MedicineCard = ({
 
 	const handleArciveButtonClick = async (medicine, event) => {
 		event.stopPropagation();
-		try{
+		try {
 			await pharmacyAxios.patch(`/medicines/${medicine._id}/arcive/${!medicine.archive}`);
 			handleDataChange();
-		} catch(error){
+		} catch (error) {
 			Swal.fire({
-					icon: 'error',
-					title: 'Oops...',
-					text: error.response.data.message,
-					});
-				}
+				icon: 'error',
+				title: 'Oops...',
+				text: error.response.data.message,
+			});
+		}
 	};
 
 	const addToCart = (medicine) => {
 		console.log('the prescriptionMedicine is ', medicine.prescriptionMedicine);
 		if (medicine.prescriptionMedicine === true) {
-			let found = false;
 			patientAxios
 				.get(`/patient/${userId}/prescriptions`)
 				.then((response) => response.data)
@@ -78,12 +81,12 @@ const MedicineCard = ({
 					for (let i = 0; i < data.length; i++) {
 						for (let j = 0; j < data[i].medicines.length; j++) {
 							if (medicine._id === data[i].medicines[j].medicineId) {
-								found = true;
+								setFoundInPrescription(true);
 							}
 						}
 					}
 				}).then(() => {
-					if (!found) {
+					if (!foundInPrescription) {
 						Swal.fire('error', "this medicine needs a prescriptions", 'error');
 					} else {
 						handleAddToCart(medicine);
@@ -160,7 +163,7 @@ const MedicineCard = ({
 							aria-label='edit'
 							onClick={(event) => handleArciveButtonClick(medicine, event)}
 						>
-							{medicine.archive?<IconArchiveOff />:<IconArchive />}
+							{medicine.archive ? <IconArchiveOff /> : <IconArchive />}
 						</IconButton>
 					)}
 				</ListItem>
@@ -168,7 +171,7 @@ const MedicineCard = ({
 
 			{userType === 'patient' && (
 				<div>
-					<AltrentivesMedicine isAltDialogOpen={isAltDialogOpen} setIsAltDialogOpen={setIsAltDialogOpen} activeIngerdients={activeIngerdients} />
+					<AltrentivesMedicine isAltDialogOpen={isAltDialogOpen} setIsAltDialogOpen={setIsAltDialogOpen} activeIngerdients={activeIngerdients} handleAddToCart={handleAddToCart} addToCartAlert={addToCartAlert} medicineIsBeingAddedToCart={medicineIsBeingAddedToCart} errorAddingToCart={errorAddingToCart} />
 					<Grid container spacing={5} m={0}>
 						<Grid item xs={9}>
 							<ListItem
@@ -222,6 +225,12 @@ const MedicineCard = ({
 											</Button>
 										</Typography>
 									</Stack>
+								</Box>
+							) : (medicine.prescriptionMedicine && !foundInPrescription) ? (
+								<Box sx={{ width: '100%' }}>
+									<Typography variant='body2' color='error' align='center'>
+										Prescription Medicine
+									</Typography>
 								</Box>
 							) : (
 								<>
