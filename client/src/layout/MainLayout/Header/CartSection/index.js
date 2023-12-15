@@ -1,25 +1,25 @@
-import React, { useState, useEffect } from 'react';
-import { useUserContext } from '../../../../hooks/useUserContext';
+import React, { useEffect } from 'react';
+import { useCartContext } from '../../../../contexts/CartContext';
 import { useNavigate } from 'react-router-dom';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
-import { IconButton } from '@mui/material';
-import { pharmacyAxios } from '../../../../utils/AxiosConfig';
+import { IconButton, Badge } from '@mui/material';
+import { useUserContext } from 'hooks/useUserContext';
+import { pharmacyAxios } from 'utils/AxiosConfig';
 
 // ==============================|| CART ||============================== //
 
 const CartSection = () => {
 	const navigate = useNavigate();
-	const user = useUserContext();
-	const userId = user.user.id;
-	const [cartLength, setCartLength] = useState(0);
+	const { cartLength, updateCartLength } = useCartContext();
+	const { user } = useUserContext();
+	const userId = user.id;
 
 	useEffect(() => {
-		console.log('In cart section useEffect');
-		console.log('Cart length: ', cartLength);
 		pharmacyAxios
 			.get(`/cart/users/${userId}/items/length`)
 			.then((response) => {
-				setCartLength(response.data.length);
+				console.log(response.data);
+				updateCartLength(response.data.length);
 			})
 			.catch((error) => {
 				console.log(error);
@@ -28,8 +28,9 @@ const CartSection = () => {
 
 	return (
 		<IconButton onClick={() => navigate('pages/cart')}>
-			<ShoppingCartIcon />
-			<span>{cartLength}</span>
+			<Badge badgeContent={cartLength} color='secondary'>
+				<ShoppingCartIcon />
+			</Badge>
 		</IconButton>
 	);
 };

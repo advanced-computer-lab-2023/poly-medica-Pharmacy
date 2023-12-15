@@ -52,14 +52,6 @@ const pages = {
 			target: false,
 		},
 		{
-			id: 'cart',
-			title: 'Cart',
-			type: 'item',
-			icon: ShoppingCartOutlinedIcon,
-			url: '/patient/pages/cart',
-			target: false,
-		},
-		{
 			id: 'Orders',
 			title: 'Orders',
 			type: 'item',

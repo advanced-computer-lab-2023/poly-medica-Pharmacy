@@ -10,6 +10,7 @@ import SearchSection from './SearchSection';
 import ProfileSection from './ProfileSection';
 import NotificationSection from './NotificationSection';
 import CartSection from './CartSection';
+import { useUserContext } from '../../../hooks/useUserContext';
 
 // assets
 import { IconMenu2 } from '@tabler/icons';
@@ -18,6 +19,8 @@ import { IconMenu2 } from '@tabler/icons';
 
 const Header = ({ handleLeftDrawerToggle }) => {
 	const theme = useTheme();
+	const { user } = useUserContext();
+	const userType = user.type;
 
 	return (
 		<>
@@ -64,8 +67,7 @@ const Header = ({ handleLeftDrawerToggle }) => {
 			<Box sx={{ flexGrow: 1 }} />
 			<Box sx={{ flexGrow: 1 }} />
 
-			{/* notification & profile */}
-			<CartSection />
+			{userType === 'patient' && <CartSection />}
 			<NotificationSection />
 			<ProfileSection />
 		</>
