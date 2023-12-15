@@ -19,6 +19,7 @@ import '../../assets/css/swalStyle.css';
 import { usePayment } from 'contexts/PaymentContext';
 
 const Checkout = () => {
+	const { type, id } = useParams();
 	const { setPaymentDone } = usePayment();
 	const [items, setItems] = useState([]);
 	const [primaryAddress, setPrimaryAddress] = useState(null);
@@ -114,7 +115,7 @@ const Checkout = () => {
 								patientId: userId,
 								details: items,
 								amount: totalCost,
-								paymentMethod : 'card',
+								paymentMethod: 'card',
 								type: type,
 								typeId: id,
 							},
@@ -122,7 +123,6 @@ const Checkout = () => {
 						},
 						replace: true,
 					});
-					
 				} else if (value === 'wallet') {
 					console.log('the amount in  wallet is : ', amountInWallet);
 					if (amountInWallet >= amountToPay) {
@@ -140,8 +140,7 @@ const Checkout = () => {
 											amount: totalCost,
 											type: type,
 											typeId: id,
-											paymentMethod : 'wallet'
-
+											paymentMethod: 'wallet',
 										});
 										if (type === 'cart') {
 											pharmacyAxios
@@ -186,7 +185,7 @@ const Checkout = () => {
 											patientId: userId,
 											details: items,
 											amount: totalCost,
-											paymentMethod : 'wallet',
+											paymentMethod: 'wallet',
 											type: type,
 											typeId: id,
 										},
@@ -203,7 +202,7 @@ const Checkout = () => {
 							patientId: userId,
 							details: items,
 							amount: totalCost,
-							paymentMethod : 'cash',
+							paymentMethod: 'cash',
 							type: type,
 							typeId: id,
 						});
