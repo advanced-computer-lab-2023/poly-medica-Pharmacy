@@ -11,6 +11,7 @@ import Message from 'ui-component/Message';
 import { useSearch } from 'contexts/SearchContext';
 import { useFilter } from 'contexts/FilterContext';
 import { useUserContext } from 'hooks/useUserContext';
+import { useCartContext } from 'contexts/CartContext';
 
 const Medicines = () => {
 	const { user } = useUserContext();
@@ -30,7 +31,7 @@ const Medicines = () => {
 		quantity: '',
 		medicinalUse: '',
 		activeIngerdients: '',
-		prescriptionMedicine : false
+		prescriptionMedicine: false,
 	});
 	const [image, setImage] = useState(null);
 	const [selectedEditMedicine, setSelectedEditMedicine] = useState(null);
@@ -41,8 +42,9 @@ const Medicines = () => {
 		useState(false);
 	const [errorAddingToCart, setErrorAddingToCart] = useState(false);
 	const [dataChange, setDataChange] = useState(false);
+	const { updateCartLength } = useCartContext();
 
-	const handleDataChange= () => {
+	const handleDataChange = () => {
 		setDataChange(!dataChange);
 	};
 
@@ -96,7 +98,7 @@ const Medicines = () => {
 			quantity: '',
 			medicinalUse: '',
 			activeIngerdients: '',
-			prescriptionMedicine : false
+			prescriptionMedicine: false,
 		});
 	};
 
@@ -123,7 +125,10 @@ const Medicines = () => {
 			.then((response) => {
 				const newMedicineData = response.data.addedMedicine;
 				setMedicines((prevMedicines) => [...prevMedicines, newMedicineData]);
-				setOriginalMedicines((prevMedicines) => [...prevMedicines, newMedicineData]);
+				setOriginalMedicines((prevMedicines) => [
+					...prevMedicines,
+					newMedicineData,
+				]);
 				handleAddDialogClose();
 			})
 			.catch((error) => {
@@ -176,10 +181,23 @@ const Medicines = () => {
 				setTimeout(() => {
 					setAddToCartAlert(false);
 				}, 1000);
+				updateCartItemsLength();
 			})
 			.catch((error) => {
 				setMedicineIsBeingAddedToCart(false);
 				errorAddingToCart(true);
+				console.log(error);
+			});
+	};
+
+	const updateCartItemsLength = () => {
+		pharmacyAxios
+			.get(`/cart/users/${userId}/items/length`)
+			.then((response) => {
+				console.log(response.data);
+				updateCartLength(response.data.length);
+			})
+			.catch((error) => {
 				console.log(error);
 			});
 	};
