@@ -8,7 +8,6 @@ import {
 	IconButton,
 } from '@mui/material';
 
-import { useNavigate } from 'react-router-dom';
 import ShoppingCartCheckoutSharpIcon from '@mui/icons-material/ShoppingCartCheckoutSharp';
 import FileDownloadIcon from '@mui/icons-material/FileDownload';
 import CheckIcon from '@mui/icons-material/Check';
@@ -20,8 +19,7 @@ import prescrptionImage from '../utilities/prescription.png';
 import { clinicAxios } from '../../utils/AxiosConfig';
 import { PATIENT_BASE_URL } from 'utils/Constants';
 
-const PrescriptionItem = ({ prescription, handleClicking }) => {
-	const navigate = useNavigate();
+const PrescriptionItem = ({ prescription, handleClicking, addToCart }) => {
 	const [doctor, setDoctor] = useState({});
 	const [Loading, setLoading] = useState(true);
 	useEffect(() => {
@@ -110,11 +108,10 @@ const PrescriptionItem = ({ prescription, handleClicking }) => {
 						sx={{ marginLeft: '2%' }}
 						edge='end'
 						aria-label='checkout'
-						onClick={() =>
-							navigate(
-								`/patient/pages/checkout/prescription/${prescription._id}`,
-							)
-						}
+						onClick={(e) => {
+							e.stopPropagation();
+							addToCart(prescription.medicines);
+						}}
 					>
 						<ShoppingCartCheckoutSharpIcon />
 					</IconButton>

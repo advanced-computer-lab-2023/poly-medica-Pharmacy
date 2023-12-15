@@ -35,13 +35,11 @@ const Prescriptions = () => {
 				}
 
 				const prescriptions = patientResponses.data.filter(
-					(prescription) =>
-						prescription.purchased === false && prescription.filled === true,
+					(prescription) => prescription.filled === false,
 				);
 
 				setPrescriptions(prescriptions);
 				setLoadingPrescription(false);
-				console.log('prescription now false');
 			} catch (err) {
 				setLoadingPrescription(false);
 				console.log(err);
@@ -72,6 +70,33 @@ const Prescriptions = () => {
 		setPrescriptionDoctor(doctor);
 	};
 
+	const addToCart = (prescriptionMedicines) => {
+		prescriptionMedicines.forEach((medicine) => {
+			const medicineId = medicine.medicineId;
+			const quantity = medicine.amount;
+			pharmacyAxios
+				.get(`/medicines/${medicineId}`)
+				.then((response) => {
+					const medicine = response.data.medicine;
+					console.log('MEDDDD === ', medicine);
+					pharmacyAxios
+						.post(
+							`/cart/users/${user.id}/prescription-medicines?quantity=${quantity}`,
+							{ medicine },
+						)
+						.then((response) => {
+							console.log(response.data);
+						})
+						.catch((error) => {
+							console.log(error);
+						});
+				})
+				.catch((error) => {
+					console.log(error);
+				});
+		});
+	};
+
 	return loadingMedicine || loadingPrescription ? (
 		<Loader />
 	) : (
@@ -79,6 +104,7 @@ const Prescriptions = () => {
 			<PrescriptionsList
 				prescriptions={prescriptions}
 				handleSelectingPrescription={handleSelectingPrescription}
+				addToCart={addToCart}
 			/>
 
 			<PrescriptionDetails

@@ -136,6 +136,27 @@ export const cart = (app) => {
 		}
 	});
 
+	app.post('/cart/users/:userId/prescription-medicines', async (req, res) => {
+		try {
+			const { medicine } = req.body;
+			console.log('prescription medicine post in cart api ===== ', medicine);
+			const { userId } = req.params;
+			const { quantity } = req.query;
+			if (!isValidMongoId(userId)) {
+				return res.status(ERROR_STATUS_CODE).json({ err: 'Invalid user id!' });
+			}
+			const cart = await service.addPrescriptionMedicineToCart(
+				userId,
+				medicine,
+				quantity,
+			);
+
+			res.status(OK_STATUS_CODE).json({ cart });
+		} catch (err) {
+			res.status(ERROR_STATUS_CODE).json({ err: err.message });
+		}
+	});
+
 	app.patch('/cart/users/:userId/medicines/:medicineId', async (req, res) => {
 		try {
 			const { userId, medicineId } = req.params;

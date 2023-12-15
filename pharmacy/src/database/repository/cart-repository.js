@@ -25,6 +25,23 @@ class CartRepository {
 		return await this.getCart(userId);
 	}
 
+	async addPrescriptionMedicineToCart(userId, medicine, quantity) {
+		await CartModel.findOneAndUpdate(
+			{ userId: new mongoose.Types.ObjectId(userId) },
+			{
+				$push: {
+					medicines: {
+						medicine: medicine,
+						quantity: quantity,
+					},
+				},
+			},
+			{ new: true },
+		);
+
+		return await this.getCart(userId);
+	}
+
 	async getMedicine(userId, medicineId) {
 		const cart = await CartModel.findOne({
 			userId: new mongoose.Types.ObjectId(userId),

@@ -27,18 +27,20 @@ export const medicine = (app) => {
 	});
 
 	app.get('/medicines/archive', async (req, res) => {
-		try{
+		try {
 			const medicines = await service.getAllArchiveMedicines();
 			res.send(medicines);
-		} catch(error) {
+		} catch (error) {
 			res.status(ERROR_STATUS_CODE).json({ err: error.message });
 		}
-	})
+	});
 
 	app.get('/medicines/:id', async (req, res) => {
 		try {
 			const { id } = req.params;
+			console.log('id ======== ', id);
 			const medicine = await service.getOneMedicine(id);
+			console.log('medicine ======== ', medicine);
 			if (medicine) {
 				res.status(OK_STATUS_CODE).json({ medicine });
 			} else {
@@ -109,7 +111,7 @@ export const medicine = (app) => {
 			const month = date.getMonth();
 			const day = date.getDate();
 			const newMonthlySales = oldMedicine.monthlySales;
-			newMonthlySales[month+1][day] += (oldMedicine.quantity - quantity);
+			newMonthlySales[month + 1][day] += oldMedicine.quantity - quantity;
 
 			const updated = await service.updateMedicineQuantity(
 				id,
@@ -117,8 +119,6 @@ export const medicine = (app) => {
 				newSales,
 				newMonthlySales,
 			);
-			
-
 
 			return res.status(OK_STATUS_CODE).json(updated);
 		} catch (error) {
@@ -127,15 +127,15 @@ export const medicine = (app) => {
 	});
 
 	app.patch('/medicines/:id/arcive/:archive', async (req, res) => {
-		try{
+		try {
 			const medicineId = req.params.id;
 			const archive = req.params.archive;
 			await service.updateMedicineArchiveState(medicineId, archive);
 			res.status(OK_REQUEST_CODE_200).end();
-		} catch (error){
+		} catch (error) {
 			res.status(ERROR_STATUS_CODE).json({ message: error.message });
 		}
-	})
+	});
 
 	app.post(
 		'/medicines',
