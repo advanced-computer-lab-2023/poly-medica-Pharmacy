@@ -83,6 +83,11 @@ class CartRepository {
 		}
 		return cart;
 	}
+
+	async getCartItemsLength(userId) {
+		const cart = await this.getCart(userId);
+		return cart.medicines.length;
+	}
 }
 
 export default CartRepository;

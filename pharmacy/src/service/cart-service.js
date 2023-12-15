@@ -52,6 +52,11 @@ class CartService {
 		return cart;
 	}
 
+	async getCartItemsLength(userId) {
+		const cart = await this.repository.getCartItemsLength(userId);
+		return cart;
+	}
+
 	async getCart(userId) {
 		const cart = await this.repository.getCart(userId);
 		return cart;
