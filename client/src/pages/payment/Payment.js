@@ -42,7 +42,7 @@ export default function App() {
 			<div className='App'>
 				{clientSecret && (
 					<Elements options={options} stripe={stripePromise}>
-						<CheckoutForm item={item} />
+						<CheckoutForm item={item} type={item.type} typeId={item.typeId} />
 					</Elements>
 				)}
 			</div>

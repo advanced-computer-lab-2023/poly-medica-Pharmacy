@@ -11,7 +11,7 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import { useUserContext } from 'hooks/useUserContext';
 import { useCartContext } from 'contexts/CartContext';
 
-export default function CheckoutForm({ item }) {
+export default function CheckoutForm({ item, type, typeId }) {
 	const { user } = useUserContext();
 	const { updateCartLength } = useCartContext();
 	const stripe = useStripe();
@@ -78,7 +78,7 @@ export default function CheckoutForm({ item }) {
   };
 
   const handleCancel = async () => {
-      navigate('/patient/pages/checkout');
+      navigate(`/patient/pages/checkout/${type}/${typeId}`);
   };
 
 
