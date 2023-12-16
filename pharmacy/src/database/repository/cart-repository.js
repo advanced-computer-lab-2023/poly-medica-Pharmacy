@@ -99,12 +99,13 @@ class CartRepository {
 		return cart;
 	}
 
-	async deleteAllMedicinesFromCart(userId) {
+	async deleteAllMedicinesAndPrescriptionsFromCart(userId) {
 		const cart = await CartModel.findOneAndUpdate(
 			{ userId: new mongoose.Types.ObjectId(userId) },
 			{
 				$set: {
 					medicines: [],
+					prescriptions: [],
 				},
 			},
 			{ new: true },

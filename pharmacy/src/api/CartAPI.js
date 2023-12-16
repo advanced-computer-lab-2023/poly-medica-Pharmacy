@@ -63,7 +63,7 @@ export const cart = (app) => {
 		}
 	});
 
-	app.delete('/cart/users/:userId/medicines', async (req, res) => {
+	app.delete('/cart/users/:userId', async (req, res) => {
 		try {
 			const { userId } = req.params;
 			if (!isValidMongoId(userId)) {
@@ -77,7 +77,7 @@ export const cart = (app) => {
 					.json({ err: 'Cart not found!' });
 			}
 
-			const updatedCart = await service.deleteAllMedicinesFromCart(userId);
+			const updatedCart = await service.deleteAllMedicinesAndPrescriptionsFromCart(userId);
 
 			res.status(OK_STATUS_CODE).json({ updatedCart });
 		} catch (err) {

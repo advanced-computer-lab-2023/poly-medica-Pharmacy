@@ -69,8 +69,8 @@ class CartService {
 		return cart;
 	}
 
-	async deleteAllMedicinesFromCart(userId) {
-		const cart = await this.repository.deleteAllMedicinesFromCart(userId);
+	async deleteAllMedicinesAndPrescriptionsFromCart(userId) {
+		const cart = await this.repository.deleteAllMedicinesAndPrescriptionsFromCart(userId);
 		return cart;
 	}
 

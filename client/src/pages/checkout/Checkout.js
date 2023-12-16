@@ -32,46 +32,45 @@ const Checkout = () => {
 	const { updateCartLength } = useCartContext();
 	primaryAddress;
 	useEffect(() => {
-	pharmacyAxios
-		.get(`/cart/users/${userId}/medicines/`)
-		.then((response) => {
-			console.log(response.data);
-			const medicines = response.data;
-			setItems(() => {
-				let itms = medicines.medicines.map((medicine) => {
-					const itm = {
-						medicineId: medicine.medicine._id,
-						name: medicine.medicine.name,
-						quantity: medicine.quantity,
-						price: medicine.medicine.price,
-					};
-					setTotalCost((prev) => {
-						return prev + itm.quantity * itm.price;
-					});
-					return itm;
-				});
-				medicines.prescriptions.map((prescription) => {
-					const meds = prescription.medicines.map(medicine => {
+		pharmacyAxios
+			.get(`/cart/users/${userId}/medicines/`)
+			.then((response) => {
+				console.log(response.data);
+				const medicines = response.data;
+				setItems(() => {
+					let itms = medicines.medicines.map((medicine) => {
 						const itm = {
-							medicineId: medicine.medicineId,
-							name: medicine.name,
-							quantity: medicine.amount,
-							price: medicine.price,
+							medicineId: medicine.medicine._id,
+							name: medicine.medicine.name,
+							quantity: medicine.quantity,
+							price: medicine.medicine.price,
 						};
 						setTotalCost((prev) => {
 							return prev + itm.quantity * itm.price;
 						});
 						return itm;
 					});
-					itms = [...itms, ...meds];
+					medicines.prescriptions.map((prescription) => {
+						const meds = prescription.medicines.map((medicine) => {
+							const itm = {
+								medicineId: medicine.medicineId,
+								name: medicine.name,
+								quantity: medicine.amount,
+								price: medicine.price,
+							};
+							setTotalCost((prev) => {
+								return prev + itm.quantity * itm.price;
+							});
+							return itm;
+						});
+						itms = [...itms, ...meds];
+					});
+					return itms;
 				});
-				return itms;
+			})
+			.catch((error) => {
+				console.log(error);
 			});
-		})
-		.catch((error) => {
-			console.log(error);
-		});
-		
 
 		patientAxios
 			.get('/address/' + userId)
@@ -137,17 +136,15 @@ const Checkout = () => {
 											},
 											updateCartLength,
 										);
-										if (type === 'cart') {
-											pharmacyAxios
-												.delete(`/cart/users/${userId}/medicines`)
-												.then(() => {
-													updateCartLength();
-													navigate(callBackUrl, { replace: true });
-												})
-												.catch((err) => {
-													console.log(err);
-												});
-										}
+										pharmacyAxios
+											.delete(`/cart/users/${userId}`)
+											.then(() => {
+												updateCartLength();
+												navigate(callBackUrl, { replace: true });
+											})
+											.catch((err) => {
+												console.log(err);
+											});
 									},
 								),
 							)
