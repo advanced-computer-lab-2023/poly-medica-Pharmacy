@@ -211,6 +211,8 @@ const Medicines = () => {
 				handleAddToCart={handleAddToCart}
 				medicineIsBeingAddedToCart={medicineIsBeingAddedToCart}
 				handleDataChange={handleDataChange}
+				addToCartAlert={addToCartAlert}
+				errorAddingToCart={errorAddingToCart}
 			/>
 			{addToCartAlert && (
 				<Message

@@ -1,8 +1,6 @@
 import DoctorIcon from '../../assets/images/icons/DoctorIcon.png';
-import WorkIcon from '@mui/icons-material/Work';
-import SchoolIcon from '@mui/icons-material/School';
-import PaidIcon from '@mui/icons-material/Paid';
-
+import EmailIcon from '@mui/icons-material/Email';
+import StarBorderIcon from '@mui/icons-material/StarBorder';
 import {
 	Dialog,
 	DialogTitle,
@@ -12,17 +10,18 @@ import {
 	Button,
 } from '@mui/material';
 
-const PharmacistsDetails = ({ selectedPharmacist, handleDialogClose }) => {
+const AdminDetails = ({ selectedAdmin, handleDialogClose }) => {
+	const title = ' ';
 	return (
 		<Dialog
-			open={selectedPharmacist}
+			open={selectedAdmin}
 			onClose={handleDialogClose}
 			PaperProps={{ sx: { minWidth: window.outerWidth > 800 ? 500 : 300 } }}
 		>
-			{selectedPharmacist && (
+			{selectedAdmin && (
 				<>
 					<DialogTitle align='center' variant='h2'>
-						{selectedPharmacist.userData.name}
+						{selectedAdmin.userName}
 					</DialogTitle>
 					<DialogContent>
 						<div
@@ -34,12 +33,17 @@ const PharmacistsDetails = ({ selectedPharmacist, handleDialogClose }) => {
 								marginBottom: '5em',
 							}}
 						>
-							<img
-								src={DoctorIcon}
-								alt={selectedPharmacist.userData.name}
-								width='100'
-								height='100'
-							/>
+							<div>
+								<img
+									src={DoctorIcon}
+									alt={`${title} ${selectedAdmin.userName}`}
+									width='100'
+									height='100'
+								/>
+								<Typography variant='h4' sx={{ marginTop: '1em' }}>
+									{`${title} ${selectedAdmin.userName}`}
+								</Typography>
+							</div>
 							<div
 								style={{
 									display: 'flex',
@@ -54,9 +58,9 @@ const PharmacistsDetails = ({ selectedPharmacist, handleDialogClose }) => {
 										flexDirection: 'row',
 									}}
 								>
-									<WorkIcon style={{ marginRight: '0.4em' }} />
+									<EmailIcon style={{ marginRight: '0.4em' }} />
 									<Typography variant='body1'>
-										{`${selectedPharmacist.affiliation}`}
+										{`${selectedAdmin.email}`}
 									</Typography>
 								</div>
 								<div
@@ -66,21 +70,9 @@ const PharmacistsDetails = ({ selectedPharmacist, handleDialogClose }) => {
 										flexDirection: 'row',
 									}}
 								>
-									<SchoolIcon style={{ marginRight: '0.4em' }} />
+									<StarBorderIcon style={{ marginRight: '0.4em' }} />
 									<Typography variant='body1'>
-										{`${selectedPharmacist.educationalBackground}`}
-									</Typography>
-								</div>
-								<div
-									style={{
-										display: 'flex',
-										alignItems: 'center',
-										flexDirection: 'row',
-									}}
-								>
-									<PaidIcon style={{ marginRight: '0.4em' }} />
-									<Typography variant='body1'>
-										{selectedPharmacist.hourlyRate}
+										{selectedAdmin.mainAdmin ? 'Main Admin' : 'Sub Admin'}
 									</Typography>
 								</div>
 							</div>
@@ -97,4 +89,4 @@ const PharmacistsDetails = ({ selectedPharmacist, handleDialogClose }) => {
 	);
 };
 
-export default PharmacistsDetails;
+export default AdminDetails;

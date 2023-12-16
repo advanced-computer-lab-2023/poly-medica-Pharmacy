@@ -10,11 +10,12 @@ import {
 	Typography
 } from '@mui/material';
 import { useNavigate } from 'react-router';
+import { useUserContext } from 'hooks/useUserContext';
 
 // assets
-import { IconVaccineBottle } from '@tabler/icons';
+import { IconCalendarTime } from '@tabler/icons';
 import { MEDICINE_NOTIFICATION_TYPE_ENUM } from 'utils/Constants';
-import { useUserContext } from 'hooks/useUserContext';
+
 
 const ListItemWrapper = styled('div')(({ theme }) => ({
 	cursor: 'pointer',
@@ -32,7 +33,7 @@ const chipSX = {
 	padding: '0 6px'
 };
 
-const BasicNotification = ({ header, body, date, notificationType, chipLabel, chipType }) => {
+const BasicNotification = ({ header, body, date, notificationType, chipLabel, chipType, key }) => {
     const theme = useTheme();
 	const navigate = useNavigate();
 	const { user } = useUserContext();
@@ -56,9 +57,8 @@ const BasicNotification = ({ header, body, date, notificationType, chipLabel, ch
 		}
 	};
     return ( 
-        <ListItemWrapper>
+        <ListItemWrapper key={key}>
 
-				{/* <ListItemText justifyContent="flex-end" primary="John Doe" /> */}
 				<ListItem alignItems="center" sx={{ marginBottom: 1, marginTop: 1 }}>
 					<ListItemText primary={header} sx={{ marginLeft: 1 }} />
 					<ListItemSecondaryAction sx={{ marginTop: -1 }}>
@@ -82,14 +82,15 @@ const BasicNotification = ({ header, body, date, notificationType, chipLabel, ch
 					<Grid item xs={12}>
 						<Grid container>
 							<Grid item>
-								<Button variant="contained" onClick={ () => navigate(`/${user.type}/pages/medicines`) } disableElevation endIcon={<IconVaccineBottle stroke={1.5} size="1.3rem" />}>
-									medicines
+								<Button variant="contained" onClick={ () => navigate(`/${user.type}/pages/medicines`) } disableElevation endIcon={<IconCalendarTime stroke={1.5} size="1.3rem" />}>
+									Medicines
 								</Button>
 							</Grid>
 						</Grid>
 					</Grid>
 					</Grid>
 					}
+
 
 					
 					
@@ -105,7 +106,7 @@ const BasicNotification = ({ header, body, date, notificationType, chipLabel, ch
 						</Grid>
 					</Grid>
 					</Grid>
-					
+				
 				</Grid>
 			</ListItemWrapper>
      );

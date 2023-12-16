@@ -1,3 +1,11 @@
+import DoctorIcon from '../../assets/images/icons/DoctorIcon.png';
+import EmailIcon from '@mui/icons-material/Email';
+import PregnantWomanIcon from '@mui/icons-material/PregnantWoman';
+import WcIcon from '@mui/icons-material/Wc';
+import PhoneIcon from '@mui/icons-material/Phone';
+import ContactEmergencyIcon from '@mui/icons-material/ContactEmergency';
+import { getDay } from '../../utils/DateFormatter.js';
+
 import {
 	Dialog,
 	DialogTitle,
@@ -7,28 +15,113 @@ import {
 	Button,
 } from '@mui/material';
 
-const PatientDetails = ({ selectedPatients, handleDialogClose }) => {
+const PatientDetails = ({ selectedPatient, handleDialogClose }) => {
+	const title = ' ';
 	return (
-		<Dialog open={selectedPatients} onClose={handleDialogClose} PaperProps={{ sx: { minWidth: window.outerWidth > 800 ? 500 : 300 } }}  >
-			{selectedPatients && (
+		<Dialog
+			open={selectedPatient}
+			onClose={handleDialogClose}
+			PaperProps={{ sx: { minWidth: window.outerWidth > 800 ? 500 : 300 } }}
+		>
+			{selectedPatient && (
 				<>
-					<DialogTitle align='center' variant='h2'>{selectedPatients.name}</DialogTitle>
+					<DialogTitle align='center' variant='h2'>
+						{selectedPatient.name}
+					</DialogTitle>
 					<DialogContent>
-						<Typography variant="subtitle1">Email:</Typography>
-						<Typography variant="body1">{selectedPatients.email}</Typography>
-						<Typography variant="subtitle1">Date of Birth:</Typography>
-						<Typography variant="body1">${selectedPatients.dateOfBirth}</Typography>
-						<Typography variant="subtitle1">Gender :</Typography>
-						<Typography variant="body1">{selectedPatients.gender}</Typography>
-						<Typography variant="subtitle1">Mobile Number:</Typography>
-						<Typography variant="body1">{selectedPatients.mobileNumber}</Typography>
-						<Typography variant="subtitle1">Emergency Contact :</Typography>
-						<Typography variant="body1">{selectedPatients.emergencyContact.name}</Typography>
-                        <Typography variant="body2">{selectedPatients.emergencyContact.mobile}</Typography>
+						<div
+							style={{
+								display: 'flex',
+								justifyContent: 'space-around',
+								alignItems: 'center',
+								flexDirection: 'row',
+								marginBottom: '5em',
+							}}
+						>
+							<div>
+								<img
+									src={DoctorIcon}
+									alt={`${title} ${selectedPatient.name}`}
+									width='100'
+									height='100'
+								/>
+								<Typography variant='h4' sx={{ marginTop: '1em' }}>
+									{`${title} ${selectedPatient.name}`}
+								</Typography>
+							</div>
+							<div
+								style={{
+									display: 'flex',
+									flexDirection: 'column',
+									gap: '0.7em',
+								}}
+							>
+								<div
+									style={{
+										display: 'flex',
+										alignItems: 'center',
+										flexDirection: 'row',
+									}}
+								>
+									<EmailIcon style={{ marginRight: '0.4em' }} />
+									<Typography variant='body1'>
+										{`${selectedPatient.email}`}
+									</Typography>
+								</div>
+								<div
+									style={{
+										display: 'flex',
+										alignItems: 'center',
+										flexDirection: 'row',
+									}}
+								>
+									<PregnantWomanIcon style={{ marginRight: '0.4em' }} />
+									<Typography variant='body1'>
+										{`Born on ${getDay(selectedPatient.dateOfBirth)}`}
+									</Typography>
+								</div>
+								<div
+									style={{
+										display: 'flex',
+										alignItems: 'center',
+										flexDirection: 'row',
+									}}
+								>
+									<WcIcon style={{ marginRight: '0.4em' }} />
+									<Typography variant='body1'>
+										{`${selectedPatient.gender}`}
+									</Typography>
+								</div>
+								<div
+									style={{
+										display: 'flex',
+										alignItems: 'center',
+										flexDirection: 'row',
+									}}
+								>
+									<PhoneIcon style={{ marginRight: '0.4em' }} />
+									<Typography variant='body1'>
+										{`${selectedPatient.mobileNumber}`}
+									</Typography>
+								</div>
+								<div
+									style={{
+										display: 'flex',
+										alignItems: 'center',
+										flexDirection: 'row',
+									}}
+								>
+									<ContactEmergencyIcon style={{ marginRight: '0.4em' }} />
+									<Typography variant='body1'>
+										{`${selectedPatient.emergencyContact.name} - ${selectedPatient.emergencyContact.mobile}`}
+									</Typography>
+								</div>
+							</div>
+						</div>
 					</DialogContent>
 					<DialogActions>
-						<Button onClick={handleDialogClose} color="primary">
-                            Close
+						<Button onClick={handleDialogClose} color='primary'>
+							Close
 						</Button>
 					</DialogActions>
 				</>

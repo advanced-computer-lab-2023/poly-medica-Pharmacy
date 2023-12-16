@@ -45,15 +45,63 @@ const Cart = mongoose.Schema({
 					type: String,
 					required: true,
 				},
-				monthlySales:{
+				monthlySales: {
 					type: [[Number]],
 					required: true,
-					default:() => Array.from({ length: 13 }, () => new Array(32).fill(0)) 
+					default: () =>
+						Array.from({ length: 13 }, () => new Array(32).fill(0)),
 				},
 			},
 			quantity: {
 				type: Number,
 				default: 1,
+			},
+		},
+	],
+
+	prescriptions: [
+		{
+			prescriptionId: {
+				type: mongoose.Schema.Types.ObjectId,
+			},
+
+			description: {
+				type: String,
+			},
+
+			doctorName: {
+				type: String,
+			},
+
+			medicines: [
+				{
+					medicineId: {
+						type: mongoose.Schema.Types.ObjectId,
+						required: true,
+					},
+					name: {
+						type: String,
+						required: true,
+					},
+					price: {
+						type: Number,
+						required: true,
+					},
+					amount: {
+						type: Number,
+						required: true,
+					},
+				},
+			],
+
+			medicinesQuantity: {
+				type: Number,
+				required: true,
+			},
+
+			price: {
+				type: Number,
+				required: true,
 			},
 		},
 	],
