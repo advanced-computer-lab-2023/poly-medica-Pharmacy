@@ -18,10 +18,15 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import prescrptionImage from '../utilities/prescription.png';
 import { clinicAxios } from '../../utils/AxiosConfig';
 import { PATIENT_BASE_URL } from 'utils/Constants';
+import { pharmacyAxios } from 'pages/utilities/AxiosConfig';
+import { useUserContext } from 'hooks/useUserContext';
 
 const PrescriptionItem = ({ prescription, handleClicking, addToCart }) => {
+	const { user } = useUserContext();
+	const userId = user.id;
 	const [doctor, setDoctor] = useState({});
 	const [Loading, setLoading] = useState(true);
+	const [inCart, setInCart] = useState(false);
 	useEffect(() => {
 		try {
 			const getDoctor = () => {
@@ -41,6 +46,27 @@ const PrescriptionItem = ({ prescription, handleClicking, addToCart }) => {
 			console.log(err);
 		}
 	}, [prescription]);
+
+	useEffect(() => {
+		pharmacyAxios
+			.get(`cart/users/${userId}/prescriptions/${prescription._id}`)
+			.then((response) => {
+				console.log(response.data);
+				if (response.data.prescription) {
+					setInCart(true);
+				}
+			})
+			.catch((err) => {
+				console.log(err);
+				setInCart(false);
+			});
+	}, []);
+
+	const handleAddToCart = (prescription) => {
+		setInCart(true);
+		addToCart(prescription);
+	};
+
 	if (Loading) {
 		return <Typography variant='h5'>Loading...</Typography>;
 	} else {
@@ -110,8 +136,9 @@ const PrescriptionItem = ({ prescription, handleClicking, addToCart }) => {
 						aria-label='checkout'
 						onClick={(e) => {
 							e.stopPropagation();
-							addToCart(prescription);
+							handleAddToCart(prescription);
 						}}
+						disabled={inCart}
 					>
 						<ShoppingCartCheckoutSharpIcon />
 					</IconButton>

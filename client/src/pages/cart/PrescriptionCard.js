@@ -53,17 +53,17 @@ const PrescriptionCard = ({
 					</ListItemAvatar>
 					<ListItemText
 						primary={`Dr. ${doctorName}`}
-                        secondary={
-                            <div
-                                style={{
-                                    overflow: 'hidden',
-                                    whiteSpace: 'nowrap',
-                                    textOverflow: 'ellipsis',
-                                }}
-                            >
-                                {description}
-                            </div>
-                        }
+						secondary={
+							<div
+								style={{
+									overflow: 'hidden',
+									whiteSpace: 'nowrap',
+									textOverflow: 'ellipsis',
+								}}
+							>
+								{description}
+							</div>
+						}
 						sx={{
 							lineHeight: '1.5em',
 							maxHeight: '3em',

@@ -277,4 +277,44 @@ export const cart = (app) => {
 			res.status(ERROR_STATUS_CODE).json({ err: err.message });
 		}
 	});
+
+	app.get(
+		'/cart/users/:userId/prescriptions/:prescriptionId',
+		async (req, res) => {
+			try {
+				const { userId, prescriptionId } = req.params;
+				if (!isValidMongoId(prescriptionId)) {
+					return res
+						.status(ERROR_STATUS_CODE)
+						.json({ err: 'Invalid prescription id!' });
+				}
+				if (!isValidMongoId(userId)) {
+					return res
+						.status(ERROR_STATUS_CODE)
+						.json({ err: 'Invalid user id!' });
+				}
+
+				const cart = await service.getCart(userId);
+				if (!cart) {
+					return res
+						.status(NOT_FOUND_STATUS_CODE)
+						.json({ err: 'No cart for this user' });
+				}
+
+				const prescription = await service.getPrescription(
+					userId,
+					prescriptionId,
+				);
+				if (!prescription) {
+					return res
+						.status(NOT_FOUND_STATUS_CODE)
+						.json({ err: 'Prescription is not in the cart!' });
+				}
+
+				res.status(OK_STATUS_CODE).json({ prescription });
+			} catch (err) {
+				res.status(ERROR_STATUS_CODE).json({ err: err.message });
+			}
+		},
+	);
 };
