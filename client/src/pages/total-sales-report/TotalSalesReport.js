@@ -56,9 +56,13 @@ const TotalSalesReport = () => {
 					medicine.name === filterData[0].selectedValue),
 		);
 		
+		if(filteredMedicines.length==0){
+			setChartDate([]);
+		}
+		
 		
 		setMedicines(filteredMedicines); 
-	}, [originalMedicines, filterData]);
+	}, [searchQuery,originalMedicines, filterData]);
 	
 	const render =selectedMonth!=0; 
 
