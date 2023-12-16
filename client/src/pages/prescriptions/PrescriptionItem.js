@@ -8,7 +8,7 @@ import {
 	IconButton,
 } from '@mui/material';
 
-import ShoppingCartCheckoutSharpIcon from '@mui/icons-material/ShoppingCartCheckoutSharp';
+import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
 import FileDownloadIcon from '@mui/icons-material/FileDownload';
 import CheckIcon from '@mui/icons-material/Check';
 import CloseIcon from '@mui/icons-material/Close';
@@ -139,8 +139,9 @@ const PrescriptionItem = ({ prescription, handleClicking, addToCart }) => {
 							handleAddToCart(prescription);
 						}}
 						disabled={inCart}
+						color={inCart ? 'success' : 'primary'}
 					>
-						<ShoppingCartCheckoutSharpIcon />
+						<AddShoppingCartIcon />
 					</IconButton>
 				</Tooltip>
 			</ListItem>
