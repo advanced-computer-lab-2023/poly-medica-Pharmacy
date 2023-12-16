@@ -35,11 +35,11 @@ const Sidebar = ({ drawerOpen, drawerToggle, window }) => {
 	useEffect(() => {
 		if (userType === 'patient') {
 			patientAxios.get(`/patients/${userId}/wallet`).then((response) => {
-				setamountInWallet(response.data.walletAmount);
+				setamountInWallet(Math.round(response.data.walletAmount));
 			});
 		} else if (userType === 'pharmacist') {
 			pharmacyAxios.get(`/pharmacists/${userId}/wallet`).then((response) => {
-				setamountInWallet(response.data.walletAmount);
+				setamountInWallet(Math.round(response.data.walletAmount));
 			});
 		}
 		setPaymentDone(false);
