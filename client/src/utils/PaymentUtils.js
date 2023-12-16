@@ -1,4 +1,4 @@
-import { patientAxios, pharmacyAxios } from './AxiosConfig';
+import { communicationAxios, patientAxios, pharmacyAxios } from './AxiosConfig';
 import Swal from 'sweetalert2';
 
 export const successfulPayment = (userId, order, updateCartLength) => {
@@ -14,9 +14,15 @@ export const successfulPayment = (userId, order, updateCartLength) => {
 						const cart = response.data.cart;
 						cart.medicines.forEach((medicine) => {
 							pharmacyAxios.patch(
-								`medicines/${medicine.medicine._id}/${
-									medicine.medicine.quantity - medicine.quantity
+								`medicines/${medicine.medicine._id}/${medicine.medicine.quantity - medicine.quantity
 								}`,
+							).then(() => {
+								if (medicine.medicine.quantity - medicine.quantity === 0) {
+									communicationAxios.post(`/notifications/medicines/${medicine.medicine.name}`).catch((err) => {
+										Swal.fire(err.message);
+									});
+								}
+							}
 							);
 						});
 
@@ -26,8 +32,7 @@ export const successfulPayment = (userId, order, updateCartLength) => {
 									.get(`/medicines/${medicine.medicineId}`)
 									.then((response) => {
 										pharmacyAxios.patch(
-											`medicines/${medicine.medicineId}/${
-												response.data.medicine.quantity - medicine.amount
+											`medicines/${medicine.medicineId}/${response.data.medicine.quantity - medicine.amount
 											}`,
 										);
 									});
@@ -71,8 +76,7 @@ export const successfulPayment = (userId, order, updateCartLength) => {
 										.get(`/medicines/${medicine.medicineId}`)
 										.then((response) => {
 											pharmacyAxios.patch(
-												`medicines/${medicine.medicineId}/${
-													response.data.medicine.quantity - medicine.amount
+												`medicines/${medicine.medicineId}/${response.data.medicine.quantity - medicine.amount
 												}`,
 											);
 										});

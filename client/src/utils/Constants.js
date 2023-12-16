@@ -14,6 +14,8 @@ export const OK_STATUS_CODE = 200;
 
 const APPOINTMENT_STATUS = ['COMPLETE', 'UNCOMPLETE', 'CANCELED'];
 export const DATE_FILTER_ARRAY = ['Last week', 'Last month', 'Last year'];
+export const HEALTH_PACKAGE_STATUS = ['CANCELLED', 'SUBSCRIBED WITH RENEWAL DATE', 'UNSUBSCRIBED'];
+
 
 export const APPOINTMENT_FILTER_ARRAY = [
 	{
