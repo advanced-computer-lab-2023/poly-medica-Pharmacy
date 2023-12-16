@@ -7,7 +7,6 @@ import { useUserContext } from 'hooks/useUserContext.js';
 import { REJECTED_STATUS, CANCELLED_STATUS } from 'utils/Constants.js';
 import { usePayment } from 'contexts/PaymentContext';
 
-
 const Orders = () => {
 	const { setPaymentDone } = usePayment();
 	const [orders, setOrders] = useState([]);
@@ -45,24 +44,27 @@ const Orders = () => {
 	const handleAmountRefund = (order) => {
 		if (order.paymentMethod != 'cash') {
 			let user_Id;
-			if(userType != 'patient'){
+			if (userType != 'patient') {
 				user_Id = order.patientId;
-			}else if (userType === 'patient'){
+			} else if (userType === 'patient') {
 				user_Id = userId;
 			}
-			patientAxios.
-				get(`/patients/${user_Id}/wallet`).
-				then((response) => {
+			patientAxios
+				.get(`/patients/${user_Id}/wallet`)
+				.then((response) => {
 					console.log(response.data.walletAmount);
 					patientAxios
-						.patch(`/patients/${user_Id}/wallet`, { amount: response.data.walletAmount + order.amount })
+						.patch(`/patients/${user_Id}/wallet`, {
+							amount: response.data.walletAmount + order.amount,
+						})
 						.then(() => {
 							setPaymentDone((prev) => prev + 1);
-						}).catch((err) => {
+						})
+						.catch((err) => {
 							console.log(err.message);
 						});
-				}).
-				catch((err) => {
+				})
+				.catch((err) => {
 					console.log(err.message);
 				});
 		}
@@ -93,9 +95,11 @@ const Orders = () => {
 							//monthlySales
 							const date = new Date(order.createdAt);
 							console.log('date ===f===== ', date);
-							const month = date.getMonth(); 
+							const month = date.getMonth();
 							const day = date.getDate();
-							updatedMedicine.monthlySales[month+1][day] -= medicine.quantity;
+							updatedMedicine.monthlySales[month + 1][day] -= medicine.quantity;
+
+							console.log('updatedMedicine ===f===== ', updatedMedicine);
 
 							pharmacyAxios
 								.patch(`/medicines/${updatedMedicine._id}`, { updatedMedicine })
@@ -114,7 +118,6 @@ const Orders = () => {
 
 		handleAmountRefund(order);
 		handleDialogClose();
-
 	};
 
 	const handleAcceptOrRejectOrder = (status) => {
@@ -129,13 +132,13 @@ const Orders = () => {
 					});
 					return updateOrders;
 				});
-				if (status === REJECTED_STATUS){
+				if (status === REJECTED_STATUS) {
 					console.log('was hererererer');
 					handleAmountRefund(order);
 				}
 			})
 			.then(() => {
-				if(selectedOrder.status === REJECTED_STATUS) { 
+				if (selectedOrder.status === REJECTED_STATUS) {
 					selectedOrder.details.forEach((medicine) => {
 						pharmacyAxios
 							.get(`/medicines/${medicine.medicineId}`)
@@ -144,7 +147,9 @@ const Orders = () => {
 								updatedMedicine.quantity += medicine.quantity;
 								updatedMedicine.sales -= medicine.quantity;
 								pharmacyAxios
-									.patch(`/medicines/${updatedMedicine._id}`, { updatedMedicine })
+									.patch(`/medicines/${updatedMedicine._id}`, {
+										updatedMedicine,
+									})
 									.then((response) => {
 										console.log(response);
 									})
@@ -158,7 +163,7 @@ const Orders = () => {
 			.catch((err) => {
 				console.log(err);
 			});
-			handleDialogClose();
+		handleDialogClose();
 	};
 
 	return (

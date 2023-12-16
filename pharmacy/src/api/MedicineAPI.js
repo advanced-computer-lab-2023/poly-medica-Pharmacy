@@ -73,9 +73,6 @@ export const medicine = (app) => {
 			const { id } = req.params;
 			const { updatedMedicine } = req.body;
 			const oldMedicine = await service.getOneMedicine(id);
-			console.log('Inside medicine api ');
-			console.log('Old medicine ======== ', oldMedicine);
-			console.log('Updated Medicine ========= ', updatedMedicine);
 			if (!oldMedicine) {
 				res
 					.status(NOT_FOUND_STATUS_CODE)
