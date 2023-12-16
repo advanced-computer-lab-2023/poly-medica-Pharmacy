@@ -3,7 +3,7 @@ export const PATIENT_BASE_URL = 'http://localhost:8002';
 export const PHARMACY_BASE_URL = 'http://localhost:8003';
 export const PAYMENT_BASE_URL = 'http://localhost:8005';
 export const AUTHENTICATION_BASE_URL = 'http://localhost:8004';
-export const COMMUNICATION_BASE_UTL = 'http://localhost:8006';
+export const COMMUNICATION_BASE_URL = 'http://localhost:8006';
 
 export const PATIENT_TYPE_ENUM = 'patient';
 export const ADMIN_TYPE_ENUM = 'admin';

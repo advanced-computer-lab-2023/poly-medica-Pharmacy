@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { CLINIC_BASE_URL, PATIENT_BASE_URL, PHARMACY_BASE_URL, PAYMENT_BASE_URL, AUTHENTICATION_BASE_URL, COMMUNICATION_BASE_UTL } from './Constants';
+import { CLINIC_BASE_URL, PATIENT_BASE_URL, PHARMACY_BASE_URL, PAYMENT_BASE_URL, AUTHENTICATION_BASE_URL, COMMUNICATION_BASE_URL } from './Constants';
 
 // Define the base URLs for each microservice
 
@@ -30,6 +30,6 @@ export const authenticationAxios = axios.create({
   });
 
   export const communicationAxios = axios.create({
-    baseURL: COMMUNICATION_BASE_UTL,
+    baseURL: COMMUNICATION_BASE_URL,
     withCredentials: true,
 });
