@@ -53,14 +53,22 @@ const PrescriptionCard = ({
 					</ListItemAvatar>
 					<ListItemText
 						primary={`Dr. ${doctorName}`}
+                        secondary={
+                            <div
+                                style={{
+                                    overflow: 'hidden',
+                                    whiteSpace: 'nowrap',
+                                    textOverflow: 'ellipsis',
+                                }}
+                            >
+                                {description}
+                            </div>
+                        }
 						sx={{
 							lineHeight: '1.5em',
 							maxHeight: '3em',
 						}}
 					/>
-					<Grid item xs={3}>
-						<Typography variant='body2'>{description}</Typography>
-					</Grid>
 					<Grid item xs={3}>
 						<Typography variant='body2'>Total: ${price.toFixed(2)}</Typography>
 					</Grid>
