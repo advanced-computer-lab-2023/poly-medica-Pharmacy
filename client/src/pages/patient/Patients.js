@@ -33,6 +33,7 @@ const Patients = () => {
 
 	const handleDialogClose = () => {
 		setSelectedPatient(null);
+		setErrorMessage('');
 	};
 
 	const handleRemovePatient = (e, patientId) => {
