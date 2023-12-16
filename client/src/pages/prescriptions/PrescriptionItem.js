@@ -8,8 +8,7 @@ import {
 	IconButton,
 } from '@mui/material';
 
-import { useNavigate } from 'react-router-dom';
-import ShoppingCartCheckoutSharpIcon from '@mui/icons-material/ShoppingCartCheckoutSharp';
+import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
 import FileDownloadIcon from '@mui/icons-material/FileDownload';
 import CheckIcon from '@mui/icons-material/Check';
 import CloseIcon from '@mui/icons-material/Close';
@@ -19,11 +18,15 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import prescrptionImage from '../utilities/prescription.png';
 import { clinicAxios } from '../../utils/AxiosConfig';
 import { PATIENT_BASE_URL } from 'utils/Constants';
+import { pharmacyAxios } from 'pages/utilities/AxiosConfig';
+import { useUserContext } from 'hooks/useUserContext';
 
-const PrescriptionItem = ({ prescription, handleClicking }) => {
-	const navigate = useNavigate();
+const PrescriptionItem = ({ prescription, handleClicking, addToCart }) => {
+	const { user } = useUserContext();
+	const userId = user.id;
 	const [doctor, setDoctor] = useState({});
 	const [Loading, setLoading] = useState(true);
+	const [inCart, setInCart] = useState(false);
 	useEffect(() => {
 		try {
 			const getDoctor = () => {
@@ -43,6 +46,27 @@ const PrescriptionItem = ({ prescription, handleClicking }) => {
 			console.log(err);
 		}
 	}, [prescription]);
+
+	useEffect(() => {
+		pharmacyAxios
+			.get(`cart/users/${userId}/prescriptions/${prescription._id}`)
+			.then((response) => {
+				console.log(response.data);
+				if (response.data.prescription) {
+					setInCart(true);
+				}
+			})
+			.catch((err) => {
+				console.log(err);
+				setInCart(false);
+			});
+	}, []);
+
+	const handleAddToCart = (prescription) => {
+		setInCart(true);
+		addToCart(prescription);
+	};
+
 	if (Loading) {
 		return <Typography variant='h5'>Loading...</Typography>;
 	} else {
@@ -110,13 +134,14 @@ const PrescriptionItem = ({ prescription, handleClicking }) => {
 						sx={{ marginLeft: '2%' }}
 						edge='end'
 						aria-label='checkout'
-						onClick={() =>
-							navigate(
-								`/patient/pages/checkout/prescription/${prescription._id}`,
-							)
-						}
+						onClick={(e) => {
+							e.stopPropagation();
+							handleAddToCart(prescription);
+						}}
+						disabled={inCart}
+						color={inCart ? 'success' : 'primary'}
 					>
-						<ShoppingCartCheckoutSharpIcon />
+						<AddShoppingCartIcon />
 					</IconButton>
 				</Tooltip>
 			</ListItem>

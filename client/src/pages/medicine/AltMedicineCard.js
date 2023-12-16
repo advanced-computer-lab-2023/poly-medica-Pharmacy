@@ -14,8 +14,9 @@ import {
 } from '@mui/material';
 import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
 import { PHARMACY_BASE_URL } from 'utils/Constants';
-import { pharmacyAxios } from '../../utils/AxiosConfig';
+import { patientAxios,pharmacyAxios } from '../../utils/AxiosConfig';
 import { useUserContext } from 'hooks/useUserContext';
+import Swal from 'sweetalert2';
 
 
 const AltMedicineCard = ({
@@ -29,8 +30,29 @@ const AltMedicineCard = ({
 	const userType = user.type;
 	const [addToCartStatus, setAddToCartStatus] = useState(true);
 	const [isLoading, setIsLoading] = useState(true);
+	const [foundInPrescription, setFoundInPrescription] = useState(false);
+
 
 	useEffect(() => {
+		if (medicine.prescriptionMedicine === true) {
+			patientAxios
+				.get(`/patient/${userId}/prescriptions`)
+				.then((response) => response.data)
+				.then((data) => {
+					for (let i = 0; i < data.length; i++) {
+						for (let j = 0; j < data[i].medicines.length; j++) {
+							if (medicine._id === data[i].medicines[j].medicineId) {
+								setFoundInPrescription(true);
+							}
+						}
+					}
+				})
+				.catch((error) => {
+					console.error('Error fetching data:', error);
+					Swal.fire('error', error.message, 'error');
+					setIsLoading(false);
+				});
+		}
 		pharmacyAxios
 			.get(`/cart/users/${userId}/medicines/${medicine._id}`)
 			.then((response) => {
@@ -103,6 +125,12 @@ const AltMedicineCard = ({
 											Out of Stock
 										</Typography>
 									</Stack>
+								</Box>
+							) : (medicine.prescriptionMedicine && !foundInPrescription) ? (
+								<Box sx={{ width: '100%' }}>
+									<Typography variant='body2' color='error' align='center'>
+										Prescription Medicine
+									</Typography>
 								</Box>
 							) : (
 								<>

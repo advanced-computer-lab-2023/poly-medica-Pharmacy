@@ -6,6 +6,7 @@ const AltMedicinesList = ({
 	setSelectedMedicine,
 	handleAddToCart,
 	medicineIsBeingAddedToCart,
+	foundInPrescription,
 }) => {
 	return (
 		<List>
@@ -18,6 +19,7 @@ const AltMedicinesList = ({
 								setSelectedMedicine={setSelectedMedicine}
 								handleAddToCart={handleAddToCart}
 								medicineIsBeingAddedToCart={medicineIsBeingAddedToCart}
+								foundInPrescription={foundInPrescription}
 							></AltMedicineCard>
 						</div>
 					</div>

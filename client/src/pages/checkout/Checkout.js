@@ -17,8 +17,10 @@ import { successfulPayment } from '../../utils/PaymentUtils';
 import Swal from 'sweetalert2';
 import '../../assets/css/swalStyle.css';
 import { usePayment } from 'contexts/PaymentContext';
+import { useCartContext } from 'contexts/CartContext';
 
 const Checkout = () => {
+	const { type, id } = useParams();
 	const { setPaymentDone } = usePayment();
 	const [items, setItems] = useState([]);
 	const [primaryAddress, setPrimaryAddress] = useState(null);
@@ -27,59 +29,49 @@ const Checkout = () => {
 	const { user } = useUserContext();
 	const userId = user.id;
 	const navigate = useNavigate();
+	const { updateCartLength } = useCartContext();
 	primaryAddress;
 	useEffect(() => {
-		if (type == 'cart') {
-			pharmacyAxios
-				.get(`/cart/users/${userId}/medicines/`)
-				.then((response) => {
-					const medicines = response.data;
-					setItems(() => {
-						const itms = medicines.medicines.map((medicine) => {
+		pharmacyAxios
+			.get(`/cart/users/${userId}/medicines/`)
+			.then((response) => {
+				console.log(response.data);
+				const medicines = response.data;
+				setItems(() => {
+					let itms = medicines.medicines.map((medicine) => {
+						const itm = {
+							medicineId: medicine.medicine._id,
+							name: medicine.medicine.name,
+							quantity: medicine.quantity,
+							price: medicine.medicine.price,
+						};
+						setTotalCost((prev) => {
+							return prev + itm.quantity * itm.price;
+						});
+						return itm;
+					});
+					medicines.prescriptions.map((prescription) => {
+						const meds = prescription.medicines.map((medicine) => {
 							const itm = {
-								medicineId: medicine.medicine._id,
-								name: medicine.medicine.name,
-								quantity: medicine.quantity,
-								price: medicine.medicine.price,
+								medicineId: medicine.medicineId,
+								name: medicine.name,
+								quantity: medicine.amount,
+								price: medicine.price,
+								prescriptionId: prescription.prescriptionId,
 							};
 							setTotalCost((prev) => {
 								return prev + itm.quantity * itm.price;
 							});
 							return itm;
 						});
-						return itms;
+						itms = [...itms, ...meds];
 					});
-				})
-				.catch((error) => {
-					console.log(error);
+					return itms;
 				});
-		} else if (type == 'prescription') {
-			const prescriptionId = id;
-			patientAxios
-				.get(`/prescriptions/${prescriptionId}/medicines`)
-				.then((response) => {
-					const medicines = response.data;
-					medicines.map((medicine) => {
-						pharmacyAxios
-							.get(`/medicines/${medicine.medicineId}`)
-							.then((response) => {
-								const itm = {
-									medicineId: medicine.medicineId,
-									name: response.data.medicine.name,
-									quantity: medicine.amount,
-									price: response.data.medicine.price,
-								};
-								setTotalCost((prev) => {
-									return prev + itm.quantity * itm.price;
-								});
-								setItems((prev) => [...prev, itm]);
-							});
-					});
-				})
-				.catch((error) => {
-					console.log(error);
-				});
-		}
+			})
+			.catch((error) => {
+				console.log(error);
+			});
 
 		patientAxios
 			.get('/address/' + userId)
@@ -114,7 +106,7 @@ const Checkout = () => {
 								patientId: userId,
 								details: items,
 								amount: totalCost,
-								paymentMethod : 'card',
+								paymentMethod: 'card',
 								type: type,
 								typeId: id,
 							},
@@ -122,7 +114,6 @@ const Checkout = () => {
 						},
 						replace: true,
 					});
-					
 				} else if (value === 'wallet') {
 					console.log('the amount in  wallet is : ', amountInWallet);
 					if (amountInWallet >= amountToPay) {
@@ -134,25 +125,27 @@ const Checkout = () => {
 							.then(
 								Swal.fire('success', 'Payment Succeeded', 'success').then(
 									() => {
-										const callBackUrl = successfulPayment(userId, {
-											patientId: userId,
-											details: items,
-											amount: totalCost,
-											type: type,
-											typeId: id,
-											paymentMethod : 'wallet'
-
-										});
-										if (type === 'cart') {
-											pharmacyAxios
-												.delete(`/cart/users/${userId}/medicines`)
-												.then(() => {
-													navigate(callBackUrl, { replace: true });
-												})
-												.catch((err) => {
-													console.log(err);
-												});
-										}
+										const callBackUrl = successfulPayment(
+											userId,
+											{
+												patientId: userId,
+												details: items,
+												amount: totalCost,
+												type: type,
+												typeId: id,
+												paymentMethod: 'wallet',
+											},
+											updateCartLength,
+										);
+										pharmacyAxios
+											.delete(`/cart/users/${userId}`)
+											.then(() => {
+												updateCartLength();
+												navigate(callBackUrl, { replace: true });
+											})
+											.catch((err) => {
+												console.log(err);
+											});
 									},
 								),
 							)
@@ -186,7 +179,7 @@ const Checkout = () => {
 											patientId: userId,
 											details: items,
 											amount: totalCost,
-											paymentMethod : 'wallet',
+											paymentMethod: 'wallet',
 											type: type,
 											typeId: id,
 										},
@@ -199,14 +192,18 @@ const Checkout = () => {
 					}
 				} else {
 					Swal.fire('success', 'Payment Succeeded', 'success').then(() => {
-						const callBackUrl = successfulPayment(userId, {
-							patientId: userId,
-							details: items,
-							amount: totalCost,
-							paymentMethod : 'cash',
-							type: type,
-							typeId: id,
-						});
+						const callBackUrl = successfulPayment(
+							userId,
+							{
+								patientId: userId,
+								details: items,
+								amount: totalCost,
+								paymentMethod: 'cash',
+								type: type,
+								typeId: id,
+							},
+							updateCartLength,
+						);
 						navigate(callBackUrl, { replace: true });
 					});
 					setPaymentDone(true);

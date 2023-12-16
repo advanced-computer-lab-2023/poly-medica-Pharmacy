@@ -16,7 +16,6 @@ const DeleteConfirmationDialog = ({
 	content,
 	errorMessage,
 	someoneIsBeingDeleted,
-	
 }) => {
 	return (
 		<Dialog open={open} onClose={onClose}>

@@ -25,6 +25,52 @@ class CartRepository {
 		return await this.getCart(userId);
 	}
 
+	async addPrescriptionToCart(
+		userId,
+		prescriptionId,
+		description,
+		doctorName,
+		medicines,
+		medicinesQuantity,
+		price,
+	) {
+		await CartModel.findOneAndUpdate(
+			{ userId: new mongoose.Types.ObjectId(userId) },
+			{
+				$push: {
+					prescriptions: {
+						prescriptionId: prescriptionId,
+						description: description,
+						doctorName: doctorName,
+						medicines: medicines,
+						medicinesQuantity: medicinesQuantity,
+						price: price,
+					},
+				},
+			},
+			{ new: true },
+		);
+
+		return await this.getCart(userId);
+	}
+
+	async addPrescriptionMedicineToCart(userId, medicine, quantity) {
+		await CartModel.findOneAndUpdate(
+			{ userId: new mongoose.Types.ObjectId(userId) },
+			{
+				$push: {
+					medicines: {
+						medicine: medicine,
+						quantity: quantity,
+					},
+				},
+			},
+			{ new: true },
+		);
+
+		return await this.getCart(userId);
+	}
+
 	async getMedicine(userId, medicineId) {
 		const cart = await CartModel.findOne({
 			userId: new mongoose.Types.ObjectId(userId),
@@ -53,12 +99,13 @@ class CartRepository {
 		return cart;
 	}
 
-	async deleteAllMedicinesFromCart(userId) {
+	async deleteAllMedicinesAndPrescriptionsFromCart(userId) {
 		const cart = await CartModel.findOneAndUpdate(
 			{ userId: new mongoose.Types.ObjectId(userId) },
 			{
 				$set: {
 					medicines: [],
+					prescriptions: [],
 				},
 			},
 			{ new: true },
@@ -78,6 +125,36 @@ class CartRepository {
 		if (cart) {
 			cart.medicines = cart.medicines.filter(
 				(item) => item.medicine._id != medicineId,
+			);
+			await cart.save();
+		}
+		return cart;
+	}
+
+	async getCartItemsLength(userId) {
+		const cart = await this.getCart(userId);
+		const quantities = cart.medicines.map((item) => item.quantity);
+		const medicinesLength = quantities.reduce((a, b) => a + b, 0);
+		const prescriptionsMedicinesLength = cart.prescriptions.reduce(
+			(acc, prescription) => acc + prescription.medicinesQuantity,
+			0,
+		);
+
+		return medicinesLength + prescriptionsMedicinesLength;
+	}
+
+	async getPrescription(userId, prescriptionId) {
+		const cart = await this.getCart(userId);
+		return cart.prescriptions.find(
+			(item) => item.prescriptionId == prescriptionId,
+		);
+	}
+
+	async deletePrescriptionFromCart(userId, prescriptionId) {
+		const cart = await this.getCart(userId);
+		if (cart) {
+			cart.prescriptions = cart.prescriptions.filter(
+				(item) => item.prescriptionId != prescriptionId,
 			);
 			await cart.save();
 		}

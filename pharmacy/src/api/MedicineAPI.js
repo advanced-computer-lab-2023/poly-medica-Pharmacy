@@ -27,18 +27,20 @@ export const medicine = (app) => {
 	});
 
 	app.get('/medicines/archive', async (req, res) => {
-		try{
+		try {
 			const medicines = await service.getAllArchiveMedicines();
 			res.send(medicines);
-		} catch(error) {
+		} catch (error) {
 			res.status(ERROR_STATUS_CODE).json({ err: error.message });
 		}
-	})
+	});
 
 	app.get('/medicines/:id', async (req, res) => {
 		try {
 			const { id } = req.params;
+			console.log('id ======== ', id);
 			const medicine = await service.getOneMedicine(id);
+			console.log('medicine ======== ', medicine);
 			if (medicine) {
 				res.status(OK_STATUS_CODE).json({ medicine });
 			} else {
@@ -71,9 +73,6 @@ export const medicine = (app) => {
 			const { id } = req.params;
 			const { updatedMedicine } = req.body;
 			const oldMedicine = await service.getOneMedicine(id);
-			console.log('Inside medicine api ');
-			console.log('Old medicine ======== ', oldMedicine);
-			console.log('Updated Medicine ========= ', updatedMedicine);
 			if (!oldMedicine) {
 				res
 					.status(NOT_FOUND_STATUS_CODE)
@@ -103,10 +102,19 @@ export const medicine = (app) => {
 			}
 
 			const newSales = oldMedicine.sales + (oldMedicine.quantity - quantity);
+			//monthlySales
+			const date = new Date();
+			console.log('dateee ======== ', date);
+			const month = date.getMonth();
+			const day = date.getDate();
+			const newMonthlySales = oldMedicine.monthlySales;
+			newMonthlySales[month + 1][day] += oldMedicine.quantity - quantity;
+
 			const updated = await service.updateMedicineQuantity(
 				id,
 				quantity,
 				newSales,
+				newMonthlySales,
 			);
 
 			return res.status(OK_STATUS_CODE).json(updated);
@@ -116,15 +124,15 @@ export const medicine = (app) => {
 	});
 
 	app.patch('/medicines/:id/arcive/:archive', async (req, res) => {
-		try{
+		try {
 			const medicineId = req.params.id;
 			const archive = req.params.archive;
 			await service.updateMedicineArchiveState(medicineId, archive);
 			res.status(OK_REQUEST_CODE_200).end();
-		} catch (error){
+		} catch (error) {
 			res.status(ERROR_STATUS_CODE).json({ message: error.message });
 		}
-	})
+	});
 
 	app.post(
 		'/medicines',

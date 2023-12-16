@@ -3,45 +3,50 @@ import mongoose from 'mongoose';
 const Medicine = mongoose.Schema({
 	name: {
 		type: String,
-		required: true
+		required: true,
 	},
 	price: {
 		type: Number,
-		required: true
+		required: true,
 	},
 	description: {
 		type: String,
-		required: true
+		required: true,
 	},
 	pictureName: {
 		type: String,
 	},
 	quantity: {
 		type: Number,
-		required: true
+		required: true,
 	},
 	sales: {
-		type: Number, 
+		type: Number,
 		required: true,
-		default: 0
+		default: 0,
 	},
 	medicinalUse: {
 		type: String,
-		required: true
+		required: true,
 	},
 	activeIngerdients: {
 		type: String,
-		required: true
+		required: true,
+	},
+	monthlySales: {
+		type: [[Number]], //12 months * 32 days
+		required: true,
+		default: () => Array.from({ length: 13 }, () => new Array(32).fill(0)),
 	},
 	prescriptionMedicine: {
 		type: Boolean,
-		required: true
+		default: false,
 	},
 	archive: {
 		type: Boolean,
 		required: true,
-		default: false
-	}
+		default: false,
+	},
 });
 
 const MedicineModel = mongoose.model('Medicine', Medicine);
