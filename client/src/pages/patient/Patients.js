@@ -1,18 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import {
-	Table,
-	TableBody,
-	TableCell,
-	TableContainer,
-	TableHead,
-	TableRow,
-	Paper,
-} from '@mui/material';
+
 import MainCard from 'ui-component/cards/MainCard';
-import PatientRow from './PatientRow';
 import DeleteConfirmationDialog from '../../ui-component/DeleteConfirmationDialog';
 import { patientAxios, pharmacyAxios } from 'utils/AxiosConfig';
 import Message from 'ui-component/Message';
+import PatientsList from './PatientsList';
+import PatientDetails from './PatientDetails';
 
 const Patients = () => {
 	const [patients, setPatients] = useState([]);
@@ -22,6 +15,7 @@ const Patients = () => {
 	const [patientIsBeingDeleted, setPatientIsBeingDeleted] = useState(false);
 	const [patientDeleted, setPatientDeleted] = useState(false);
 	const [errorMessage, setErrorMessage] = useState('');
+	const [selectedPatient, setSelectedPatient] = useState(null);
 
 	useEffect(() => {
 		patientAxios
@@ -37,7 +31,12 @@ const Patients = () => {
 			});
 	}, [patients.length]);
 
-	const handleRemovePatient = (patientId) => {
+	const handleDialogClose = () => {
+		setSelectedPatient(null);
+	};
+
+	const handleRemovePatient = (e, patientId) => {
+		e.stopPropagation();
 		setPatientToDelete(patientId);
 		setConfirmDeleteDialogOpen(true);
 	};
@@ -76,40 +75,25 @@ const Patients = () => {
 			{isLoading ? (
 				<p>Loading...</p>
 			) : (
-				<div>
-					<TableContainer component={Paper}>
-						<Table>
-							<TableHead>
-								<TableRow>
-									<TableCell>Name</TableCell>
-									<TableCell>User Name</TableCell>
-									<TableCell>Email</TableCell>
-									<TableCell>Date of Birth</TableCell>
-									<TableCell>Gender</TableCell>
-									<TableCell>Mobile Number</TableCell>
-									<TableCell>Delete</TableCell>
-								</TableRow>
-							</TableHead>
-							<TableBody>
-								{Array.isArray(patients) &&
-									patients.map((patient) => (
-										<PatientRow
-											key={patient._id}
-											patient={patient}
-											handleRemovePatient={handleRemovePatient}
-										/>
-									))}
-							</TableBody>
-						</Table>
-					</TableContainer>
+				<>
+					<PatientsList
+						patients={patients}
+						handleRemovePatient={handleRemovePatient}
+						setSelectedPatient={setSelectedPatient}
+					/>
+
+					<PatientDetails
+						selectedPatient={selectedPatient}
+						handleDialogClose={handleDialogClose}
+					/>
 
 					{patientDeleted && (
 						<Message
 							message='Patient deleted successfully'
-							severity='success'
-							time={2000}
-							vertical={'bottom'}
-							horizontal={'right'}
+							type='success'
+							timeout={3000}
+							horizontal='right'
+							vertical='bottom'
 						/>
 					)}
 
@@ -122,7 +106,7 @@ const Patients = () => {
 						errorMessage={errorMessage}
 						someoneIsBeingDeleted={patientIsBeingDeleted}
 					/>
-				</div>
+				</>
 			)}
 		</MainCard>
 	);
