@@ -1,18 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import {
-	Table,
-	TableBody,
-	TableCell,
-	TableContainer,
-	TableHead,
-	TableRow,
-	Paper,
-} from '@mui/material';
 import MainCard from 'ui-component/cards/MainCard';
-import PharmacistRow from './PharmacistRow';
 import DeleteConfirmationDialog from '../../ui-component/DeleteConfirmationDialog';
 import { pharmacyAxios } from 'utils/AxiosConfig';
 import Message from 'ui-component/Message';
+import PharmacistsList from './PharmacistsList';
+import PharmacistsDetails from './PharmacistsDetails';
 
 const Pharmacists = () => {
 	const [pharmacists, setPharmacists] = useState([]);
@@ -23,6 +15,7 @@ const Pharmacists = () => {
 		useState(false);
 	const [pharmacistDeleted, setPharmacistDeleted] = useState(false);
 	const [errorMessage, setErrorMessage] = useState('');
+	const [selectedPharmacist, setSelectedPharmacist] = useState(null);
 
 	useEffect(() => {
 		pharmacyAxios
@@ -38,7 +31,13 @@ const Pharmacists = () => {
 			});
 	}, [pharmacists.length]);
 
-	const handleRemovePharmacist = (pharmacistId) => {
+	const handleDialogClose = () => {
+		setSelectedPharmacist(null);
+		setErrorMessage('');
+	};
+
+	const handleRemovePharmacist = (e, pharmacistId) => {
+		e.stopPropagation();
 		setPharmacistToDelete(pharmacistId);
 		setConfirmDeleteDialogOpen(true);
 	};
@@ -79,33 +78,18 @@ const Pharmacists = () => {
 			{isLoading ? (
 				<p>Loading...</p>
 			) : (
-				<div>
-					<TableContainer component={Paper}>
-						<Table>
-							<TableHead>
-								<TableRow>
-									<TableCell>Name</TableCell>
-									<TableCell>User Name</TableCell>
-									<TableCell>Email</TableCell>
-									<TableCell>Date of Birth</TableCell>
-									<TableCell>Hourly Rate</TableCell>
-									<TableCell>Affiliation</TableCell>
-									<TableCell>Educational Background</TableCell>
-									<TableCell>Delete</TableCell>
-								</TableRow>
-							</TableHead>
-							<TableBody>
-								{Array.isArray(pharmacists) &&
-									pharmacists.map((pharmacist) => (
-										<PharmacistRow
-											key={pharmacist._id}
-											pharmacist={pharmacist}
-											handleRemovePharmacist={handleRemovePharmacist}
-										/>
-									))}
-							</TableBody>
-						</Table>
-					</TableContainer>
+				<>
+					<PharmacistsList
+						pharmacists={pharmacists}
+						handleRemovePharmacist={handleRemovePharmacist}
+						setSelectedPharmacist={setSelectedPharmacist}
+					/>
+
+					<PharmacistsDetails
+						selectedPharmacist={selectedPharmacist}
+						handleDialogClose={handleDialogClose}
+					/>
+
 					{pharmacistDeleted && (
 						<Message
 							message={'Pharmacist deleted successfully!'}
@@ -125,7 +109,7 @@ const Pharmacists = () => {
 						errorMessage={errorMessage}
 						someoneIsBeingDeleted={pharmacistIsBeingDeleted}
 					/>
-				</div>
+				</>
 			)}
 		</MainCard>
 	);
