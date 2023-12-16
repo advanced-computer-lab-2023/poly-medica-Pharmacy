@@ -3,6 +3,7 @@ import { useUserContext } from 'hooks/useUserContext';
 import { useCartContext } from 'contexts/CartContext';
 import { pharmacyAxios } from '../../utils/AxiosConfig';
 import MedicineCard from './MedicineCard';
+import PrescriptionCard from './PrescriptionCard';
 import { Box } from '@mui/system';
 import { Button, Grid, Paper } from '@mui/material';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
@@ -15,6 +16,7 @@ const Cart = () => {
 	const user = useUserContext();
 	const userId = user.user.id;
 	const [cartItems, setCartItems] = useState([]);
+	const [cartPrescriptions, setCartPrescriptions] = useState([]);
 	const [itemsLength, setItemsLength] = useState(0);
 	const [isLoading, setIsLoading] = useState(true);
 	const { cartLength, updateCartLength } = useCartContext();
@@ -25,7 +27,10 @@ const Cart = () => {
 			.then((response) => {
 				console.log(response.data);
 				setCartItems(response.data.medicines);
-				setItemsLength(response.data.medicines.length);
+				setCartPrescriptions(response.data.prescriptions);
+				setItemsLength(
+					response.data.medicines.length + response.data.prescriptions.length,
+				);
 				setIsLoading(false);
 			})
 			.catch((error) => {
@@ -62,6 +67,22 @@ const Cart = () => {
 			});
 	};
 
+	const removePrescription = async (prescriptionId) => {
+		await pharmacyAxios
+			.delete(`/cart/users/${userId}/prescriptions/${prescriptionId}`)
+			.then((response) => {
+				console.log(response.data);
+				setCartPrescriptions(
+					cartPrescriptions.filter((item) => item._id !== prescriptionId),
+				);
+				setItemsLength(itemsLength - 1);
+				updateCartLength();
+			})
+			.catch((error) => {
+				console.log(error);
+			});
+	};
+
 	return (
 		<>
 			{isLoading ? (
@@ -89,6 +110,20 @@ const Cart = () => {
 										onUpdateQuantity={updateMedicineQuantity}
 									/>
 								))}
+
+							{Array.isArray(cartPrescriptions) &&
+								cartPrescriptions.map((item) => (
+									<PrescriptionCard
+										key={item._id}
+										prescriptionId={item.prescriptionId}
+										doctorName={item.doctorName}
+										description={item.description}
+										price={item.price}
+										medicinesQuantity={item.medicinesQuantity}
+										removePrescription={removePrescription}
+									/>
+								))}
+
 							<Grid
 								container
 								spacing={2}

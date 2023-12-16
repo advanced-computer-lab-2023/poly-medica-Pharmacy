@@ -70,31 +70,32 @@ const Prescriptions = () => {
 		setPrescriptionDoctor(doctor);
 	};
 
-	const addToCart = (prescriptionMedicines) => {
-		prescriptionMedicines.forEach((medicine) => {
-			const medicineId = medicine.medicineId;
-			const quantity = medicine.amount;
-			pharmacyAxios
-				.get(`/medicines/${medicineId}`)
-				.then((response) => {
-					const medicine = response.data.medicine;
-					console.log('MEDDDD === ', medicine);
-					pharmacyAxios
-						.post(
-							`/cart/users/${user.id}/prescription-medicines?quantity=${quantity}`,
-							{ medicine },
-						)
-						.then((response) => {
-							console.log(response.data);
-						})
-						.catch((error) => {
-							console.log(error);
-						});
-				})
-				.catch((error) => {
-					console.log(error);
-				});
-		});
+	const addToCart = (prescription) => {
+		const prescriptionPrice = prescription.medicines.reduce(
+			(acc, medicine) => acc + medicine.price * medicine.amount,
+			0,
+		);
+
+		const medicinesQuantity = prescription.medicines.reduce(
+			(acc, medicine) => acc + medicine.amount,
+			0,
+		);
+
+		pharmacyAxios
+			.post(`cart/users/${user.id}/prescription/`, {
+				prescriptionId: prescription._id,
+				description: prescription.description,
+				doctorName: prescription.doctorName,
+				medicines: prescription.medicines,
+				medicinesQuantity: medicinesQuantity,
+				price: prescriptionPrice,
+			})
+			.then((response) => {
+				console.log(response.data);
+			})
+			.catch((err) => {
+				console.log(err);
+			});
 	};
 
 	return loadingMedicine || loadingPrescription ? (

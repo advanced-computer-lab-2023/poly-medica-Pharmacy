@@ -110,7 +110,7 @@ const PrescriptionItem = ({ prescription, handleClicking, addToCart }) => {
 						aria-label='checkout'
 						onClick={(e) => {
 							e.stopPropagation();
-							addToCart(prescription.medicines);
+							addToCart(prescription);
 						}}
 					>
 						<ShoppingCartCheckoutSharpIcon />

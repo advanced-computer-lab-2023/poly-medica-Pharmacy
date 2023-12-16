@@ -25,6 +25,35 @@ class CartRepository {
 		return await this.getCart(userId);
 	}
 
+	async addPrescriptionToCart(
+		userId,
+		prescriptionId,
+		description,
+		doctorName,
+		medicines,
+		medicinesQuantity,
+		price,
+	) {
+		await CartModel.findOneAndUpdate(
+			{ userId: new mongoose.Types.ObjectId(userId) },
+			{
+				$push: {
+					prescriptions: {
+						prescriptionId: prescriptionId,
+						description: description,
+						doctorName: doctorName,
+						medicines: medicines,
+						medicinesQuantity: medicinesQuantity,
+						price: price,
+					},
+				},
+			},
+			{ new: true },
+		);
+
+		return await this.getCart(userId);
+	}
+
 	async addPrescriptionMedicineToCart(userId, medicine, quantity) {
 		await CartModel.findOneAndUpdate(
 			{ userId: new mongoose.Types.ObjectId(userId) },

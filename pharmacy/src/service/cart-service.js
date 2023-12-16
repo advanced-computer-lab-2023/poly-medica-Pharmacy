@@ -15,6 +15,19 @@ class CartService {
 		return cart;
 	}
 
+	async addPrescriptionToCart(userId, prescriptionId, description, doctorName, medicines, medicinesQuantity, price) {
+		const cart = await this.repository.addPrescriptionToCart(
+			userId,
+			prescriptionId,
+			description,
+			doctorName,
+			medicines,
+			medicinesQuantity,
+			price
+		);
+		return cart;
+	}
+
 	async addPrescriptionMedicineToCart(userId, medicine, quantity) {
 		const cart = await this.repository.addPrescriptionMedicineToCart(
 			userId,
