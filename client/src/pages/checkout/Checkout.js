@@ -32,57 +32,46 @@ const Checkout = () => {
 	const { updateCartLength } = useCartContext();
 	primaryAddress;
 	useEffect(() => {
-		if (type == 'cart') {
-			pharmacyAxios
-				.get(`/cart/users/${userId}/medicines/`)
-				.then((response) => {
-					const medicines = response.data;
-					setItems(() => {
-						const itms = medicines.medicines.map((medicine) => {
-							const itm = {
-								medicineId: medicine.medicine._id,
-								name: medicine.medicine.name,
-								quantity: medicine.quantity,
-								price: medicine.medicine.price,
-							};
-							setTotalCost((prev) => {
-								return prev + itm.quantity * itm.price;
-							});
-							return itm;
+	pharmacyAxios
+		.get(`/cart/users/${userId}/medicines/`)
+		.then((response) => {
+			console.log(response.data);
+			const medicines = response.data;
+			setItems(() => {
+				let itms = medicines.medicines.map((medicine) => {
+					const itm = {
+						medicineId: medicine.medicine._id,
+						name: medicine.medicine.name,
+						quantity: medicine.quantity,
+						price: medicine.medicine.price,
+					};
+					setTotalCost((prev) => {
+						return prev + itm.quantity * itm.price;
+					});
+					return itm;
+				});
+				medicines.prescriptions.map((prescription) => {
+					const meds = prescription.medicines.map(medicine => {
+						const itm = {
+							medicineId: medicine.medicineId,
+							name: medicine.name,
+							quantity: medicine.amount,
+							price: medicine.price,
+						};
+						setTotalCost((prev) => {
+							return prev + itm.quantity * itm.price;
 						});
-						return itms;
+						return itm;
 					});
-				})
-				.catch((error) => {
-					console.log(error);
+					itms = [...itms, ...meds];
 				});
-		} else if (type == 'prescription') {
-			const prescriptionId = id;
-			patientAxios
-				.get(`/prescriptions/${prescriptionId}/medicines`)
-				.then((response) => {
-					const medicines = response.data;
-					medicines.map((medicine) => {
-						pharmacyAxios
-							.get(`/medicines/${medicine.medicineId}`)
-							.then((response) => {
-								const itm = {
-									medicineId: medicine.medicineId,
-									name: response.data.medicine.name,
-									quantity: medicine.amount,
-									price: response.data.medicine.price,
-								};
-								setTotalCost((prev) => {
-									return prev + itm.quantity * itm.price;
-								});
-								setItems((prev) => [...prev, itm]);
-							});
-					});
-				})
-				.catch((error) => {
-					console.log(error);
-				});
-		}
+				return itms;
+			});
+		})
+		.catch((error) => {
+			console.log(error);
+		});
+		
 
 		patientAxios
 			.get('/address/' + userId)

@@ -79,6 +79,10 @@ const Cart = mongoose.Schema({
 						type: mongoose.Schema.Types.ObjectId,
 						required: true,
 					},
+					name: {
+						type: String,
+						required: true,
+					},
 					price: {
 						type: Number,
 						required: true,
