@@ -4,6 +4,7 @@ import List from '@mui/material/List';
 const PrescriptionsList = ({
 	prescriptions,
 	handleSelectingPrescription,
+	addToCart,
 }) => {
 	return (
 		<List>
@@ -15,6 +16,7 @@ const PrescriptionsList = ({
 								key={index}
 								prescription={prescription}
 								handleClicking={handleSelectingPrescription}
+								addToCart={addToCart}
 							/>
 						</div>
 					);
