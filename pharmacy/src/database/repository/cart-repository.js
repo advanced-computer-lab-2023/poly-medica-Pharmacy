@@ -148,6 +148,17 @@ class CartRepository {
 			(item) => item.prescriptionId == prescriptionId,
 		);
 	}
+
+	async deletePrescriptionFromCart(userId, prescriptionId) {
+		const cart = await this.getCart(userId);
+		if (cart) {
+			cart.prescriptions = cart.prescriptions.filter(
+				(item) => item.prescriptionId != prescriptionId,
+			);
+			await cart.save();
+		}
+		return cart;
+	}
 }
 
 export default CartRepository;

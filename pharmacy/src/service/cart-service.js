@@ -95,6 +95,14 @@ class CartService {
 		return prescription;
 	}
 
+	async deletePrescriptionFromCart(userId, prescriptionId) {
+		const cart = await this.repository.deletePrescriptionFromCart(
+			userId,
+			prescriptionId,
+		);
+		return cart;
+	}
+
 	async getCart(userId) {
 		const cart = await this.repository.getCart(userId);
 		return cart;

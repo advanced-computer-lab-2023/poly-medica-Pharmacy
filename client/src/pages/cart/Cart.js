@@ -73,7 +73,9 @@ const Cart = () => {
 			.then((response) => {
 				console.log(response.data);
 				setCartPrescriptions(
-					cartPrescriptions.filter((item) => item._id !== prescriptionId),
+					cartPrescriptions.filter(
+						(item) => item.prescriptionId !== prescriptionId,
+					),
 				);
 				setItemsLength(itemsLength - 1);
 				updateCartLength();

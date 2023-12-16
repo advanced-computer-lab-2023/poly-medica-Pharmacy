@@ -317,4 +317,39 @@ export const cart = (app) => {
 			}
 		},
 	);
+
+	app.delete(
+		'/cart/users/:userId/prescriptions/:prescriptionId',
+		async (req, res) => {
+			try {
+				const { userId, prescriptionId } = req.params;
+				if (!isValidMongoId(prescriptionId)) {
+					return res
+						.status(ERROR_STATUS_CODE)
+						.json({ err: 'Invalid prescription id!' });
+				}
+				if (!isValidMongoId(userId)) {
+					return res
+						.status(ERROR_STATUS_CODE)
+						.json({ err: 'Invalid user id!' });
+				}
+
+				const cart = await service.getCart(userId);
+				if (!cart) {
+					return res
+						.status(NOT_FOUND_STATUS_CODE)
+						.json({ err: 'No cart for this user' });
+				}
+
+				const updatedCart = await service.deletePrescriptionFromCart(
+					userId,
+					prescriptionId,
+				);
+
+				res.status(OK_STATUS_CODE).json({ updatedCart });
+			} catch (err) {
+				res.status(ERROR_STATUS_CODE).json({ err: err.message });
+			}
+		},
+	);
 };
