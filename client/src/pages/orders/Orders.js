@@ -109,6 +109,21 @@ const Orders = () => {
 								.catch((err) => {
 									console.log(err);
 								});
+						})
+						.then(() => {
+							console.log('medicine.prescriptionId == ', medicine);
+							if (medicine.prescriptionId) {
+								patientAxios
+									.patch(`/prescriptions/${medicine.prescriptionId}`, {
+										prescription: { filled: false },
+									})
+									.then(() => {
+										console.log('prescription updated');
+									})
+									.catch((err) => {
+										console.log(err);
+									});
+							}
 						});
 				});
 			})
@@ -156,6 +171,20 @@ const Orders = () => {
 									.catch((err) => {
 										console.log(err);
 									});
+							})
+							.then(() => {
+								if (medicine.prescriptionId) {
+									patientAxios
+										.patch(`/prescriptions/${medicine.prescriptionId}`, {
+											prescription: { filled: false },
+										})
+										.then(() => {
+											console.log('prescription updated');
+										})
+										.catch((err) => {
+											console.log(err);
+										});
+								}
 							});
 					});
 				}

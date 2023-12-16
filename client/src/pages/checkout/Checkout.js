@@ -57,6 +57,7 @@ const Checkout = () => {
 								name: medicine.name,
 								quantity: medicine.amount,
 								price: medicine.price,
+								prescriptionId: prescription.prescriptionId,
 							};
 							setTotalCost((prev) => {
 								return prev + itm.quantity * itm.price;

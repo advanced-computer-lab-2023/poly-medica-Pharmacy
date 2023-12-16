@@ -2,7 +2,7 @@ import { patientAxios, pharmacyAxios } from './AxiosConfig';
 import Swal from 'sweetalert2';
 
 export const successfulPayment = (userId, order, updateCartLength) => {
-	console.log('IN SUCCESSFUL PAYMENT');
+	console.log('IN SUCCESSFUL PAYMENT ==== ', order);
 	const { type } = order;
 	patientAxios
 		.post('/order', { order })
@@ -32,6 +32,15 @@ export const successfulPayment = (userId, order, updateCartLength) => {
 										);
 									});
 							});
+						});
+
+						cart.prescriptions.forEach((prescription) => {
+							patientAxios.patch(
+								`/prescriptions/${prescription.prescriptionId}`,
+								{
+									prescription: { filled: true },
+								},
+							);
 						});
 					})
 					.then(() => {
