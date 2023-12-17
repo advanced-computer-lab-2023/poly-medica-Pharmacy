@@ -68,7 +68,7 @@ const pages = {
 			title: 'Total Sales Report',
 			type: 'item',
 			icon: icons.IconRegistered,
-			url: '/pharmacist/pages/total-sales-report',
+			url: '/admin/pages/total-sales-report',
 			target: false,
 		},
 	],
