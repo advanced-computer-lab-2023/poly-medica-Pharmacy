@@ -20,6 +20,7 @@ export const successfulPayment = (userId, order, updateCartLength) => {
 								if (medicine.medicine.quantity - medicine.quantity === 0) {
 									communicationAxios.post(`/notifications/medicines/${medicine.medicine.name}`).catch((err) => {
 										Swal.fire(err.message);
+										console.log(err);
 									});
 								}
 							}

@@ -43,7 +43,7 @@ const MedicineCard = ({
 	const [foundInPrescription, setFoundInPrescription] = useState(false);
 
 	useEffect(() => {
-		if (medicine.prescriptionMedicine === true) {
+		if (medicine.prescriptionMedicine === true && userType === 'patient') {
 			patientAxios
 				.get(`/patient/${userId}/prescriptions`)
 				.then((response) => response.data)
@@ -62,7 +62,8 @@ const MedicineCard = ({
 					setIsLoading(false);
 				});
 		}
-		pharmacyAxios
+		if(userType === 'patient'){
+			pharmacyAxios
 			.get(`/cart/users/${userId}/medicines/${medicine._id}`)
 			.then((response) => {
 				console.log(response.data);
@@ -74,6 +75,7 @@ const MedicineCard = ({
 				setIsLoading(false);
 				console.log(error);
 			});
+		}
 	}, []);
 
 	const handleArciveButtonClick = async (medicine, event) => {
