@@ -6,7 +6,7 @@ import { useUserContext } from 'hooks/useUserContext';
 // project imports
 import AnimateButton from 'ui-component/extended/AnimateButton';
 import { patientAxios } from 'utils/AxiosConfig';
-import { HEALTH_PACKAGE_STATUS } from 'utils/Constants';
+import { HEALTH_PACKAGE_STATUS, PATIENT_TYPE_ENUM } from 'utils/Constants';
 import { useNavigate } from 'react-router-dom';
 // styles
 const CardStyle = styled(Card)(({ theme }) => ({
@@ -55,7 +55,7 @@ const UpgradePlanCard = () => {
 			console.log(err);
 		});
 	}, []);
-	return (
+	return user.type === PATIENT_TYPE_ENUM ? (
 		<CardStyle>
 			<CardContent>
 				<Grid container direction="column" spacing={2}>
@@ -99,7 +99,7 @@ const UpgradePlanCard = () => {
 				</Grid>
 			</CardContent>
 		</CardStyle>
-	);
+	) : (<></>);
 };
 
 export default UpgradePlanCard;
