@@ -9,7 +9,7 @@ export const PATIENT_TYPE_ENUM = 'patient';
 export const ADMIN_TYPE_ENUM = 'admin';
 export const PHARMACIST_TYPE_ENUM = 'pharmacist';
 export const MEDICINE_NOTIFICATION_TYPE_ENUM ="medicine";
-
+export const PHARMACY_MONGO_ID = '5fc7a921328d333b8ce85141';
 export const OK_STATUS_CODE = 200;
 
 const APPOINTMENT_STATUS = ['COMPLETE', 'UNCOMPLETE', 'CANCELED'];

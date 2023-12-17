@@ -7,7 +7,7 @@ import { AppBar, Box, CssBaseline, Toolbar, useMediaQuery } from '@mui/material'
 
 // project imports
 import { pharmacyAxios } from '../../utils/AxiosConfig';
-
+import Chat from 'pages/chat/Chat';
 import Header from './Header';
 import Sidebar from './Sidebar';
 // import Customization from '../Customization';
@@ -16,6 +16,7 @@ import { drawerWidth } from 'store/constant';
 import { SET_MENU } from 'store/actions';
 import { SearchProvider } from 'contexts/SearchContext';
 import { FilterProvider } from 'contexts/FilterContext';
+import { ChatContextProvider } from 'contexts/ChatContext';
 import { useUserContext } from 'hooks/useUserContext';
 import { useEffect } from 'react';
 import { PaymentProvider } from 'contexts/PaymentContext';
@@ -61,6 +62,7 @@ const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })(({
 // ==============================|| MAIN LAYOUT ||============================== //
 
 const MainLayout = ({ userType }) => {
+	Outlet;
 	const theme = useTheme();
 	const matchDownMd = useMediaQuery(theme.breakpoints.down('md'));
 	// Handle left drawer
@@ -69,13 +71,13 @@ const MainLayout = ({ userType }) => {
 	const userId = user.id;
 	const navigate = useNavigate();
 	useEffect(() => {
-		if(!user || user.type != userType){
+		if (!user || user.type != userType) {
 			navigate(`/${user.type}`);
-		} else if(userType == 'patient') {
-			pharmacyAxios.get(`/cart/users/${userId}`).then(() => { 
+		} else if (userType == 'patient') {
+			pharmacyAxios.get(`/cart/users/${userId}`).then(() => {
 				console.log('cart already created!');
 			}).catch((error) => {
-				if(error.response.status == 404){
+				if (error.response.status == 404) {
 					pharmacyAxios.post('/cart/users', { userId }).then(() => {
 						console.log('cart created!');
 					}).catch((error) => {
@@ -83,52 +85,61 @@ const MainLayout = ({ userType }) => {
 					});
 				}
 			});
-			
+
 		}
-	},[]);
+	}, []);
 	const dispatch = useDispatch();
 	const handleLeftDrawerToggle = () => {
 		dispatch({ type: SET_MENU, opened: !leftDrawerOpened });
 	};
 
 	return (
-		<FilterProvider>
-		<SearchProvider>
-		<PaymentProvider>
-		<CartProvider>
-		<Box sx={{ display: 'flex' }}>
-			<CssBaseline />
-			{/* header */}
-			<AppBar
-				enableColorOnDark
-				position="fixed"
-				color="inherit"
-				elevation={0}
-				sx={{
-					bgcolor: theme.palette.background.default,
-					transition: leftDrawerOpened ? theme.transitions.create('width') : 'none'
-				}}
-			>
-				<Toolbar>
-					<Header handleLeftDrawerToggle={handleLeftDrawerToggle} />
-				</Toolbar>
-			</AppBar>
+		<ChatContextProvider>
+			<FilterProvider>
+				<SearchProvider>
+					<PaymentProvider>
+						<CartProvider>
+							<Box sx={{ display: 'flex' }}>
+								<CssBaseline />
+								{/* header */}
+								<AppBar
+									enableColorOnDark
+									position="fixed"
+									color="inherit"
+									elevation={0}
+									sx={{
+										bgcolor: theme.palette.background.default,
+										transition: leftDrawerOpened ? theme.transitions.create('width') : 'none'
+									}}
+								>
+									<Toolbar>
+										<Header handleLeftDrawerToggle={handleLeftDrawerToggle} />
+									</Toolbar>
+								</AppBar>
 
-			{/* drawer */}
-			{user && user.type == userType && <Sidebar drawerOpen={!matchDownMd ? leftDrawerOpened : !leftDrawerOpened} drawerToggle={handleLeftDrawerToggle} />}
+								{/* drawer */}
+								{user && user.type == userType && <Sidebar drawerOpen={!matchDownMd ? leftDrawerOpened : !leftDrawerOpened} drawerToggle={handleLeftDrawerToggle} />}
 
-					{/* main content */}
-			<Main theme={theme} open={leftDrawerOpened}>
-					{(!user || user.type != userType) && <h1>not autherized!!</h1>}
-					{user && user.type == userType && <Outlet />}
-			</Main>
-			{/* <Customization /> */}
-		</Box>
-		</CartProvider>
-		</PaymentProvider>
-		</SearchProvider>
-		</FilterProvider>
-		
+								{/* main content */}
+								<Main theme={theme} open={leftDrawerOpened} sx={{ position: 'relative' }}>
+									{(!user || user.type != userType) && (
+										<h1>not autherized!!</h1>
+									)}
+									{user && user.type == userType &&
+										<Chat>
+											<div>
+												<Outlet />
+											</div>
+										</Chat>
+									}
+								</Main>
+								{/* <Customization /> */}
+							</Box>
+						</CartProvider>
+					</PaymentProvider>
+				</SearchProvider>
+			</FilterProvider>
+		</ChatContextProvider>
 	);
 };
 
