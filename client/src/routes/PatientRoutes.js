@@ -16,6 +16,9 @@ const LazyPayment = Loadable(lazy(() => import('pages/payment/Payment')));
 const LazyOrders = Loadable(lazy(() => import('pages/orders/Orders')));
 const LazyCheckout = Loadable(lazy(() => import('pages/checkout/Checkout')));
 const LazyAddress = Loadable(lazy(() => import('pages/address/Address')));
+
+const LazyHome = Loadable(lazy(() => import('pages/Home/Home')));
+
 // utilities routing
 const UtilsTypography = Loadable(
 	lazy(() => import('pages/utilities/Typography')),
@@ -43,6 +46,10 @@ const PatientRoutes = {
 					path: 'default',
 					element: <DashboardDefault />,
 				},
+                {
+                    path: 'home',
+                    element: <LazyHome />,
+                }
 			],
 		},
 		{
