@@ -40,7 +40,7 @@ const FirebaseLogin = () => {
 			if(data.reset)
 				navigate(`/${data.type}/pages/profile`);
 			else
-				navigate(`/${data.type}`);
+				navigate(`/${data.type}/dashboard/home`);
 			setIsSubmitting(false);
 		} catch(error){
 			Swal.fire({

@@ -10,6 +10,9 @@ const LazyMedicines = Loadable(lazy(() => import('pages/medicine/Medicines')));
 const LazyPatientsInfo = Loadable(
 	lazy(() => import('pages/patient/PatientInfo')),
 );
+
+const LazyHome = Loadable(lazy(() => import('pages/Home/Home')));
+
 const LazyPharmacistsInfo = Loadable(
 	lazy(() => import('pages/pharmacist/PharmacistInfo')),
 );
@@ -46,6 +49,10 @@ const PharmacistRoutes = {
 					path: 'default',
 					element: <DashboardDefault />,
 				},
+                {
+                    path: 'home',
+                    element: <LazyHome />,
+                }
 			],
 		},
 		{
