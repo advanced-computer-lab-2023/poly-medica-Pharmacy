@@ -4,7 +4,8 @@ import { useUserContext } from 'hooks/useUserContext';
 import { useTheme } from '@mui/material/styles';
 import {  Box, Chip, Drawer, List, Stack, useMediaQuery } from '@mui/material';
 import { usePayment } from 'contexts/PaymentContext';
-import EarningCard from 'ui-component/EarningCard';
+// import EarningCard from 'ui-component/EarningCard';
+import TotalIncomeDarkCard from 'ui-component/cards/TotalIncomeDarkCard';
 
 // third-party
 import PerfectScrollbar from 'react-perfect-scrollbar';
@@ -64,16 +65,17 @@ const Sidebar = ({ drawerOpen, drawerToggle, window }) => {
 						paddingRight: '16px'
 					}}
 				>
-
-					<MenuList />
 					<List
 						subheader={
 							userType != 'admin' && (
-								<EarningCard isLoading={false} earning={'Poly-Wallet'} value={amountInWallet}/>
+								<TotalIncomeDarkCard title={`$${amountInWallet}`} subTitle={'Poly-Wallet'}/>
+								// <EarningCard isLoading={false} earning={'Poly-Wallet'} value={amountInWallet}/>
 							)
 						}
 					>
 					</List>
+					<MenuList />
+					
 					<Stack direction="row" justifyContent="center" sx={{ mb: 2 }}>
 						<Chip label={process.env.REACT_APP_VERSION} disabled chipcolor="secondary" size="small" sx={{ cursor: 'pointer' }} />
 					</Stack>
