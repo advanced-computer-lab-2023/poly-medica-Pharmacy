@@ -10,7 +10,7 @@ import Routes from 'routes';
 import themes from 'themes';
 import { useEffect, useState } from 'react';
 import { useUserContext } from 'hooks/useUserContext';
-import { useNavigate,useLocation } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import Swal from 'sweetalert2';
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
@@ -29,30 +29,30 @@ const App = () => {
 	const [loading, setIsLoading] = useState(true);
 	useEffect(() => {
 		setIsLoading(true);
-		authenticationAxios.get('/check-user', {  withCredentials:true }).then(async userCheck => {
+		authenticationAxios.get('/check-user', { withCredentials: true }).then(async userCheck => {
 			console.log({ userCheck });
-			if(!user) {
+			if (!user) {
 				await dispatch({ auth: true, payload: userCheck.data });
 				setIsLoading(false);
 			}
-			if(location.pathname == "/login/login3" || location.pathname == "/login/register/register3"){
+			if (location.pathname == "/login/login3" || location.pathname == "/login/register/register3") {
 				navigate(`/${userCheck.data.type}`);
 				setIsLoading(false);
 			}
-		}).catch( async () => {
-			if(location.pathname != "/login/login3" && location.pathname != "/login/register/register3"){
+		}).catch(async () => {
+			if (location.pathname != "/login/login3" && location.pathname != "/login/register/register3") {
 				Swal.fire({
-				icon: 'error',
-				title: 'Oops...',
-				text: "you are not autherized, please login",
-			});
-			navigate('/login/login3');
-			setIsLoading(false);
-		}
+					icon: 'error',
+					title: 'Oops...',
+					text: "you are not autherized, please login",
+				});
+				navigate('/login/login3');
+				setIsLoading(false);
+			}
 			await dispatch({ auth: false, payload: null });
 			setIsLoading(false);
 		});
-	
+
 	}, []);
 
 	return (
@@ -60,8 +60,8 @@ const App = () => {
 			<ThemeProvider theme={themes(customization)}>
 				<CssBaseline />
 				<LocalizationProvider dateAdapter={AdapterDateFns}>
-				{loading && <Loader />}
-				{!loading && <Routes />}
+					{loading && <Loader />}
+					{!loading && <Routes />}
 				</LocalizationProvider>
 			</ThemeProvider>
 		</DndProvider>

@@ -4,13 +4,16 @@ import MainCard from 'ui-component/cards/MainCard';
 import OrdersList from './OrdersList.js';
 import OrdersDetails from './OrdersDetails.js';
 import { useUserContext } from 'hooks/useUserContext.js';
-import { CANCELLED_STATUS, REJECTED_STATUS } from 'utils/Constants.js';
+import { REJECTED_STATUS, CANCELLED_STATUS } from 'utils/Constants.js';
+import { usePayment } from 'contexts/PaymentContext';
 
 const Orders = () => {
+	const { setPaymentDone } = usePayment();
 	const [orders, setOrders] = useState([]);
 	const [selectedOrder, setSelectedOrder] = useState(null);
 
 	const { user } = useUserContext();
+	const userType = user.type;
 	const userId = user.id;
 	useEffect(() => {
 		if (user.type === 'patient') {
@@ -38,6 +41,35 @@ const Orders = () => {
 		setSelectedOrder(null);
 	};
 
+	const handleAmountRefund = (order) => {
+		if (order.paymentMethod != 'cash') {
+			let user_Id;
+			if (userType != 'patient') {
+				user_Id = order.patientId;
+			} else if (userType === 'patient') {
+				user_Id = userId;
+			}
+			patientAxios
+				.get(`/patients/${user_Id}/wallet`)
+				.then((response) => {
+					console.log(response.data.walletAmount);
+					patientAxios
+						.patch(`/patients/${user_Id}/wallet`, {
+							amount: response.data.walletAmount + order.amount,
+						})
+						.then(() => {
+							setPaymentDone((prev) => prev + 1);
+						})
+						.catch((err) => {
+							console.log(err.message);
+						});
+				})
+				.catch((err) => {
+					console.log(err.message);
+				});
+		}
+	};
+
 	const handleCancleOrder = (order) => {
 		order.status = CANCELLED_STATUS;
 		patientAxios
@@ -60,6 +92,15 @@ const Orders = () => {
 							const updatedMedicine = response.data.medicine;
 							updatedMedicine.quantity += medicine.quantity;
 							updatedMedicine.sales -= medicine.quantity;
+							//monthlySales
+							const date = new Date(order.createdAt);
+							console.log('date ===f===== ', date);
+							const month = date.getMonth();
+							const day = date.getDate();
+							updatedMedicine.monthlySales[month + 1][day] -= medicine.quantity;
+
+							console.log('updatedMedicine ===f===== ', updatedMedicine);
+
 							pharmacyAxios
 								.patch(`/medicines/${updatedMedicine._id}`, { updatedMedicine })
 								.then((response) => {
@@ -68,12 +109,29 @@ const Orders = () => {
 								.catch((err) => {
 									console.log(err);
 								});
+						})
+						.then(() => {
+							console.log('medicine.prescriptionId == ', medicine);
+							if (medicine.prescriptionId) {
+								patientAxios
+									.patch(`/prescriptions/${medicine.prescriptionId}`, {
+										prescription: { filled: false },
+									})
+									.then(() => {
+										console.log('prescription updated');
+									})
+									.catch((err) => {
+										console.log(err);
+									});
+							}
 						});
 				});
 			})
 			.catch((err) => {
 				console.log(err);
 			});
+
+		handleAmountRefund(order);
 		handleDialogClose();
 	};
 
@@ -89,9 +147,13 @@ const Orders = () => {
 					});
 					return updateOrders;
 				});
+				if (status === REJECTED_STATUS) {
+					console.log('was hererererer');
+					handleAmountRefund(order);
+				}
 			})
 			.then(() => {
-				if(selectedOrder.status === REJECTED_STATUS) { 
+				if (selectedOrder.status === REJECTED_STATUS) {
 					selectedOrder.details.forEach((medicine) => {
 						pharmacyAxios
 							.get(`/medicines/${medicine.medicineId}`)
@@ -99,14 +161,37 @@ const Orders = () => {
 								const updatedMedicine = response.data.medicine;
 								updatedMedicine.quantity += medicine.quantity;
 								updatedMedicine.sales -= medicine.quantity;
+								const date = new Date(selectedOrder.createdAt);
+							console.log('date ===f===== ', date);
+							const month = date.getMonth();
+							const day = date.getDate();
+							updatedMedicine.monthlySales[month + 1][day] -= medicine.quantity;
+								
+
 								pharmacyAxios
-									.patch(`/medicines/${updatedMedicine._id}`, { updatedMedicine })
+									.patch(`/medicines/${updatedMedicine._id}`, {
+										updatedMedicine,
+									})
 									.then((response) => {
 										console.log(response);
 									})
 									.catch((err) => {
 										console.log(err);
 									});
+							})
+							.then(() => {
+								if (medicine.prescriptionId) {
+									patientAxios
+										.patch(`/prescriptions/${medicine.prescriptionId}`, {
+											prescription: { filled: false },
+										})
+										.then(() => {
+											console.log('prescription updated');
+										})
+										.catch((err) => {
+											console.log(err);
+										});
+								}
 							});
 					});
 				}

@@ -1,22 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { useUserContext } from 'hooks/useUserContext.js';
-import {
-	Table,
-	TableBody,
-	TableCell,
-	TableContainer,
-	TableHead,
-	TableRow,
-	Paper,
-	Fab,
-} from '@mui/material';
+import { Fab } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import MainCard from 'ui-component/cards/MainCard';
-import AdminRow from './AdminRow';
 import DeleteConfirmationDialog from '../../ui-component/DeleteConfirmationDialog';
 import AddAdminDialog from './AddAdminDialog';
 import Message from 'ui-component/Message';
 import { authenticationAxios, pharmacyAxios } from 'utils/AxiosConfig';
+import AdminsList from './AdminsList';
+import AdminDetails from './AdminDetails';
 
 const Admins = () => {
 	const { user } = useUserContext();
@@ -36,6 +28,7 @@ const Admins = () => {
 
 	const [strength, setStrength] = useState(0);
 	const [level, setLevel] = useState();
+	const [selectedAdmin, setSelectedAdmin] = useState(null);
 
 	useEffect(() => {
 		pharmacyAxios
@@ -53,7 +46,12 @@ const Admins = () => {
 			});
 	}, [admins.length]);
 
-	const handleRemoveAdmin = (adminId) => {
+	const handleDialogClose = () => {
+		setSelectedAdmin(null);
+	};
+
+	const handleRemoveAdmin = (e, adminId) => {
+		e.stopPropagation();
 		setAdminToDelete(adminId);
 		setConfirmDeleteDialogOpen(true);
 	};
@@ -115,7 +113,7 @@ const Admins = () => {
 		const newAdmin = {
 			userName: newAdminUsername,
 			password: newAdminPassword,
-			email: newAdminEmail
+			email: newAdminEmail,
 		};
 
 		if (!newAdminUsername || !newAdminPassword || !newAdminEmail) {
@@ -149,43 +147,36 @@ const Admins = () => {
 				setAdminIsBeingAdded(false);
 				if (error.response) {
 					if (error.response.status == 400) {
-						setErrorMessage(
-							error.response.data.message,
-						);
+						setErrorMessage(error.response.data.message);
 						return;
 					}
 				} else console.error('Error adding admin:', error);
 			});
 	};
 
-	const isAddButtonDisabled = !newAdminUsername || !newAdminPassword || !newAdminEmail || !level || level.label != 'Strong';
+	const isAddButtonDisabled =
+		!newAdminUsername ||
+		!newAdminPassword ||
+		!newAdminEmail ||
+		!level ||
+		level.label != 'Strong';
 
 	return (
 		<MainCard title='Admins'>
 			{isLoading ? (
 				<p>Loading...</p>
 			) : (
-				<div>
-					<TableContainer component={Paper}>
-						<Table>
-							<TableHead>
-								<TableRow>
-									<TableCell>Username</TableCell>
-									<TableCell>Delete</TableCell>
-								</TableRow>
-							</TableHead>
-							<TableBody>
-								{Array.isArray(admins) &&
-									admins.map((admin) => (
-										<AdminRow
-											key={admin._id}
-											admin={admin}
-											handleRemoveAdmin={handleRemoveAdmin}
-										/>
-									))}
-							</TableBody>
-						</Table>
-					</TableContainer>
+				<>
+					<AdminsList
+						admins={admins}
+						handleRemoveAdmin={handleRemoveAdmin}
+						setSelectedAdmin={setSelectedAdmin}
+					/>
+
+					<AdminDetails
+						selectedAdmin={selectedAdmin}
+						handleDialogClose={handleDialogClose}
+					/>
 
 					<Fab
 						color='secondary'
@@ -249,7 +240,7 @@ const Admins = () => {
 						someoneIsBeingDeleted={adminIsBeingDeleted}
 						errorMessage={errorMessage}
 					/>
-				</div>
+				</>
 			)}
 		</MainCard>
 	);

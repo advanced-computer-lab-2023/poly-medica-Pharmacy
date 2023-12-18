@@ -8,10 +8,12 @@ import { cart } from './src/api/CartAPI.js';
 import morgan from 'morgan';
 import cookieParser from 'cookie-parser';
 import bodyParser from 'body-parser';
+import dotenv from 'dotenv';
 import { checkUser } from './src/middleware/authMiddleware.js';
 
 const app = express();
 
+dotenv.config();
 app.use(morgan('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));

@@ -1,3 +1,8 @@
+import DoctorIcon from '../../assets/images/icons/DoctorIcon.png';
+import WorkIcon from '@mui/icons-material/Work';
+import SchoolIcon from '@mui/icons-material/School';
+import PaidIcon from '@mui/icons-material/Paid';
+
 import {
 	Dialog,
 	DialogTitle,
@@ -7,27 +12,83 @@ import {
 	Button,
 } from '@mui/material';
 
-const PharmacistsDetails = ({ selectedPharmacists, handleDialogClose }) => {
+const PharmacistsDetails = ({ selectedPharmacist, handleDialogClose }) => {
 	return (
-		<Dialog open={selectedPharmacists} onClose={handleDialogClose} PaperProps={{ sx: { minWidth: window.outerWidth > 800 ? 500 : 300 } }}  >
-			{selectedPharmacists && (
+		<Dialog
+			open={selectedPharmacist}
+			onClose={handleDialogClose}
+			PaperProps={{ sx: { minWidth: window.outerWidth > 800 ? 500 : 300 } }}
+		>
+			{selectedPharmacist && (
 				<>
-					<DialogTitle align='center' variant='h2'>{selectedPharmacists.userData.name}</DialogTitle>
+					<DialogTitle align='center' variant='h2'>
+						{selectedPharmacist.userData.name}
+					</DialogTitle>
 					<DialogContent>
-						<Typography variant="subtitle1">Email:</Typography>
-						<Typography variant="body1">{selectedPharmacists.userData.email}</Typography>
-						<Typography variant="subtitle1">Date of Birth:</Typography>
-						<Typography variant="body1">${selectedPharmacists.userData.dateOfBirth}</Typography>
-						<Typography variant="subtitle1">Hourly Rate :</Typography>
-						<Typography variant="body1">{selectedPharmacists.hourlyRate}</Typography>
-						<Typography variant="subtitle1">Affiliation:</Typography>
-						<Typography variant="body1">{selectedPharmacists.affiliation}</Typography>
-						<Typography variant="subtitle1">Educational Background:</Typography>
-						<Typography variant="body1">{selectedPharmacists.educationalBackground}</Typography>
+						<div
+							style={{
+								display: 'flex',
+								justifyContent: 'space-around',
+								alignItems: 'center',
+								flexDirection: 'row',
+								marginBottom: '5em',
+							}}
+						>
+							<img
+								src={DoctorIcon}
+								alt={selectedPharmacist.userData.name}
+								width='100'
+								height='100'
+							/>
+							<div
+								style={{
+									display: 'flex',
+									flexDirection: 'column',
+									gap: '0.7em',
+								}}
+							>
+								<div
+									style={{
+										display: 'flex',
+										alignItems: 'center',
+										flexDirection: 'row',
+									}}
+								>
+									<WorkIcon style={{ marginRight: '0.4em' }} />
+									<Typography variant='body1'>
+										{`${selectedPharmacist.affiliation}`}
+									</Typography>
+								</div>
+								<div
+									style={{
+										display: 'flex',
+										alignItems: 'center',
+										flexDirection: 'row',
+									}}
+								>
+									<SchoolIcon style={{ marginRight: '0.4em' }} />
+									<Typography variant='body1'>
+										{`${selectedPharmacist.educationalBackground}`}
+									</Typography>
+								</div>
+								<div
+									style={{
+										display: 'flex',
+										alignItems: 'center',
+										flexDirection: 'row',
+									}}
+								>
+									<PaidIcon style={{ marginRight: '0.4em' }} />
+									<Typography variant='body1'>
+										{selectedPharmacist.hourlyRate}
+									</Typography>
+								</div>
+							</div>
+						</div>
 					</DialogContent>
 					<DialogActions>
-						<Button onClick={handleDialogClose} color="primary">
-                            Close
+						<Button onClick={handleDialogClose} color='primary'>
+							Close
 						</Button>
 					</DialogActions>
 				</>

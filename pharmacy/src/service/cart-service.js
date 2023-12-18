@@ -15,6 +15,36 @@ class CartService {
 		return cart;
 	}
 
+	async addPrescriptionToCart(
+		userId,
+		prescriptionId,
+		description,
+		doctorName,
+		medicines,
+		medicinesQuantity,
+		price,
+	) {
+		const cart = await this.repository.addPrescriptionToCart(
+			userId,
+			prescriptionId,
+			description,
+			doctorName,
+			medicines,
+			medicinesQuantity,
+			price,
+		);
+		return cart;
+	}
+
+	async addPrescriptionMedicineToCart(userId, medicine, quantity) {
+		const cart = await this.repository.addPrescriptionMedicineToCart(
+			userId,
+			medicine,
+			quantity,
+		);
+		return cart;
+	}
+
 	async getMedicine(userId, medicineId) {
 		const medicine = await this.repository.getMedicine(userId, medicineId);
 		return medicine;
@@ -39,8 +69,8 @@ class CartService {
 		return cart;
 	}
 
-	async deleteAllMedicinesFromCart(userId) {
-		const cart = await this.repository.deleteAllMedicinesFromCart(userId);
+	async deleteAllMedicinesAndPrescriptionsFromCart(userId) {
+		const cart = await this.repository.deleteAllMedicinesAndPrescriptionsFromCart(userId);
 		return cart;
 	}
 
@@ -48,6 +78,27 @@ class CartService {
 		const cart = await this.repository.deleteMedicineFromCart(
 			userId,
 			medicineId,
+		);
+		return cart;
+	}
+
+	async getCartItemsLength(userId) {
+		const cart = await this.repository.getCartItemsLength(userId);
+		return cart;
+	}
+
+	async getPrescription(userId, prescriptionId) {
+		const prescription = await this.repository.getPrescription(
+			userId,
+			prescriptionId,
+		);
+		return prescription;
+	}
+
+	async deletePrescriptionFromCart(userId, prescriptionId) {
+		const cart = await this.repository.deletePrescriptionFromCart(
+			userId,
+			prescriptionId,
 		);
 		return cart;
 	}

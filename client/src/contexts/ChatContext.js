@@ -61,7 +61,6 @@ export const ChatContextProvider = ({ children }) => {
             });
     };
 
-
     useEffect(() => {
         socket = io.connect(COMMUNICATION_BASE_URL);
         socket.emit(

@@ -13,7 +13,7 @@ import {
 
 // project imports
 import { pharmacyAxios } from '../../utils/AxiosConfig';
-
+import Chat from 'pages/chat/Chat';
 import Header from './Header';
 import Sidebar from './Sidebar';
 import Chat from '../../pages/chat/Chat';
@@ -26,6 +26,8 @@ import { FilterProvider } from 'contexts/FilterContext';
 import { ChatContextProvider } from 'contexts/ChatContext';
 import { useUserContext } from 'hooks/useUserContext';
 import { useEffect } from 'react';
+import { PaymentProvider } from 'contexts/PaymentContext';
+import { CartProvider } from 'contexts/CartContext';
 
 // assets
 // import { IconChevronRight } from '@tabler/icons';

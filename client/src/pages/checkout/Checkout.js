@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { useUserContext } from 'hooks/useUserContext';
 import {
 	pharmacyAxios,
@@ -16,8 +16,12 @@ import PaymentOptions from 'pages/payment/PaymentOptions';
 import { successfulPayment } from '../../utils/PaymentUtils';
 import Swal from 'sweetalert2';
 import '../../assets/css/swalStyle.css';
+import { usePayment } from 'contexts/PaymentContext';
+import { useCartContext } from 'contexts/CartContext';
 
 const Checkout = () => {
+	const { type, id } = useParams();
+	const { setPaymentDone } = usePayment();
 	const [items, setItems] = useState([]);
 	const [primaryAddress, setPrimaryAddress] = useState(null);
 	const [value, setValue] = useState('credit-card');
@@ -25,17 +29,18 @@ const Checkout = () => {
 	const { user } = useUserContext();
 	const userId = user.id;
 	const navigate = useNavigate();
+	const { updateCartLength } = useCartContext();
 	primaryAddress;
 	useEffect(() => {
 		pharmacyAxios
 			.get(`/cart/users/${userId}/medicines/`)
 			.then((response) => {
+				console.log(response.data);
 				const medicines = response.data;
-				// console.log(medicines);
 				setItems(() => {
-					const itms = medicines.medicines.map((medicine) => {
+					let itms = medicines.medicines.map((medicine) => {
 						const itm = {
-							medicineId : medicine.medicine._id,
+							medicineId: medicine.medicine._id,
 							name: medicine.medicine.name,
 							quantity: medicine.quantity,
 							price: medicine.medicine.price,
@@ -44,6 +49,22 @@ const Checkout = () => {
 							return prev + itm.quantity * itm.price;
 						});
 						return itm;
+					});
+					medicines.prescriptions.map((prescription) => {
+						const meds = prescription.medicines.map((medicine) => {
+							const itm = {
+								medicineId: medicine.medicineId,
+								name: medicine.name,
+								quantity: medicine.amount,
+								price: medicine.price,
+								prescriptionId: prescription.prescriptionId,
+							};
+							setTotalCost((prev) => {
+								return prev + itm.quantity * itm.price;
+							});
+							return itm;
+						});
+						itms = [...itms, ...meds];
 					});
 					return itms;
 				});
@@ -71,11 +92,12 @@ const Checkout = () => {
 
 	const handlePayment = () => {
 		let amountInWallet;
-		patientAxios.get(`/patients/${userId}/wallet`).then((response) => {
-			amountInWallet = response.data.walletAmount;
-
-		}).then(
-			() => {
+		patientAxios
+			.get(`/patients/${userId}/wallet`)
+			.then((response) => {
+				amountInWallet = response.data.walletAmount;
+			})
+			.then(() => {
 				const amountToPay = totalCost;
 				if (value === 'credit-card') {
 					navigate('/patient/pages/payment', {
@@ -84,6 +106,9 @@ const Checkout = () => {
 								patientId: userId,
 								details: items,
 								amount: totalCost,
+								paymentMethod: 'card',
+								type: type,
+								typeId: id,
 							},
 							amountToPay: totalCost,
 						},
@@ -98,21 +123,31 @@ const Checkout = () => {
 								userId: userId,
 							})
 							.then(
-								Swal.fire('success', 'Payment Succeeded', 'success').then(() => {
-									const callBackUrl = successfulPayment(userId,{
-										patientId: userId,
-										details: items,
-										amount: totalCost,
-									});
-									pharmacyAxios
-										.delete(`/cart/users/${userId}/medicines`)
-										.then(() => {
-											navigate(callBackUrl, { replace: true });
-										})
-										.catch((err) => {
-											console.log(err);
-										});
-								}),
+								Swal.fire('success', 'Payment Succeeded', 'success').then(
+									() => {
+										const callBackUrl = successfulPayment(
+											userId,
+											{
+												patientId: userId,
+												details: items,
+												amount: totalCost,
+												type: type,
+												typeId: id,
+												paymentMethod: 'wallet',
+											},
+											updateCartLength,
+										);
+										pharmacyAxios
+											.delete(`/cart/users/${userId}`)
+											.then(() => {
+												updateCartLength();
+												navigate(callBackUrl, { replace: true });
+											})
+											.catch((err) => {
+												console.log(err);
+											});
+									},
+								),
 							)
 							.catch((error) => {
 								console.log('Error in payment with the wallet', error);
@@ -144,6 +179,9 @@ const Checkout = () => {
 											patientId: userId,
 											details: items,
 											amount: totalCost,
+											paymentMethod: 'wallet',
+											type: type,
+											typeId: id,
 										},
 										amountToPay: amountToPayByCard,
 									},
@@ -154,16 +192,23 @@ const Checkout = () => {
 					}
 				} else {
 					Swal.fire('success', 'Payment Succeeded', 'success').then(() => {
-						const callBackUrl = successfulPayment(userId, {
-							patientId: userId,
-							details: items,
-							amount: totalCost,
-						});
+						const callBackUrl = successfulPayment(
+							userId,
+							{
+								patientId: userId,
+								details: items,
+								amount: totalCost,
+								paymentMethod: 'cash',
+								type: type,
+								typeId: id,
+							},
+							updateCartLength,
+						);
 						navigate(callBackUrl, { replace: true });
 					});
+					setPaymentDone(true);
 				}
-			}
-		);
+			});
 	};
 
 	return (
@@ -174,28 +219,26 @@ const Checkout = () => {
 			<SubCard
 				title='Delivery Address'
 				secondary={
-					<>
-						<Button
-							onClick={() => {
-								navigate('/patient/pages/address');
-							}}
-						>
-							Choose Address
-						</Button>
-					</>
+					<Button
+						onClick={() => {
+							navigate('/patient/pages/address');
+						}}
+					>
+						Choose Address
+					</Button>
 				}
 			>
 				{primaryAddress && (
 					<AddressCard address={primaryAddress} includeEdit={false} />
 				)}
 				{!primaryAddress && (
-					<Typography sx={{ textAlign: 'center' }} color='error' >
+					<Typography sx={{ textAlign: 'center' }} color='error'>
 						Please add a delivery address
 					</Typography>
 				)}
 			</SubCard>
 			<SubCard title='Payment method' sx={{ marginTop: 5 }}>
-				<PaymentOptions handleChange={handleChange} value={value} />
+				<PaymentOptions type={type} handleChange={handleChange} value={value} />
 			</SubCard>
 			<Container
 				sx={{
@@ -204,7 +247,12 @@ const Checkout = () => {
 					marginTop: 2,
 				}}
 			>
-				<Button onClick={handlePayment} variant='contained' color='secondary' disabled={!primaryAddress || !totalCost}>
+				<Button
+					onClick={handlePayment}
+					variant='contained'
+					color='secondary'
+					disabled={!primaryAddress || !totalCost}
+				>
 					Place Order
 				</Button>
 			</Container>

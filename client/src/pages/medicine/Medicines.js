@@ -11,6 +11,7 @@ import Message from 'ui-component/Message';
 import { useSearch } from 'contexts/SearchContext';
 import { useFilter } from 'contexts/FilterContext';
 import { useUserContext } from 'hooks/useUserContext';
+import { useCartContext } from 'contexts/CartContext';
 
 const Medicines = () => {
 	const { user } = useUserContext();
@@ -30,6 +31,7 @@ const Medicines = () => {
 		quantity: '',
 		medicinalUse: '',
 		activeIngerdients: '',
+		prescriptionMedicine: false,
 	});
 	const [image, setImage] = useState(null);
 	const [selectedEditMedicine, setSelectedEditMedicine] = useState(null);
@@ -39,6 +41,12 @@ const Medicines = () => {
 	const [medicineIsBeingAddedToCart, setMedicineIsBeingAddedToCart] =
 		useState(false);
 	const [errorAddingToCart, setErrorAddingToCart] = useState(false);
+	const [dataChange, setDataChange] = useState(false);
+	const { updateCartLength } = useCartContext();
+
+	const handleDataChange = () => {
+		setDataChange(!dataChange);
+	};
 
 	useEffect(() => {
 		pharmacyAxios
@@ -61,7 +69,7 @@ const Medicines = () => {
 			.catch((error) => {
 				console.log(error);
 			});
-	}, []);
+	}, [dataChange]);
 
 	useEffect(() => {
 		const filteredMedicines = originalMedicines.filter(
@@ -90,6 +98,7 @@ const Medicines = () => {
 			quantity: '',
 			medicinalUse: '',
 			activeIngerdients: '',
+			prescriptionMedicine: false,
 		});
 	};
 
@@ -116,7 +125,10 @@ const Medicines = () => {
 			.then((response) => {
 				const newMedicineData = response.data.addedMedicine;
 				setMedicines((prevMedicines) => [...prevMedicines, newMedicineData]);
-				setOriginalMedicines((prevMedicines) => [...prevMedicines, newMedicineData]);
+				setOriginalMedicines((prevMedicines) => [
+					...prevMedicines,
+					newMedicineData,
+				]);
 				handleAddDialogClose();
 			})
 			.catch((error) => {
@@ -169,10 +181,23 @@ const Medicines = () => {
 				setTimeout(() => {
 					setAddToCartAlert(false);
 				}, 1000);
+				updateCartItemsLength();
 			})
 			.catch((error) => {
 				setMedicineIsBeingAddedToCart(false);
 				errorAddingToCart(true);
+				console.log(error);
+			});
+	};
+
+	const updateCartItemsLength = () => {
+		pharmacyAxios
+			.get(`/cart/users/${userId}/items/length`)
+			.then((response) => {
+				console.log(response.data);
+				updateCartLength(response.data.length);
+			})
+			.catch((error) => {
 				console.log(error);
 			});
 	};
@@ -185,6 +210,9 @@ const Medicines = () => {
 				handleEditButtonClick={handleEditButtonClick}
 				handleAddToCart={handleAddToCart}
 				medicineIsBeingAddedToCart={medicineIsBeingAddedToCart}
+				handleDataChange={handleDataChange}
+				addToCartAlert={addToCartAlert}
+				errorAddingToCart={errorAddingToCart}
 			/>
 			{addToCartAlert && (
 				<Message
@@ -244,6 +272,7 @@ const Medicines = () => {
 						handleImageUpload={handleImageUpload}
 						handleAddMedicine={handleAddMedicine}
 						newMedicine={newMedicine}
+						setNewMedicine={setNewMedicine}
 					/>
 					<EditMedicine
 						isEditDialogOpen={isEditDialogOpen}

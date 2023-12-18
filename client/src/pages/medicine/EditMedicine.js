@@ -7,6 +7,8 @@ import {
 	Button,
 	TextField,
 	FormControl,
+	Checkbox,
+	FormControlLabel
 } from '@mui/material';
 
 const EditMedicine = ({
@@ -132,6 +134,16 @@ const EditMedicine = ({
 								}
 								required
 							/>
+						</FormControl>
+						<FormControl required fullWidth>
+							<FormControlLabel control={<Checkbox
+								checked={selectedEditMedicine.prescriptionMedicine}
+								onChange={() => setSelectedEditMedicine({
+									...selectedEditMedicine,
+									prescriptionMedicine: !selectedEditMedicine.prescriptionMedicine
+								})}
+								name='prescriptionMedicine'
+								color='primary' />} label="Prescription Medicine" />
 						</FormControl>
 					</form>
 				)}

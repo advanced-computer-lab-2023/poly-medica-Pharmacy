@@ -1,9 +1,5 @@
-import { clinicAxios, patientAxios } from './AxiosConfig.js';
-import {
-    DOCTOR_TYPE_ENUM,
-    PATIENT_TYPE_ENUM,
-    PHARMACIST_TYPE_ENUM,
-} from './Constants.js';
+import { patientAxios, doctorAxios } from '../pages/utilities/AxiosConfig.js';
+import { DOCTOR_TYPE_ENUM, PATIENT_TYPE_ENUM } from './Constants.js';
 
 export const isSender = (id, message) => {
     return id === message.sender;
@@ -24,7 +20,7 @@ export const getUserName = async (user) => {
     } else if (user.userType === DOCTOR_TYPE_ENUM) {
         const name = await getDoctorName(user.id);
         return name;
-    } else if (user.userType === PHARMACIST_TYPE_ENUM) {
+    } else {
         return 'Pharmacy';
     }
 };
@@ -40,7 +36,7 @@ const getPatientName = async (id) => {
 
 const getDoctorName = async (id) => {
     try {
-        const response = await clinicAxios.get(`/doctor/${id}`);
+        const response = await doctorAxios.get(`/doctor/${id}`);
         return response.data.doctor.userData.name;
     } catch (err) {
         console.log(err);

@@ -21,8 +21,8 @@ const icons = {
 
 const pages = {
 	id: 'pages',
-	title: 'Pages',
-	caption: 'Pages Caption',
+	title: 'Dashboard',
+	// caption: 'Pages Caption',
 	type: 'group',
 	children: [
 		{
@@ -62,6 +62,14 @@ const pages = {
 			type: 'item',
 			icon: icons.IconVaccineBottle,
 			url: '/admin/pages/medicines',
+		},
+		{
+			id: 'total-sales-report',
+			title: 'Total Sales Report',
+			type: 'item',
+			icon: icons.IconRegistered,
+			url: '/admin/pages/total-sales-report',
+			target: false,
 		},
 	],
 };
