@@ -72,7 +72,7 @@ const MainLayout = ({ userType }) => {
 	const navigate = useNavigate();
 	useEffect(() => {
 		if (!user || user.type != userType) {
-			navigate(`/${user.type}`);
+			navigate(`/${user.type}/dashboard/home`);
 		} else if (userType == 'patient') {
 			pharmacyAxios.get(`/cart/users/${userId}`).then(() => {
 				console.log('cart already created!');

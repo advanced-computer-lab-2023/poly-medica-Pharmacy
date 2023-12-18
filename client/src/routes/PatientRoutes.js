@@ -36,10 +36,6 @@ const PatientRoutes = {
 	element: <MainLayout userType={'patient'} />,
 	children: [
 		{
-			path: 'patient',
-			element: <DashboardDefault />,
-		},
-		{
 			path: 'dashboard',
 			children: [
 				{

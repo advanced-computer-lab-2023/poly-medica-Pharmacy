@@ -76,7 +76,6 @@ const AddressCard = ({
                                         <IconButton
                                             edge='end'
                                             aria-label='edit'
-                                            color='secondary'
                                             sx={{
                                                 marginRight: '2px'
                                             }}
@@ -92,7 +91,6 @@ const AddressCard = ({
                                         <IconButton
                                             edge='end'
                                             aria-label='edit'
-                                            color='error'
                                             onClick={() => {
                                                 const tmpAddress = JSON.parse(
                                                     JSON.stringify(address)
