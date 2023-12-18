@@ -17,7 +17,7 @@ const DraggableChatButton = ({ isChatOpen, position, setChatOpen }) => {
     display: isChatOpen? 'none' : 'block',
     transition: 'transform 0.3s',
     transform: isChatOpen ? 'translateY(-50%)' : 'translateY(0)',
-    zIndex: '1000',
+    zIndex: '99999',
   };
   setChatOpen;
   return (
