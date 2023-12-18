@@ -37,7 +37,9 @@
     "socket.io-client": "^4.7.2",
     "stripe": "^14.3.0",
     "sweetalert2": "^11.7.32",
-    "yup": "^0.32.11"
+    "yup": "^0.32.11",
+    "react-dnd": "^16.0.1",
+    "react-dnd-html5-backend": "^16.0.1"
   },
   "scripts": {
     "start": "react-scripts start",

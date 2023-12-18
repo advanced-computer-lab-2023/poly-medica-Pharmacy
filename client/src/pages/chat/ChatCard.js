@@ -1,43 +1,25 @@
-import { CardHeader, Avatar } from '@mui/material';
-import { getReceiver, getUserName } from 'utils/ChatUtils';
-import { useUserContext } from 'hooks/useUserContext';
-import { useState, useEffect } from 'react';
+import { Card } from '@mui/material';
+import ChatBox from './ChatBox';
+import ChatList from './ChatList';
+import { useChat } from 'contexts/ChatContext';
 
-const ChatCard = ({ chat }) => {
-    const { user } = useUserContext();
-    const [name, setName] = useState('');
+const ChatCard = ({ setChatOpen }) => {
+  const { selectedChat } = useChat();
 
-    useEffect(() => {
-        const fetchUserName = async () => {
-            try {
-                const userName = await getUserName(
-                    getReceiver(user, chat.users)
-                );
-                setName(userName);
-            } catch (error) {
-                console.error('Error fetching username:', error);
-            }
-        };
+  const cardStyle = {
+    backgroundColor: 'transparent',
+    height: '100%',
+    width: window.innerWidth < 1000 ? '70%' : '34%', // Adjusted width for smaller screens
+    display: 'flex',
+    justifyContent: 'space-around',
+  };
 
-        fetchUserName();
-    }, [user, chat.users]);
-    return (
-        <CardHeader
-            sx={{
-                padding: '0',
-                whiteSpace: 'nowrap',
-                overflow: 'hidden',
-                textOverflow: 'ellipsis',
-            }}
-            avatar={
-                <Avatar sx={{ bgcolor: '#f3f3f3' }} aria-label='recipe'>
-                    {name.charAt(0).toUpperCase()}
-                </Avatar>
-            }
-            title={name}
-            subheader={chat.lastMessage && chat.lastMessage.content}
-        />
-    );
+  return (
+    <Card sx={cardStyle}>
+      {!selectedChat && <ChatList setChatOpen={setChatOpen}></ChatList>}
+      {selectedChat && <ChatBox setChatOpen={setChatOpen}></ChatBox>}
+    </Card>
+  );
 };
 
 export default ChatCard;

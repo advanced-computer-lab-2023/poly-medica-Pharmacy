@@ -1,20 +1,25 @@
-import { useState, useEffect, useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import { communicationAxios } from '../../utils/AxiosConfig';
-import { Paper, InputBase, List, ListItem, Typography } from '@mui/material';
+import { Paper, InputBase, List, ListItem, Typography, Card, CardActions, CardContent, CardHeader, IconButton } from '@mui/material';
 import { useUserContext } from 'hooks/useUserContext';
 import { isSender, getReceiverId } from '../../utils/ChatUtils.js';
 import { useChat } from 'contexts/ChatContext.js';
+import PerfectScrollbar from 'react-perfect-scrollbar';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import CloseIcon from '@mui/icons-material/Close';
 import { PHARMACIST_TYPE_ENUM, PHARMACY_MONGO_ID } from 'utils/Constants';
 
-const ChatBox = () => {
-    const [chatMessages, setChatMessages] = useState([]);
-    const [newMessage, setNewMessage] = useState('');
-
+const ChatBox = ({ setChatOpen }) => {
     const { user } = useUserContext();
     const userId = user.type === PHARMACIST_TYPE_ENUM ? PHARMACY_MONGO_ID : user.id;
-    const { socket, selectedChat, updateChat } = useChat();
-    const socketRef = useRef(socket);
-    const inputRef = useRef(null);
+    const { socket, selectedChat, updateChat, setSelectedChat, chatMessages, setChatMessages, newMessage, setNewMessage, } = useChat();
+    
+    const containerRef = useRef(null);
+    useEffect(() => {
+        if (containerRef.current) {
+            containerRef.current.scrollTop = containerRef.current.scrollHeight;
+        }
+    }, [chatMessages]);
 
     useEffect(() => {
         if (!selectedChat) return;
@@ -26,7 +31,6 @@ const ChatBox = () => {
             .catch((err) => {
                 console.log(err);
             });
-        inputRef.current && inputRef.current.focus();
     }, [selectedChat]);
 
     const sendMessage = (data) => {
@@ -41,7 +45,7 @@ const ChatBox = () => {
         communicationAxios
             .post('/message', message)
             .then((response) => {
-                socketRef.current.emit('send_message', {
+                socket.emit('send_message', {
                     message: response.data,
                     userId,
                     selectedChat,
@@ -58,49 +62,61 @@ const ChatBox = () => {
             });
     };
 
-    useEffect(() => {
-        const handleReceiveMessage = (data) => {
-            updateChat(data.selectedChat, data.message._id);
-            if (selectedChat && selectedChat._id === data.room) {
-                setChatMessages((prevMessages) => [
-                    data.message,
-                    ...prevMessages,
-                ]);
-            }
-        };    
-        socketRef.current.on('receive_message', handleReceiveMessage);
-        return () => {
-            socketRef.current.off('receive_message', handleReceiveMessage);
-        };
-    }, [selectedChat]);
-
     return (
-        <Paper
+        <Card
+            elevation={5}
             style={{
-                width: '67%',
                 height: '100%',
+                maxHeight: '560px',
+                width: '92%',
                 padding: '0px',
             }}>
-            {selectedChat && (
-                <Paper
+                <CardHeader
                     sx={{
-                        height: '100%',
-                        margin: 2,
+                        paddingBottom: 2,
+                        paddingTop: 1,
+                    }}
+                    avatar={
+                    <IconButton onClick={() => setSelectedChat(null)}>
+                        <ArrowBackIcon></ArrowBackIcon>
+                    </IconButton>
+                    }
+                    action={
+                        <IconButton aria-label="settings" onClick={() => {
+                            // console.log(chats, selectedChat);
+                            setSelectedChat(null);
+                            setChatOpen(false);
+                        }}>
+                            <CloseIcon />
+                        </IconButton>
+                    }
+                >
+                    
+                </CardHeader>
+                <CardContent
+                    sx={{
+                        backgroundColor: '#f6f6f6',
+                        padding: 0,
+                        margin: '8px 24px 16px 24px',
+                        height: '74%',
                         display: 'flex',
                         flexDirection: 'column',
                         justifyContent: 'center',
                     }}>
+                    <PerfectScrollbar 
+                        containerRef={(ref) => (containerRef.current = ref)}
+                    >
                     <List
                         sx={{
                             display: 'flex',
                             flexDirection: 'column-reverse',
                             width: '100%',
-                            padding: 2,
-                            backgroundColor: '#fafafa',
+                            // height: '100%',
+                            padding: 0,
+                            backgroundColor: '#f6f6f6',
                             overflowY: 'auto',
-                            height: '65vh',
-                            maxHeight: '65vh',
-                        }}>
+                        }}
+                        >
                         {chatMessages.map((message, index) => {
                             return (
                                 <ListItem
@@ -140,16 +156,19 @@ const ChatBox = () => {
                             );
                         })}
                     </List>
+                    </PerfectScrollbar>
+                </CardContent>
+                <CardActions sx={{
+                    padding: 0,
+                }}>
                     <InputBase
                         sx={{
                             margin: '0px auto',
-                            marginTop: 2,
                             padding: 1,
-                            width: '95%',
+                            width: '80%',
                             backgroundColor: '#f5f5f5',
                         }}
                         autoFocus={true}
-                        ref={inputRef}
                         value={newMessage}
                         onChange={(e) => setNewMessage(e.target.value)}
                         placeholder=' Type a message'
@@ -159,9 +178,9 @@ const ChatBox = () => {
                             }
                         }}
                     />
-                </Paper>
-            )}
-        </Paper>
+                </CardActions>
+            
+        </Card>
     );
 };
 

@@ -1,83 +1,43 @@
-import { useEffect, useRef } from 'react';
+import { useRef } from 'react';
 import {
     Divider,
     List,
     ListItemButton,
-    ListSubheader,
-    ListItemText,
-    Paper,
+    Card,
+    CardHeader,
+    IconButton,
 } from '@mui/material';
 import { useUserContext } from 'hooks/useUserContext';
-import { communicationAxios } from '../../utils/AxiosConfig';
-import ChatCard from './ChatCard';
+import ChatListCard from './ChatListCard';
 import { useChat } from 'contexts/ChatContext';
 import {
     DOCTOR_TYPE_ENUM,
-    PATIENT_TYPE_ENUM,
     PHARMACIST_TYPE_ENUM,
     PHARMACY_MONGO_ID,
 } from '../../utils/Constants.js';
-import { chatExist, areUsersEqual } from 'utils/ChatUtils';
-import { isEqual } from 'lodash';
+import CloseIcon from '@mui/icons-material/Close';
+import PerfectScrollbar from 'react-perfect-scrollbar';
 
-const ChatList = () => {
+const ChatList = ({ setChatOpen }) => {
     const { user } = useUserContext();
-    const userId = user.id,
-        userType = user.type;
-    const { socket, setSelectedChat, chats, setChats } = useChat();
+    const userType = user.type;
+    const userId = user.type === PHARMACIST_TYPE_ENUM ? PHARMACY_MONGO_ID : user.id;
+
+    const { socket, setSelectedChat, chats, updateChat } = useChat();
     const socketRef = useRef(socket);
 
-    useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const response = await communicationAxios.get(
-                    `/chat/${
-                        userType === PHARMACIST_TYPE_ENUM
-                            ? PHARMACY_MONGO_ID
-                            : userId
-                    }`
-                );
-                if (
-                    userType === PATIENT_TYPE_ENUM &&
-                    !chatExist(response.data, userId, PHARMACY_MONGO_ID) &&
-                    !chatExist(response.data, PHARMACY_MONGO_ID, userId)
-                ) {
-                    const res = await communicationAxios.post('/chat', {
-                        chat: {
-                            chatName: 'Pharmacy',
-                            users: [
-                                {
-                                    id: PHARMACY_MONGO_ID,
-                                    userType: PHARMACIST_TYPE_ENUM,
-                                },
-                                { id: userId, userType: PATIENT_TYPE_ENUM },
-                            ],
-                        },
-                    });
-
-                    setChats((prevChats) => {
-                        if (
-                            prevChats.some((c) =>
-                                areUsersEqual(c.users, res.data.users)
-                            )
-                        ) {
-                            return prevChats;
-                        }
-                        return [...prevChats, res.data];
-                    });
-                } else {
-                    if (!isEqual(response.data, chats)) {
-                        setChats(response.data);
-                    }
-                }
-            } catch (error) {
-                console.error(error);
-            }
-        };
-        fetchData();
-    }, [chats]);
-
     const handleSelectChat = (chat) => {
+        chat.users.map(user => {
+            if(user.id === userId) {
+                user.unseen = 0;
+            }
+            return user;
+        });
+        socketRef.current.emit('message_seen', {
+            sender: userId,
+            chat,
+        });
+        updateChat(chat, null, 2);
         setSelectedChat((prevChat) => {
             if (prevChat) {
                 socketRef.current.emit('leave_room', prevChat._id);
@@ -88,12 +48,24 @@ const ChatList = () => {
     };
 
     return (
-        <Paper
+        <Card
+            elevation={5}
             style={{
-                width: '30%',
                 height: '100%',
+                maxHeight: '560px',
+                width: '92%',
                 padding: '0px',
             }}>
+            <CardHeader
+                action={
+                    <IconButton aria-label="settings" onClick={() => setChatOpen(false)}>
+                        <CloseIcon />
+                    </IconButton>
+                }
+                title= 'My Chats'
+            />
+            <Divider />
+            <PerfectScrollbar>
             <List
                 style={{
                     width: '100%',
@@ -103,20 +75,6 @@ const ChatList = () => {
                     overflow: 'auto',
                     maxHeight: '78vh',
                 }}>
-                <ListSubheader sx={{ borderTopLeftRadius: 10 }}>
-                    <ListItemText
-                        primary='My Chats'
-                        primaryTypographyProps={{
-                            fontSize: 20,
-                            fontWeight: 'medium',
-                            lineHeight: 3,
-                            mb: '2px',
-                            borderRadius: 50,
-                        }}
-                        sx={{ margin: 0 }}
-                    />
-                    <Divider></Divider>
-                </ListSubheader>
                 {chats &&
                     chats.map((chat, index) => {
                         return (
@@ -135,14 +93,15 @@ const ChatList = () => {
                                             marginTop: 1,
                                         }}
                                         onClick={() => handleSelectChat(chat)}>
-                                        {chat && <ChatCard chat={chat} />}
+                                        {chat && <ChatListCard chat={chat} />}
                                     </ListItemButton>
                                 )}
                             </div>
                         );
                     })}
             </List>
-        </Paper>
+            </PerfectScrollbar>
+        </Card>
     );
 };
 

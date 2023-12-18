@@ -16,6 +16,7 @@ import { pharmacyAxios } from '../../utils/AxiosConfig';
 
 import Header from './Header';
 import Sidebar from './Sidebar';
+import Chat from '../../pages/chat/Chat';
 // import Customization from '../Customization';
 
 import { drawerWidth } from 'store/constant';
@@ -143,11 +144,17 @@ const MainLayout = ({ userType }) => {
                         )}
 
                         {/* main content */}
-                        <Main theme={theme} open={leftDrawerOpened}>
+                        <Main theme={theme} open={leftDrawerOpened} sx={{ position: 'relative' }}>
                             {(!user || user.type != userType) && (
                                 <h1>not autherized!!</h1>
                             )}
-                            {user && user.type == userType && <Outlet />}
+                            {user && user.type == userType && 
+                            <Chat> 
+                                <div>
+                                <Outlet />
+                                </div>
+                            </Chat>
+                            }
                         </Main>
                         {/* <Customization /> */}
                     </Box>
