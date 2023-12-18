@@ -21,7 +21,8 @@ const AddressList = ({
                                 handleDelete={handleDelete}
                                 handleEditDialogOpen={
                                     handleEditDialogOpen
-                                }></AddressCard>
+                                }
+                                ></AddressCard>
                         </div>
                     </div>
                 ))}

@@ -221,7 +221,7 @@ const Checkout = () => {
 				secondary={
 					<Button
 						onClick={() => {
-							navigate('/patient/pages/address');
+							navigate('/patient/pages/address', { state: { from: location.pathname } });
 						}}
 					>
 						Choose Address
