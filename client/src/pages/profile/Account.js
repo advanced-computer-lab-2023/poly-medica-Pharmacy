@@ -1,5 +1,4 @@
 import { Box, Container, Stack, Typography, Unstable_Grid2 as Grid, CardContent, CardHeader, Card, TextField, Button, Divider, CardActions, FormControl } from '@mui/material';
-import AccountProfile from './AccountProfile';
 import PharmacistAccountProfileDetails from './accountProfileDetails/PharmacistAccountProfileDetails';
 import PatientAccountProfileDetails from './accountProfileDetails/PatientAccountProfileDetails';
 import { useUserContext } from 'hooks/useUserContext';
@@ -78,13 +77,7 @@ const Page = () => {
 								container
 								spacing={3}
 							>
-								<Grid
-									xs={12}
-									md={6}
-									lg={4}
-								>
-									<AccountProfile />
-								</Grid>
+				
 								<Grid
 									xs={12}
 									md={6}
@@ -143,12 +136,6 @@ const Page = () => {
 														Save password
 													</Button>
 												</CardActions>
-									</Card>
-
-									<Card sx={{ mt:5 }} >
-										<CardHeader
-											title='Archive medicines'
-										/>	
 									</Card>
 									
 								</Grid>
