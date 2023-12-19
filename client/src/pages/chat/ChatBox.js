@@ -44,7 +44,7 @@ const ChatBox = ({ setChatOpen }) => {
                     selectedChat,
                     room: selectedChat._id,
                 });
-                updateChat(selectedChat, response.data._id);
+                updateChat(selectedChat, response.data._id, 1);
                 setChatMessages((prevMessages) => {
                     return [response.data, ...prevMessages];
                 });

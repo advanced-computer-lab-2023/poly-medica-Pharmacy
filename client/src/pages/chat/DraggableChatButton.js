@@ -11,7 +11,7 @@ const DraggableChatButton = ({ isChatOpen, position, setChatOpen }) => {
     type: 'CHAT_BUTTON',
   });
   const buttonStyle = {
-    position: 'absolute',
+    position: 'fixed',
     left: position.left,
     top: position.top,
     display: isChatOpen? 'none' : 'block',

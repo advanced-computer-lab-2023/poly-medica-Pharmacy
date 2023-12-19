@@ -16,7 +16,6 @@ import { pharmacyAxios } from '../../utils/AxiosConfig';
 import Chat from 'pages/chat/Chat';
 import Header from './Header';
 import Sidebar from './Sidebar';
-import Chat from '../../pages/chat/Chat';
 // import Customization from '../Customization';
 
 import { drawerWidth } from 'store/constant';
@@ -110,57 +109,61 @@ const MainLayout = ({ userType }) => {
         <ChatContextProvider>
             <FilterProvider>
                 <SearchProvider>
-                    <Box sx={{ display: 'flex' }}>
-                        <CssBaseline />
-                        {/* header */}
-                        <AppBar
-                            enableColorOnDark
-                            position='fixed'
-                            color='inherit'
-                            elevation={0}
-                            sx={{
-                                bgcolor: theme.palette.background.default,
-                                transition: leftDrawerOpened
-                                    ? theme.transitions.create('width')
-                                    : 'none',
-                            }}>
-                            <Toolbar>
-                                <Header
-                                    handleLeftDrawerToggle={
-                                        handleLeftDrawerToggle
+                    <CartProvider>
+                        <PaymentProvider>
+                            <Box sx={{ display: 'flex' }}>
+                                <CssBaseline />
+                                {/* header */}
+                                <AppBar
+                                    enableColorOnDark
+                                    position='fixed'
+                                    color='inherit'
+                                    elevation={0}
+                                    sx={{
+                                        bgcolor: theme.palette.background.default,
+                                        transition: leftDrawerOpened
+                                            ? theme.transitions.create('width')
+                                            : 'none',
+                                    }}>
+                                    <Toolbar>
+                                        <Header
+                                            handleLeftDrawerToggle={
+                                                handleLeftDrawerToggle
+                                            }
+                                        />
+                                    </Toolbar>
+                                </AppBar>
+
+                                {/* drawer */}
+                                {user && user.type == userType && (
+                                    <Sidebar
+                                        drawerOpen={
+                                            !matchDownMd
+                                                ? leftDrawerOpened
+                                                : !leftDrawerOpened
+                                        }
+                                        drawerToggle={handleLeftDrawerToggle}
+                                    />
+                                )}
+
+                                {/* main content */}
+                                <Main theme={theme} open={leftDrawerOpened} sx={{ position: 'relative' }}>
+                                    {(!user || user.type != userType) && (
+                                        <h1>not autherized!!</h1>
+                                    )}
+                                    {user && user.type == userType && 
+                                    user.type === 'admin' ? <Outlet /> : 
+                                    <Chat> 
+                                        <div>
+                                            <Outlet />
+                                        </div>
+                                    </Chat>
                                     }
-                                />
-                            </Toolbar>
-                        </AppBar>
-
-                        {/* drawer */}
-                        {user && user.type == userType && (
-                            <Sidebar
-                                drawerOpen={
-                                    !matchDownMd
-                                        ? leftDrawerOpened
-                                        : !leftDrawerOpened
-                                }
-                                drawerToggle={handleLeftDrawerToggle}
-                            />
-                        )}
-
-                        {/* main content */}
-                        <Main theme={theme} open={leftDrawerOpened} sx={{ position: 'relative' }}>
-                            {(!user || user.type != userType) && (
-                                <h1>not autherized!!</h1>
-                            )}
-                            {user && user.type == userType && 
-                            user.type === 'admin' ? <Outlet /> : 
-                            <Chat> 
-                                <div>
-                                    <Outlet />
-                                </div>
-                            </Chat>
-                            }
-                        </Main>
-                        {/* <Customization /> */}
-                    </Box>
+                                </Main>
+                                {/* <Customization /> */}
+                            </Box>
+                        </PaymentProvider>
+                    </CartProvider>
                 </SearchProvider>
             </FilterProvider>
         </ChatContextProvider>

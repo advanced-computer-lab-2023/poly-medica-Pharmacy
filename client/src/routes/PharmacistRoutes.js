@@ -21,7 +21,6 @@ const LazyTotalSalesReport = Loadable(
 );
 const Account = Loadable(lazy(() => import('pages/profile/Account')));
 const LazyOrders = Loadable(lazy(() => import('pages/orders/Orders')));
-const LazyChat = Loadable(lazy(() => import('pages/chat/Chat')));
 // utilities routing
 const UtilsTypography = Loadable(
     lazy(() => import('pages/utilities/Typography'))
