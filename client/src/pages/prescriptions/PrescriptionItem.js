@@ -138,7 +138,7 @@ const PrescriptionItem = ({ prescription, handleClicking, addToCart }) => {
 							e.stopPropagation();
 							handleAddToCart(prescription);
 						}}
-						disabled={inCart}
+						disabled={inCart || prescription.medicines.length === 0}
 						color={inCart ? 'success' : 'primary'}
 					>
 						<AddShoppingCartIcon />
