@@ -4,15 +4,18 @@ import MainCard from 'ui-component/cards/MainCard';
 import AddressList from './AddressList.js';
 import AddAddress from './AddAddress.js';
 import { useUserContext } from 'hooks/useUserContext.js';
-import { Fab } from '@mui/material';
+import { Fab, Button } from '@mui/material';
 import { Add } from '@mui/icons-material';
 import EditAddress from './EditAddress.js';
 import { ZERO_INDEX } from 'utils/Constants.js';
-
+import { useNavigate, useLocation } from 'react-router-dom';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 const Address = () => {
     const [addresses, setAddresses] = useState([]);
+    const location = useLocation();
     const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
     const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
+    const navigate = useNavigate();
     const [address, setAddress] = useState({
         city: '',
         street: '',
@@ -20,6 +23,11 @@ const Address = () => {
         phoneNumber: '',
         primary: false,
     });
+    let redirectCheckout = false;
+    if (location.state) {
+        console.log((location.state.from).includes('checkout'));
+        redirectCheckout = true;
+    }
     const { user } = useUserContext();
     const userId = user.id;
     useEffect(() => {
@@ -135,42 +143,52 @@ const Address = () => {
     };
 
     return (
-        <MainCard title='Addresses' sx={{ width: '90%', margin: '0 auto' }}>
-            {addresses && (
-                <AddressList
-                    addresses={addresses}
-                    setSelectedAddress={setAddress}
-                    handleEditDialogOpen={handleEditDialogOpen}
-                    handleDelete={handleDelete}
-                />
+        <>
+            {redirectCheckout && (
+                <Button variant="outlined" startIcon={<ArrowBackIcon />} color='secondary' onClick={() => { navigate(-1); }}
+                    sx={{ mb: 1.5 , marginLeft: '5%' }}
+                >
+                    Back to checkout
+                </Button>
             )}
-            <Fab
-                color='secondary'
-                aria-label='Add'
-                onClick={handleAddDialogOpen}
-                sx={{
-                    position: 'fixed',
-                    bottom: 16,
-                    right: 16,
-                    zIndex: 9999,
-                }}>
-                <Add />
-            </Fab>
-            <AddAddress
-                isAddDialogOpen={isAddDialogOpen}
-                handleAddDialogClose={handleAddDialogClose}
-                handleFormInputChange={handleFormInputChange}
-                handleAddAddress={handleAddAddress}
-                newAddress={address}
-            />
-            <EditAddress
-                address={address}
-                handleDialogClose={handleEditDialogClose}
-                handleFormInputChange={handleFormInputChange}
-                handleSaveAddress={handleEditAddress}
-                isEditDialogOpen={isEditDialogOpen}
-            />
-        </MainCard>
+            <MainCard title='Addresses' sx={{ width: '90%', margin: '0 auto' }}>
+                {addresses && (
+                    <AddressList
+                        addresses={addresses}
+                        setSelectedAddress={setAddress}
+                        handleEditDialogOpen={handleEditDialogOpen}
+                        handleDelete={handleDelete}
+                    />
+                )}
+                <Fab
+                    color='secondary'
+                    aria-label='Add'
+                    onClick={handleAddDialogOpen}
+                    sx={{
+                        position: 'fixed',
+                        bottom: 16,
+                        right: 16,
+                        zIndex: 9999,
+                    }}>
+                    <Add />
+                </Fab>
+                <AddAddress
+                    isAddDialogOpen={isAddDialogOpen}
+                    handleAddDialogClose={handleAddDialogClose}
+                    handleFormInputChange={handleFormInputChange}
+                    handleAddAddress={handleAddAddress}
+                    newAddress={address}
+                />
+                <EditAddress
+                    address={address}
+                    handleDialogClose={handleEditDialogClose}
+                    handleFormInputChange={handleFormInputChange}
+                    handleSaveAddress={handleEditAddress}
+                    isEditDialogOpen={isEditDialogOpen}
+                />
+
+            </MainCard>
+        </>
     );
 };
 

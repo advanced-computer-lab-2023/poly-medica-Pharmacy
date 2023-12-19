@@ -36,11 +36,11 @@ const Sidebar = ({ drawerOpen, drawerToggle, window }) => {
 	useEffect(() => {
 		if (userType === 'patient') {
 			patientAxios.get(`/patients/${userId}/wallet`).then((response) => {
-				setamountInWallet(Math.round(response.data.walletAmount));
+				setamountInWallet((response.data.walletAmount.toFixed(2)));
 			});
 		} else if (userType === 'pharmacist') {
 			pharmacyAxios.get(`/pharmacists/${userId}/wallet`).then((response) => {
-				setamountInWallet(Math.round(response.data.walletAmount));
+				setamountInWallet(response.data.walletAmount.toFixed(2));
 			});
 		}
 		setPaymentDone(false);

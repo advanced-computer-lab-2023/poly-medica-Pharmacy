@@ -12,6 +12,7 @@ import AdminPanelSettingsOutlinedIcon from '@mui/icons-material/AdminPanelSettin
 import PointOfSaleIcon from '@mui/icons-material/PointOfSale';
 import ReceiptLongIcon from '@mui/icons-material/ReceiptLong';
 import HomeIcon from '@mui/icons-material/Home';
+
 // constant
 const icons = {
 	IconKey,
