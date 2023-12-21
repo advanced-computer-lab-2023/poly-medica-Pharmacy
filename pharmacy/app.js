@@ -5,6 +5,7 @@ import { pharmacistRequests } from './src/api/PharmacistRequestsAPI.js';
 import { medicine } from './src/api/MedicineAPI.js';
 import { admin } from './src/api/AdminAPI.js';
 import { cart } from './src/api/CartAPI.js';
+import { kafka } from './src/api/KafkaAPI.js';
 import morgan from 'morgan';
 import cookieParser from 'cookie-parser';
 import bodyParser from 'body-parser';
@@ -37,5 +38,6 @@ cart(app);
 pharmacist(app);
 pharmacistRequests(app);
 medicine(app);
+kafka(app);
 
 export default app;

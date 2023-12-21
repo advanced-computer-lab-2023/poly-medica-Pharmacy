@@ -1,4 +1,3 @@
-import kafka from 'kafka-node';
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
 import app from './app.js';
@@ -20,19 +19,7 @@ const connect = async () => {
 	}
 };
 
-const isRunning = () => {
-	const client = new kafka.KafkaClient({ kafkaHost: 'localhost:9092' });
-	const producer = new kafka.Producer(client);
-
-	producer.on('ready', () => {
-		console.log('Kafka producer is running');
-	});
-};
-
 await connect();
-
-const TIME = 2000;
-setTimeout(isRunning, TIME);
 
 const port = process.env.PORT || PORT;
 
