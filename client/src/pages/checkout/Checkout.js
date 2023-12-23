@@ -115,7 +115,6 @@ const Checkout = () => {
 						replace: true,
 					});
 				} else if (value === 'wallet') {
-					console.log('the amount in  wallet is : ', amountInWallet);
 					if (amountInWallet >= amountToPay) {
 						paymentAxios
 							.post('/payment/wallet', {
@@ -163,7 +162,6 @@ const Checkout = () => {
 							confirmButtonText: 'Yes',
 						}).then((result) => {
 							if (result.isConfirmed) {
-								console.log(amountInWallet);
 								paymentAxios
 									.post('/payment/wallet', {
 										amountToPayByWallet: amountInWallet,

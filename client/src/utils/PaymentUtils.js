@@ -2,7 +2,6 @@ import { communicationAxios, patientAxios, pharmacyAxios } from './AxiosConfig';
 import Swal from 'sweetalert2';
 
 export const successfulPayment = (userId, order, updateCartLength) => {
-	console.log('IN SUCCESSFUL PAYMENT ==== ', order);
 	const { type } = order;
 	patientAxios
 		.post('/order', { order })
@@ -71,7 +70,6 @@ export const successfulPayment = (userId, order, updateCartLength) => {
 							.get(`/prescriptions/${typeId}/medicines`)
 							.then((response) => {
 								const medicines = response.data;
-								console.log('MEDICINES == ', medicines);
 								medicines.forEach((medicine) => {
 									pharmacyAxios
 										.get(`/medicines/${medicine.medicineId}`)
@@ -103,8 +101,6 @@ export const paymentStatus = (
 	userId,
 	updateCartLength,
 ) => {
-	console.log('the status is ', status);
-	console.log('Payment item is ', item);
 	switch (status) {
 		case 'succeeded': {
 			Swal.fire('success', 'Payment Succeeded', 'success')

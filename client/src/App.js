@@ -30,7 +30,6 @@ const App = () => {
 	useEffect(() => {
 		setIsLoading(true);
 		authenticationAxios.get('/check-user', { withCredentials: true }).then(async userCheck => {
-			console.log({ userCheck });
 			if (!user) {
 				await dispatch({ auth: true, payload: userCheck.data });
 				setIsLoading(false);

@@ -62,7 +62,6 @@ export const pharmacistRequests = (app) => {
 		try {
 			const { fileName } = req.params;
 			const filePath = service.getFile(fileName);
-			console.log('filePath', filePath);
 			if (filePath) {
 				res.status(OK_STATUS_CODE).sendFile(filePath);
 			} else {

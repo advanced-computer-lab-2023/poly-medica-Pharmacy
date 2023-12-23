@@ -26,7 +26,7 @@ const PaymentOptions = ({ type, handleChange, value }) => {
 		patientAxios
 			.get(`/patients/${userId}/wallet`)
 			.then((response) => {
-				setAmountInWallet(response.data.walletAmount);
+				setAmountInWallet(response.data.walletAmount.toFixed(2));
 			})
 			.catch((error) => {
 				Swal.fire('error', error, 'error');

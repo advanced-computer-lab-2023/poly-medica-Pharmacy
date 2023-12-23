@@ -194,7 +194,6 @@ const Medicines = () => {
 		pharmacyAxios
 			.get(`/cart/users/${userId}/items/length`)
 			.then((response) => {
-				console.log(response.data);
 				updateCartLength(response.data.length);
 			})
 			.catch((error) => {

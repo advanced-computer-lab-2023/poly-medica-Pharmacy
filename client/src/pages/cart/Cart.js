@@ -25,7 +25,6 @@ const Cart = () => {
 		pharmacyAxios
 			.get(`/cart/users/${userId}/medicines`)
 			.then((response) => {
-				console.log(response.data);
 				setCartItems(response.data.medicines);
 				setCartPrescriptions(response.data.prescriptions);
 				setItemsLength(
@@ -36,7 +35,6 @@ const Cart = () => {
 			.catch((error) => {
 				console.log(error);
 			});
-		console.log('cart items: ', cartItems);
 	}, [cartLength]);
 
 	const handleDeleteMedicine = async (medicineId) => {
@@ -56,7 +54,6 @@ const Cart = () => {
 	};
 
 	const updateMedicineQuantity = (id, quantity) => {
-		console.log("was here");
 		pharmacyAxios
 			.patch(`/cart/users/${userId}/medicines/${id}?quantity=${quantity}`)
 			.then((response) => {

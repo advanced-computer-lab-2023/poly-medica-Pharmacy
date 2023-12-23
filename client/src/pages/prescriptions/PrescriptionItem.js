@@ -51,7 +51,6 @@ const PrescriptionItem = ({ prescription, handleClicking, addToCart }) => {
 		pharmacyAxios
 			.get(`cart/users/${userId}/prescriptions/${prescription._id}`)
 			.then((response) => {
-				console.log(response.data);
 				if (response.data.prescription) {
 					setInCart(true);
 				}

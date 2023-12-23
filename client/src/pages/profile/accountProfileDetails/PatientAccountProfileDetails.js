@@ -47,7 +47,6 @@ export const PatientAccountProfileDetails = () => {
             })
             .catch((err) => {
                 console.log(err);
-                console.log('here', err);
             });
     }, []);
 

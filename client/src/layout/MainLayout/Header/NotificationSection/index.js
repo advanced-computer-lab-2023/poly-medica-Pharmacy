@@ -50,7 +50,6 @@ const NotificationSection = () => {
 	const socket = io.connect(COMMUNICATION_BASE_URL);
 	
 	const handledataChange = () => {
-		console.log('in data change');
 		setDataChange(!dataChange);
 	};
 	
@@ -93,7 +92,6 @@ const NotificationSection = () => {
 	}, [open, dataChange]);
 
 	useEffect(() => {
-		console.log('heree');
 			communicationAxios.get(`/notifications/${user.id}`).then( response => {
 				setNotifications( () => [ ...response.data ]);
 				let counter = 0;

@@ -124,7 +124,6 @@ const ChatList = ({ setChatOpen }) => {
                                     
                                         onClick={() => handleSelectChat(chat)}>
                                         {chat && <ChatCard chat={chat} />}
-                                        {console.log('chat === ', chat)}
                                     </ListItemButton>
                                     </>
                                 )}

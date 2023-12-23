@@ -16,7 +16,6 @@ const MedicinesList = ({
 }) => {
 
 	const { user } = useUserContext();
-	console.log({ user });
 	return (
 		<List>
 			{Array.isArray(medicines) &&

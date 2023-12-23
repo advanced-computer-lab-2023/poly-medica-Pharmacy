@@ -24,9 +24,7 @@ const AddMedicine = ({
 
 	const handleInputChange = (e) => {
 		const { value } = e.target;
-		console.log('value = ', value);
 		if (parseFloat(value) <= 0) {
-			console.log('value = ', parseFloat(value));
 			return;
 		}
 

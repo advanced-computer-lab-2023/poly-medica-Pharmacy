@@ -38,9 +38,7 @@ export const medicine = (app) => {
 	app.get('/medicines/:id', async (req, res) => {
 		try {
 			const { id } = req.params;
-			console.log('id ======== ', id);
 			const medicine = await service.getOneMedicine(id);
-			console.log('medicine ======== ', medicine);
 			if (medicine) {
 				res.status(OK_STATUS_CODE).json({ medicine });
 			} else {
@@ -92,9 +90,7 @@ export const medicine = (app) => {
 	app.patch('/medicines/:id/:quantity', async (req, res) => {
 		try {
 			const { id, quantity } = req.params;
-			console.log('quantity inside medicine api ===== ', quantity);
 			const oldMedicine = await service.getOneMedicine(id);
-			console.log('old medicine ===== ', oldMedicine);
 			if (!oldMedicine) {
 				return res
 					.status(NOT_FOUND_STATUS_CODE)
@@ -104,7 +100,6 @@ export const medicine = (app) => {
 			const newSales = oldMedicine.sales + (oldMedicine.quantity - quantity);
 			//monthlySales
 			const date = new Date();
-			console.log('dateee ======== ', date);
 			const month = date.getMonth();
 			const day = date.getDate();
 			const newMonthlySales = oldMedicine.monthlySales;

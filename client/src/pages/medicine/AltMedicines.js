@@ -22,7 +22,6 @@ const AltMedicines = ({ activeIngerdients, handleAddToCart, addToCartAlert, medi
                         setMedicines(oldArray => [...oldArray, response.data.medicines[i]]);
                     }
                 }
-                console.log(medicines);
                 for (let i = 0; i < response.data.medicines.length; i++) {
                     const medicine = response.data.medicines[i];
                     if (!medicinalUses.includes(medicine.medicinalUse))

@@ -52,7 +52,6 @@ const Orders = () => {
 			patientAxios
 				.get(`/patients/${user_Id}/wallet`)
 				.then((response) => {
-					console.log(response.data.walletAmount);
 					patientAxios
 						.patch(`/patients/${user_Id}/wallet`, {
 							amount: response.data.walletAmount + order.amount,
@@ -94,12 +93,10 @@ const Orders = () => {
 							updatedMedicine.sales -= medicine.quantity;
 							//monthlySales
 							const date = new Date(order.createdAt);
-							console.log('date ===f===== ', date);
 							const month = date.getMonth();
 							const day = date.getDate();
 							updatedMedicine.monthlySales[month + 1][day] -= medicine.quantity;
 
-							console.log('updatedMedicine ===f===== ', updatedMedicine);
 
 							pharmacyAxios
 								.patch(`/medicines/${updatedMedicine._id}`, { updatedMedicine })
@@ -111,7 +108,6 @@ const Orders = () => {
 								});
 						})
 						.then(() => {
-							console.log('medicine.prescriptionId == ', medicine);
 							if (medicine.prescriptionId) {
 								patientAxios
 									.patch(`/prescriptions/${medicine.prescriptionId}`, {
@@ -148,7 +144,6 @@ const Orders = () => {
 					return updateOrders;
 				});
 				if (status === REJECTED_STATUS) {
-					console.log('was hererererer');
 					handleAmountRefund(order);
 				}
 			})
@@ -162,7 +157,6 @@ const Orders = () => {
 								updatedMedicine.quantity += medicine.quantity;
 								updatedMedicine.sales -= medicine.quantity;
 								const date = new Date(selectedOrder.createdAt);
-							console.log('date ===f===== ', date);
 							const month = date.getMonth();
 							const day = date.getDate();
 							updatedMedicine.monthlySales[month + 1][day] -= medicine.quantity;

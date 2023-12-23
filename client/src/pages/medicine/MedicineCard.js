@@ -93,7 +93,6 @@ const MedicineCard = ({
 	};
 
 	const addToCart = (medicine) => {
-		console.log('the prescriptionMedicine is ', medicine.prescriptionMedicine);
 		if (medicine.prescriptionMedicine === true) {
 			patientAxios
 				.get(`/patient/${userId}/prescriptions`)

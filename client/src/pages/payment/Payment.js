@@ -17,7 +17,6 @@ export default function App() {
 
 	if (location.state) {
 		item = location.state.items;
-		console.log('item ==== ', item);
 		paymentAmount = location.state.amountToPay;
 	} else {
 		paymentAmount = 1;

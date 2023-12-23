@@ -17,7 +17,6 @@ export const CartProvider = ({ children }) => {
 		pharmacyAxios
 			.get(`/cart/users/${userId}/items/length`)
 			.then((response) => {
-				console.log(response.data);
 				setCartLength(response.data.length);
 			})
 			.catch((error) => {

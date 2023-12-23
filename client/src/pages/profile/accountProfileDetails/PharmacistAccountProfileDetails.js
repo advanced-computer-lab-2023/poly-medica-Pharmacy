@@ -28,8 +28,6 @@ export const PharmacistAccountProfileDetails = () => {
             .get(getUsersURL)
             .then((response) => {
                 const values = response.data.doctor;
-                console.log('values', values);
-
                 setValues({
                     name: values.userData.name,
                     userName: values.userData.userName,
