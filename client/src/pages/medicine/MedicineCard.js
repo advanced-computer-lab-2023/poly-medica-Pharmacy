@@ -62,19 +62,19 @@ const MedicineCard = ({
 					setIsLoading(false);
 				});
 		}
-		if(userType === 'patient'){
+		if (userType === 'patient') {
 			pharmacyAxios
-			.get(`/cart/users/${userId}/medicines/${medicine._id}`)
-			.then((response) => {
-				console.log(response.data);
-				setAddToCartStatus(false);
-				setIsLoading(false);
-			})
-			.catch((error) => {
-				setAddToCartStatus(true);
-				setIsLoading(false);
-				console.log(error);
-			});
+				.get(`/cart/users/${userId}/medicines/${medicine._id}`)
+				.then((response) => {
+					console.log(response.data);
+					setAddToCartStatus(false);
+					setIsLoading(false);
+				})
+				.catch((error) => {
+					setAddToCartStatus(true);
+					setIsLoading(false);
+					console.log(error);
+				});
 		}
 	}, []);
 
