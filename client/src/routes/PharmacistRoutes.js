@@ -8,13 +8,13 @@ import Loadable from 'ui-component/Loadable';
 const DashboardDefault = Loadable(lazy(() => import('pages/dashboard')));
 const LazyMedicines = Loadable(lazy(() => import('pages/medicine/Medicines')));
 const LazyPatientsInfo = Loadable(
-	lazy(() => import('pages/patient/PatientInfo')),
+    lazy(() => import('pages/patient/PatientInfo'))
 );
 
 const LazyHome = Loadable(lazy(() => import('pages/Home/Home')));
 
 const LazyPharmacistsInfo = Loadable(
-	lazy(() => import('pages/pharmacist/PharmacistInfo')),
+    lazy(() => import('pages/pharmacist/PharmacistInfo'))
 );
 const LazyTotalSalesReport = Loadable(
 	lazy(() => import('pages/total-sales-report/TotalSalesReport')),
@@ -23,7 +23,7 @@ const Account = Loadable(lazy(() => import('pages/profile/Account')));
 const LazyOrders = Loadable(lazy(() => import('pages/orders/Orders')));
 // utilities routing
 const UtilsTypography = Loadable(
-	lazy(() => import('pages/utilities/Typography')),
+    lazy(() => import('pages/utilities/Typography'))
 );
 const UtilsColor = Loadable(lazy(() => import('pages/utilities/Color')));
 const UtilsShadow = Loadable(lazy(() => import('pages/utilities/Shadow')));
@@ -112,11 +112,11 @@ const PharmacistRoutes = {
 			],
 		},
 
-		{
-			path: 'sample-page',
-			element: <SamplePage />,
-		},
-	],
+        {
+            path: 'sample-page',
+            element: <SamplePage />,
+        },
+    ],
 };
 
 export default PharmacistRoutes;

@@ -1,22 +1,22 @@
 // assets
 import {
-	IconKey,
-	IconVaccineBottle,
-	IconEmergencyBed,
-	IconMedicineSyrup,
-	IconRegistered,
+    IconKey,
+    IconVaccineBottle,
+    IconEmergencyBed,
+    IconMedicineSyrup,
+    IconRegistered,
 } from '@tabler/icons';
 import AdminPanelSettingsOutlinedIcon from '@mui/icons-material/AdminPanelSettingsOutlined';
 import ReceiptLongIcon from '@mui/icons-material/ReceiptLong';
 // constant
 const icons = {
-	IconKey,
-	IconVaccineBottle,
-	IconEmergencyBed,
-	IconMedicineSyrup,
-	AdminPanelSettingsOutlinedIcon,
-	IconRegistered,
-	ReceiptLongIcon,
+    IconKey,
+    IconVaccineBottle,
+    IconEmergencyBed,
+    IconMedicineSyrup,
+    AdminPanelSettingsOutlinedIcon,
+    IconRegistered,
+    ReceiptLongIcon,
 };
 
 // ==============================|| EXTRA PAGES MENU ITEMS ||============================== //

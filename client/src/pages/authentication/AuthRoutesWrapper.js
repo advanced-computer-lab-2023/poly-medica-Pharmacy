@@ -7,30 +7,30 @@ import { authenticationAxios } from 'utils/AxiosConfig';
 
 const AuthRoutesWrapper = () => {
 
-    const [isLoading, setIsLoading] = useState(true);
-    const navigate = useNavigate();
-    const { user, dispatch } = useUserContext();
+	const [isLoading, setIsLoading] = useState(true);
+	const navigate = useNavigate();
+	const { user, dispatch } = useUserContext();
 
-    useEffect(() => {
+	useEffect(() => {
 		setIsLoading(true);
-		if(user){
-			navigate(`/${user.type}`);
-		}else {
+		if (user) {
+			navigate(`/${user.type}/dashboard/home`);
+		} else {
 			authenticationAxios.get('/check-user', { withCredentials: true }).then(async userData => {
 				await dispatch({ auth: true, payload: userData.data });
 				navigate(`/${userData.data.type}`);
-			}).catch( () => {
+			}).catch(() => {
 				setIsLoading(false);
-			});	
-		}		
+			});
+		}
 	}, []);
 
-    return ( 
-    <>
-    { isLoading && <Loader /> }
-    { !isLoading && <Outlet/> }
-    </> 
-    );
+	return (
+		<>
+			{isLoading && <Loader />}
+			{!isLoading && <Outlet />}
+		</>
+	);
 };
- 
+
 export default AuthRoutesWrapper;

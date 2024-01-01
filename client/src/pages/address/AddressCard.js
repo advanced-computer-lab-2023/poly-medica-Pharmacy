@@ -11,6 +11,7 @@ import {
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 
+
 const AddressCard = ({
     address,
     handleEditDialogOpen,
@@ -18,6 +19,7 @@ const AddressCard = ({
     handleDelete,
     includeEdit = true,
     sxx = {},
+    
 }) => {
     handleEditDialogOpen;
     setSelectedAddress;
@@ -76,7 +78,6 @@ const AddressCard = ({
                                         <IconButton
                                             edge='end'
                                             aria-label='edit'
-                                            color='secondary'
                                             sx={{
                                                 marginRight: '2px'
                                             }}
@@ -92,7 +93,6 @@ const AddressCard = ({
                                         <IconButton
                                             edge='end'
                                             aria-label='edit'
-                                            color='error'
                                             onClick={() => {
                                                 const tmpAddress = JSON.parse(
                                                     JSON.stringify(address)

@@ -42,6 +42,7 @@ const Orders = () => {
 	};
 
 	const handleAmountRefund = (order) => {
+		console.log(order);
 		if (order.paymentMethod != 'cash') {
 			let user_Id;
 			if (userType != 'patient') {
@@ -55,7 +56,7 @@ const Orders = () => {
 					console.log(response.data.walletAmount);
 					patientAxios
 						.patch(`/patients/${user_Id}/wallet`, {
-							amount: response.data.walletAmount + order.amount,
+							walletChange: response.data.walletAmount + order.amount,
 						})
 						.then(() => {
 							setPaymentDone((prev) => prev + 1);

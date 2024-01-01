@@ -43,6 +43,10 @@ const getDoctorName = async (id) => {
     }
 };
 
+export const areUsersEqual = (users1, users2) => {
+    return users1[0].id === users2[0].id && users1[1].id === users2[1].id;
+};
+
 export const chatExist = (chats, user1ID, user2ID) => {
     for (let i = 0; i < chats.length; i++) {
         if (
