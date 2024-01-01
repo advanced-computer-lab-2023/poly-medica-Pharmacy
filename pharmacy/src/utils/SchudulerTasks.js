@@ -10,7 +10,7 @@ agenda.define('Monthly Salary', {
     priority: "high"
   }
     , async job => {
-        console.log("started task");
+        console.log("started task", job);
         let pharmacists = await service.getAllPharmacists();
         for(let i=0;i<pharmacists.length;i++){
             try{
