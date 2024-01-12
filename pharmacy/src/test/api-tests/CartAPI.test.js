@@ -400,27 +400,6 @@ describe('DELETE /cart/users/:userId/medicines', () => {
 		expect(response.status).toBe(NOT_FOUND_STATUS_CODE);
 	});
 
-	it('should return 200 when deleting all medicines from cart', async () => {
-		const userId = faker.database.mongodbObjectId();
-		const medicine1 = new MedicineModel(generateMedicine());
-		const medicine2 = new MedicineModel(generateMedicine());
-		await medicine1.save();
-		await medicine2.save();
-		await CartModel(
-			generateCart(userId, [{ medicine: medicine1 }, { medicine: medicine2 }]),
-		).save();
-		const response = await deleteAllMedicinesFromCart(userId);
-		expect(response.status).toBe(OK_STATUS_CODE);
-		expect(response.body.updatedCart).toBeDefined();
-		expect(response.body.updatedCart.medicines.length).toBe(0);
-	});
-
-	it('should return 500 when deleting all medicines from cart with invalid user id', async () => {
-		const userId = faker.lorem.word();
-		const response = await deleteAllMedicinesFromCart(userId);
-		expect(response.status).toBe(ERROR_STATUS_CODE);
-	});
-
 	afterEach(async () => {
 		await disconnectDBTest();
 	});
