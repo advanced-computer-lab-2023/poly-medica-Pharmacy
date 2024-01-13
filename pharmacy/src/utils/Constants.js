@@ -30,6 +30,8 @@ export const MEDICINE_FOLDER_NAME = 'medicines';
 
 export const PHARMACIST_FOLDER_NAME = 'pharmacists';
 
+export const MEDICINE_NOTIFICATION_TYPE_ENUM = 'medicine';
+
 export const ZERO_INDEX_ARR = 0;
 
 export const ONE_ELEMENT_IN_ARR = 1;

@@ -1,4 +1,4 @@
-import { communicationAxios, patientAxios, pharmacyAxios } from './AxiosConfig';
+import { patientAxios, pharmacyAxios } from './AxiosConfig';
 import Swal from 'sweetalert2';
 
 export const successfulPayment = (userId, order, updateCartLength) => {
@@ -18,7 +18,7 @@ export const successfulPayment = (userId, order, updateCartLength) => {
 								}`,
 							).then(() => {
 								if (medicine.medicine.quantity - medicine.quantity === 0) {
-									communicationAxios.post(`/notifications/medicines/${medicine.medicine.name}`).catch((err) => {
+									pharmacyAxios.post(`/medicines/${medicine.medicine.name}/out-of-stock`).catch((err) => {
 										Swal.fire(err.message);
 										console.log(err);
 									});

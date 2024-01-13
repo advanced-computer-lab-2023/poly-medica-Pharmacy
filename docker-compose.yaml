@@ -1,0 +1,50 @@
+version: '3.8'
+services:
+  zookeeper:
+    container_name: zookeper
+    image: wurstmeister/zookeeper
+    ports:
+      - 2181:2181
+  kafka:
+    container_name: kafka
+    image: wurstmeister/kafka
+    ports:
+      - 9092:9092
+    volumes:
+      - ./data/kafka:/var/run/docker.sock
+    environment:
+      - KAFKA_ADVERTISED_HOST_NAME=kafka
+      - KAFKA_ZOOKEEPER_CONNECT=zookeeper:2181
+
+  authentication:
+    container_name: authentication
+    build: ../../Clinic/poly-medica-Clinic/authentication
+    ports:
+      - 8001:8001
+    volumes:
+      - ../../Clinic/poly-medica-Clinic/authentication:/authentication
+    environment:
+      - PORT=8001
+      - MONGO_URL=mongodb://mongo:27017/authentication
+      - MONGO_URI=mongodb+srv://amir:01090613786@nodeexpressprojects.koaaprr.mongodb.net/authentication?retryWrites=true&w=majority
+      - MONGO_URI_TEST=mongodb+srv://amir:01090613786@nodeexpressprojects.koaaprr.mongodb.net/authentication-tests?retryWrites=true&w=majority
+      - KAFKA_BOOTSTRAP_SERVERS=kafka:9092
+      - KAFKA_TOPIC=admin_register_req
+    depends_on:
+      - kafka
+
+  pharmacy:
+    container_name: pharmacy
+    build: ./pharmacy
+    ports:
+      - 8003:8003
+    volumes:
+      - ./pharmacy:/pharmacy
+    environment:
+      - PORT=8003
+      - KAFKA_BOOTSTRAP_SERVERS=kafka:9092
+      - KAFKA_TOPIC=admin_register_req
+      - MONGO_URI=mongodb+srv://amir:01090613786@nodeexpressprojects.koaaprr.mongodb.net/pharmacy?retryWrites=true&w=majority
+      - MONGO_URI_TEST=mongodb+srv://amir:01090613786@nodeexpressprojects.koaaprr.mongodb.net/pharmacy-tests?retryWrites=true&w=majority
+    depends_on:
+      - kafka
