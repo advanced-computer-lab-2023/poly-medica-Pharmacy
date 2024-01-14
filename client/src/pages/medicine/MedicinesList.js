@@ -1,5 +1,5 @@
 import React from 'react';
-import { List } from '@mui/material';
+import { List, Grid } from '@mui/material';
 import MedicineCard from './MedicineCard';
 import { useUserContext } from 'hooks/useUserContext';
 import { PHARMACIST_TYPE_ENUM } from 'utils/Constants';
@@ -19,23 +19,29 @@ const MedicinesList = ({
 	console.log({ user });
 	return (
 		<List>
-			{Array.isArray(medicines) &&
-				medicines.map((medicine, index) => { return (!medicine.archive || (user.type === PHARMACIST_TYPE_ENUM))? (
-					<div key={index}>
-						<div key={index}>
-							<MedicineCard
-								medicine={medicine}
-								handleEditButtonClick={handleEditButtonClick}
-								setSelectedMedicine={setSelectedMedicine}
-								handleAddToCart={handleAddToCart}
-								medicineIsBeingAddedToCart={medicineIsBeingAddedToCart}
-								handleDataChange={handleDataChange}
-								addToCartAlert={addToCartAlert}
-								errorAddingToCart={errorAddingToCart}
-							></MedicineCard>
-						</div>
-					</div>
-				):<></>;})}
+			<Grid container>
+				{Array.isArray(medicines) &&
+					medicines.map((medicine, index) => {
+						return (!medicine.archive || (user.type === PHARMACIST_TYPE_ENUM)) ? (
+							<Grid item xs={6}>
+								<div key={index}>
+									<div key={index}>
+										<MedicineCard
+											medicine={medicine}
+											handleEditButtonClick={handleEditButtonClick}
+											setSelectedMedicine={setSelectedMedicine}
+											handleAddToCart={handleAddToCart}
+											medicineIsBeingAddedToCart={medicineIsBeingAddedToCart}
+											handleDataChange={handleDataChange}
+											addToCartAlert={addToCartAlert}
+											errorAddingToCart={errorAddingToCart}
+										></MedicineCard>
+									</div>
+								</div>
+							</Grid>
+						) : <></>;
+					})}
+			</Grid>
 		</List>
 	);
 };

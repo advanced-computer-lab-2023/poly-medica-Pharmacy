@@ -1,9 +1,6 @@
-# poly-medica-Pharmacy
+# Poly Medica Pharmacy  
 
-
-## Motivation
-
-Welcome to Poly-Medica, an innovative virtual pharmacy solution at the forefront of healthcare transformation. Designed to simplify medication management, Poly-Medica offers a streamlined interface for patients to effortlessly order prescriptions and manage medication refills. Through intuitive reminders and secure transactions, our platform ensures convenient access to prescribed medications within a digital healthcare ecosystem. Poly-Medica redefines the pharmacy experience, providing a reliable and efficient solution for patients' medication needs.
+This repository is a service integrated with [The Poly Medica Clinic](https://github.com/advanced-computer-lab-2023/poly-medica-Clinic) system.  
 
 
 ### Build Status
@@ -65,103 +62,49 @@ We're excited to introduce AI models to augment our system's capabilities:
 
 <!-- Admin Screenshots-->
 <details>
-<summary>Admin</summary>
+<summary>Patient Viewing Medicines</summary>
 
-<details>
-<summary>View All Admins</summary>
+![medicines](https://github.com/advanced-computer-lab-2023/poly-medica-Pharmacy/assets/102627389/513a501b-4e43-4918-a7ca-795976fd4848)
 
- ![admins](https://github.com/advanced-computer-lab-2023/poly-medica-Pharmacy/assets/101880627/8dc71a5b-9e78-4600-a7e6-5f6b8b7cbe33)
-
-    
-</details>
-<details>
-<summary>Add New Admin</summary>
-
-![add_admin](https://github.com/advanced-computer-lab-2023/poly-medica-Pharmacy/assets/101880627/f6b4a70c-528c-413d-aa84-bdcba18ce2c7)
-
-    
-</details>
-
-
-<details>
-<summary>View Medicines</summary>
-
-![admin_medicines](https://github.com/advanced-computer-lab-2023/poly-medica-Pharmacy/assets/101880627/9e6a5f72-4c12-4ec8-a052-8e715cf6907a)
-
-</details>
-
-
-
-
-
-
-
-
-</details>
-
-<!-- Patient Screenshots-->
-<details>
-<summary>Patient</summary>
-
-<details>
-<summary>Shoping Cart</summary>
-
-![WhatsApp Image 2023-12-17 at 5 47 14 AM](https://github.com/advanced-computer-lab-2023/poly-medica-Pharmacy/assets/101880627/89a55d39-3264-4f11-9caa-86b8bc50bcd4)
-
-    
 </details>
 
 <details>
-<summary>Checkout</summary>
+<summary>Patient Viewing Cart</summary>
 
- ![checkout](https://github.com/advanced-computer-lab-2023/poly-medica-Pharmacy/assets/101880627/175e647e-1c06-4350-b8ea-d7e28a4b668a)
-
-    
+ ![cart](https://github.com/advanced-computer-lab-2023/poly-medica-Pharmacy/assets/102627389/29cd8cab-7db6-4e7a-8922-154c7c1a5777)
+ 
 </details>
 
 <details>
-<summary>Credit Card</summary>
+<summary>Pateint Chatting With Pharmacy</summary>
 
-![credit_card](https://github.com/advanced-computer-lab-2023/poly-medica-Pharmacy/assets/101880627/4730d0bc-1328-49ff-80af-97a814b288e9)
+![payment using card](https://github.com/advanced-computer-lab-2023/poly-medica-Pharmacy/assets/102627389/7e7c3c66-a4b6-4bd2-ae6d-1ac1d3bee255)
 
-    
-</details>
-
-</details>
-
-
-
-<!-- Pharmacist Screenshots-->
-<details>
-<summary>Pharmacist</summary>
-
-<details>
-<summary>Edit Medicines</summary>
-
- ![phar_edit_medicines](https://github.com/advanced-computer-lab-2023/poly-medica-Pharmacy/assets/101880627/8b910093-f2e5-442b-9525-4881e101aeec)
-
-    
 </details>
 
 <details>
-<summary>View Orders</summary>
+<summary> Patient Viewing Order </summary>
+	
+ ![orders](https://github.com/advanced-computer-lab-2023/poly-medica-Pharmacy/assets/102627389/7764d06e-74bd-4dcf-b3f9-fb815b41f155)
 
- ![phar_orders](https://github.com/advanced-computer-lab-2023/poly-medica-Pharmacy/assets/101880627/d39eb15b-2e40-47f3-a59b-fa4200de25e3)
-
-    
 </details>
-
 
 <details>
-<summary>View Monthly Sales Report</summary>
 
- ![WhatsApp Image 2023-12-17 at 5 41 49 AM](https://github.com/advanced-computer-lab-2023/poly-medica-Pharmacy/assets/101880627/ff450c6e-c1b6-494b-a12d-ef93827c5893)
+<summary> Admin Viewing Sales Report </summary>
 
-    
-</details>
+ ![report](https://github.com/advanced-computer-lab-2023/poly-medica-Pharmacy/assets/102627389/9566f3a1-75ab-4239-81bd-7439523f3653)
 
 </details>
 
+<details>
+<summary> Pharmacist Receving Notification </summary>
+
+![notification](https://github.com/advanced-computer-lab-2023/poly-medica-Pharmacy/assets/102627389/c2638a98-4c46-4a35-8c3e-e63719a5b438)
+
+
+ 
+</details>
 
 
 
@@ -2106,13 +2049,4 @@ Contributions are always welcome!
 
 ## License
 
-#### Stripe License
-This project uses Stripe to process payments. By using this project, you agree to be bound by the Stripe Services Agreement.
-
-You can find the full text of the Stripe Services Agreement at the following link:
-
-https://stripe.com/legal
-
-Please make sure to read and understand the Stripe Services Agreement before using this project.
-
-If you have any questions about the Stripe Services Agreement or how it applies to your use of this project, please contact Stripe at support@stripe.com.    
+This project is open source following [MIT License](https://opensource.org/license/mit/).  
