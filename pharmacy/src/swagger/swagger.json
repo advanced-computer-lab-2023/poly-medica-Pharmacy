@@ -1,0 +1,1669 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "version": "1.0.0",
+    "title": "Pharmacy Service API",
+    "description": "API documentation for the pharmacy service"
+  },
+  "basePath": "/",
+  "schemes": ["http", "https"],
+  "consumes": ["application/json"],
+  "produces": ["application/json"],
+  "paths": {
+    "/admins": {
+      "get": {
+        "summary": "Get all admins",
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "schema": {
+              "$ref": "#/definitions/AdminArrayResponse"
+            }
+          },
+          "400": {
+            "description": "Bad request",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Add an admin",
+        "parameters": [
+          {
+            "name": "AdminRequest",
+            "in": "body",
+            "description": "Admin details",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/AdminRequest"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "schema": {
+              "$ref": "#/definitions/AdminResponse"
+            }
+          },
+          "400": {
+            "description": "Bad request",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
+    "/admins/{id}": {
+      "delete": {
+        "summary": "Delete an admin by ID",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID of the admin to delete",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "schema": {
+              "$ref": "#/definitions/DeletedAdminResponse"
+            }
+          },
+          "400": {
+            "description": "Bad request",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
+    "/patients/{id}": {
+      "delete": {
+        "summary": "Delete a patient by ID",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID of the patient to be deleted",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Patient deleted successfully",
+            "schema": {
+              "$ref": "#/definitions/DeletedPatientResponse"
+            }
+          },
+          "404": {
+            "description": "Patient not found",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
+    "/cart/users": {
+      "post": {
+        "summary": "Create a cart for a user",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "description": "User data",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/CreateCartRequest"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Cart created successfully",
+            "schema": {
+              "$ref": "#/definitions/CartResponse"
+            }
+          },
+          "400": {
+            "description": "Bad request",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
+    "/cart/users/{userId}": {
+      "get": {
+        "summary": "Get cart by user ID",
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "ID of the user whose cart will be retrieved",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "schema": {
+              "$ref": "#/definitions/CartResponse"
+            }
+          },
+          "404": {
+            "description": "Cart not found",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Add medicine to user's cart",
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "ID of the user",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "requestBody": {
+          "description": "Medicine data",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "medicine": {
+                    "$ref": "#/definitions/Medicine"
+                  }
+                },
+                "required": ["medicine"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Medicine added to cart successfully",
+            "schema": {
+              "$ref": "#/definitions/CartResponse"
+            }
+          },
+          "400": {
+            "description": "Bad request",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          },
+          "404": {
+            "description": "Cart not found",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete user's cart",
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "ID of the user",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Cart deleted successfully",
+            "schema": {
+              "$ref": "#/definitions/CartResponse"
+            }
+          },
+          "400": {
+            "description": "Bad request",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          },
+          "404": {
+            "description": "Cart not found",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
+    "/cart/users/{userId}/medicines": {
+      "get": {
+        "summary": "Get user's cart medicines",
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "ID of the user",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "schema": {
+              "$ref": "#/definitions/CartMedicinesResponse"
+            }
+          },
+          "400": {
+            "description": "Bad request",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          },
+          "404": {
+            "description": "Cart not found",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
+    "/cart/users/{userId}/medicines/{medicineId}": {
+      "get": {
+        "summary": "Get user's cart medicine by ID",
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "ID of the user",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "medicineId",
+            "in": "path",
+            "description": "ID of the medicine",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "schema": {
+              "$ref": "#/definitions/CartMedicineResponse"
+            }
+          },
+          "400": {
+            "description": "Bad request",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          },
+          "404": {
+            "description": "Cart or Medicine not found",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      },
+      "patch": {
+        "summary": "Update quantity of medicine in the cart",
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "ID of the user",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "medicineId",
+            "in": "path",
+            "description": "ID of the medicine",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "quantity",
+            "in": "query",
+            "description": "New quantity of the medicine",
+            "required": true,
+            "type": "integer",
+            "minimum": 1,
+            "format": "int32"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "schema": {
+              "$ref": "#/definitions/CartResponse"
+            }
+          },
+          "400": {
+            "description": "Bad request",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          },
+          "404": {
+            "description": "Medicine not found in the cart",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      },
+      "delete": {
+        "summary": "Remove a medicine from the user's cart",
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "ID of the user",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "medicineId",
+            "in": "path",
+            "description": "ID of the medicine",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Medicine removed successfully",
+            "schema": {
+              "$ref": "#/definitions/CartResponse"
+            }
+          },
+          "400": {
+            "description": "Bad request",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          },
+          "404": {
+            "description": "Not found",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
+    "/cart/users/{userId}/prescription": {
+      "post": {
+        "summary": "Add a prescription to the cart",
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "ID of the user",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Prescription data",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/PrescriptionRequest"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "schema": {
+              "$ref": "#/definitions/CartResponse"
+            }
+          },
+          "400": {
+            "description": "Bad request",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          },
+          "404": {
+            "description": "Cart not found",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
+    "/cart/users/{userId}/items/length": {
+      "get": {
+        "summary": "Get the length of items in the user's cart",
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "ID of the user",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "length": {
+                  "type": "number",
+                  "description": "Number of items in the cart"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          },
+          "404": {
+            "description": "Not found",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
+    "/cart/users/{userId}/prescriptions/{prescriptionId}": {
+      "get": {
+        "summary": "Get a prescription from the user's cart",
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "ID of the user",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "prescriptionId",
+            "in": "path",
+            "description": "ID of the prescription",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "schema": {
+              "$ref": "#/definitions/Prescription"
+            }
+          },
+          "400": {
+            "description": "Bad request",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          },
+          "404": {
+            "description": "Not found",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete a prescription from the user's cart",
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "ID of the user",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "prescriptionId",
+            "in": "path",
+            "description": "ID of the prescription",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "schema": {
+              "$ref": "#/definitions/Cart"
+            }
+          },
+          "400": {
+            "description": "Bad request",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          },
+          "404": {
+            "description": "Not found",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
+    "/medicines": {
+      "get": {
+        "summary": "Get all medicines",
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "schema": {
+              "$ref": "#/definitions/MedicineListResponse"
+            }
+          },
+          "404": {
+            "description": "Medicines not found"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/medicines/archive": {
+      "get": {
+        "summary": "Get all archive medicines",
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "schema": {
+              "$ref": "#/definitions/MedicineListResponse"
+            }
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/medicines/{id}": {
+      "get": {
+        "summary": "Get a specific medicine",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "schema": {
+              "$ref": "#/definitions/MedicineListResponse"
+            }
+          },
+          "404": {
+            "description": "Medicine not found"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      },
+      "patch": {
+        "summary": "Update a specific medicine",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "schema": {
+              "$ref": "#/definitions/Medicine"
+            }
+          },
+          "404": {
+            "description": "Medicine not found"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      },
+      "post": {
+        "summary": "Add a new medicine",
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "schema": {
+              "$ref": "#/definitions/Medicine"
+            }
+          },
+          "404": {
+            "description": "Medicine not added"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/medicines/{id}/pictures": {
+      "get": {
+        "summary": "Get the picture of a specific medicine",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation"
+          },
+          "404": {
+            "description": "No picture found"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/medicines/{id}/{quantity}": {
+      "patch": {
+        "summary": "Update quantity of a specific medicine",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "quantity",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "schema": {
+              "$ref": "#/definitions/Medicine"
+            }
+          },
+          "404": {
+            "description": "Medicine not found"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/medicines/{id}/arcive/{archive}": {
+      "patch": {
+        "summary": "Update archive state of a specific medicine",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "archive",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation"
+          },
+          "404": {
+            "description": "Medicine not found"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/patients": {
+      "get": {
+        "summary": "Get all patients",
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "schema": {
+              "$ref": "#/definitions/PatientListResponse"
+            }
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/pharmacists": {
+      "get": {
+        "summary": "Get all pharmacists",
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "schema": {
+              "$ref": "#/definitions/PharmacistListResponse"
+            }
+          },
+          "404": {
+            "description": "Pharmacists not found"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      },
+      "post": {
+        "summary": "Add a new pharmacist",
+        "responses": {
+          "201": {
+            "description": "Pharmacist created",
+            "schema": {
+              "$ref": "#/definitions/AddedPharmacist"
+            }
+          },
+          "404": {
+            "description": "Pharmacist not added"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/pharmacists/{id}": {
+      "get": {
+        "summary": "Get a specific pharmacist",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "schema": {
+              "$ref": "#/definitions/AddedPharmacist"
+            }
+          },
+          "404": {
+            "description": "Pharmacist not found"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      },
+      "post": {
+        "summary": "Add a new pharmacist",
+        "responses": {
+          "201": {
+            "description": "Pharmacist created",
+            "schema": {
+              "$ref": "#/definitions/AddedPharmacist"
+            }
+          },
+          "404": {
+            "description": "Pharmacist not added"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete a specific pharmacist",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "schema": {
+              "$ref": "#/definitions/AddedPharmacist"
+            }
+          },
+          "404": {
+            "description": "Pharmacist not found"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/pharmacists/{id}/wallet": {
+      "get": {
+        "summary": "Get the wallet amount of a specific pharmacist",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "schema": {
+              "$ref": "#/definitions/WalletAmountResponse"
+            }
+          },
+          "404": {
+            "description": "Pharmacist not found"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/check-pharmacist-req": {
+      "post": {
+        "summary": "Check pharmacist request",
+        "responses": {
+          "200": {
+            "description": "Successful operation"
+          },
+          "400": {
+            "description": "Duplicate key error",
+            "schema": {
+              "$ref": "#/definitions/DuplicateKeyError"
+            }
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/pharmacist-requests": {
+      "get": {
+        "summary": "Get all pharmacist requests.",
+        "responses": {
+          "200": {
+            "description": "Successful response.",
+            "schema": {
+              "$ref": "#/definitions/PharmacistRequestsResponse"
+            }
+          },
+          "500": {
+            "description": "Internal server error.",
+            "schema": {
+              "$ref": "#/definitions/ErrorMessageResponse"
+            }
+          }
+        }
+      }
+    },
+    "/add-pharmacist-req": {
+      "post": {
+        "summary": "Add a pharmacist request.",
+        "consumes": ["multipart/form-data"],
+        "parameters": [
+          {
+            "name": "file",
+            "in": "formData",
+            "type": "file",
+            "description": "Pharmacist documents (array)."
+          },
+          {
+            "name": "sendData",
+            "in": "formData",
+            "type": "string",
+            "description": "JSON string containing pharmacist request data."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response.",
+            "schema": {
+              "$ref": "#/definitions/PharmacistUserResponse"
+            }
+          },
+          "400": {
+            "description": "Bad request.",
+            "schema": {
+              "$ref": "#/definitions/DuplicateKeyErrorResponse"
+            }
+          },
+          "500": {
+            "description": "Internal server error.",
+            "schema": {
+              "$ref": "#/definitions/ErrorMessageResponse"
+            }
+          }
+        }
+      }
+    },
+    "/pharmacist-requests/files/{fileName}": {
+      "get": {
+        "summary": "Get a pharmacist request file.",
+        "parameters": [
+          {
+            "name": "fileName",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "Pharmacist request file name."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response.",
+            "schema": {
+              "type": "string",
+              "format": "binary"
+            }
+          },
+          "404": {
+            "description": "File not found.",
+            "schema": {
+              "$ref": "#/definitions/ErrorMessageResponse"
+            }
+          },
+          "500": {
+            "description": "Internal server error.",
+            "schema": {
+              "$ref": "#/definitions/ErrorMessageResponse"
+            }
+          }
+        }
+      }
+    },
+    "/pharmacist-requests/{id}": {
+      "delete": {
+        "summary": "Delete a pharmacist request.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "Pharmacist request ID."
+          },
+          {
+            "name": "accept",
+            "in": "query",
+            "required": false,
+            "type": "boolean",
+            "description": "Set to false if request is rejected."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response.",
+            "schema": {
+              "$ref": "#/definitions/PharmacistRequestDeletedResponse"
+            }
+          },
+          "400": {
+            "description": "Bad request.",
+            "schema": {
+              "$ref": "#/definitions/ErrorMessageResponse"
+            }
+          },
+          "500": {
+            "description": "Internal server error.",
+            "schema": {
+              "$ref": "#/definitions/ErrorMessageResponse"
+            }
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "AdminArrayResponse": {
+      "type": "object",
+      "properties": {
+        "admins": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Admin"
+          },
+          "description": "Array of admins"
+        }
+      },
+      "required": ["admins"]
+    },
+    "AdminResponse": {
+      "type": "object",
+      "properties": {
+        "admin": {
+          "$ref": "#/definitions/Admin"
+        }
+      },
+      "required": ["admin"]
+    },
+    "DeletedAdminResponse": {
+      "type": "object",
+      "properties": {
+        "message": {
+          "type": "string",
+          "description": "A message indicating the result of the deletion"
+        },
+        "deletedAdmin": {
+          "$ref": "#/definitions/Admin",
+          "description": "The deleted admin details"
+        }
+      },
+      "required": ["message", "deletedAdmin"]
+    },
+    "DeletedPatientResponse": {
+      "type": "object",
+      "properties": {
+        "message": {
+          "type": "string",
+          "description": "A message indicating the result of the deletion"
+        },
+        "deletedPatient": {
+          "$ref": "#/definitions/UserSchema",
+          "description": "The deleted patient details"
+        },
+        "status": {
+          "type": "integer",
+          "description": "HTTP status code of the response"
+        }
+      },
+      "required": ["message", "deletedPatient", "status"]
+    },
+    "CreateCartRequest": {
+      "type": "object",
+      "properties": {
+        "userId": {
+          "type": "string",
+          "description": "ID of the user for whom the cart will be created"
+        }
+      },
+      "required": ["userId"]
+    },
+    "CartResponse": {
+      "type": "object",
+      "properties": {
+        "cart": {
+          "$ref": "#/definitions/Cart"
+        }
+      },
+      "required": ["cart"]
+    },
+    "CartMedicineResponse" : {
+      "type": "object",
+      "properties": {
+        "medicine": {
+          "$ref": "#/definitions/Medicine",
+          "description": "Details of the medicine in the cart"
+        },
+        "quantity": {
+          "type": "number",
+          "description": "The quantity of the medicine in the cart",
+          "default": 1
+        }
+      },
+      "required": ["medicine"]
+    },   
+    "Error": {
+      "type": "object",
+      "properties": {
+        "errCode": {
+          "type": "string"
+        },
+        "errMessage": {
+          "type": "string"
+        }
+      },
+      "required": ["errCode", "errMessage"]
+    },
+    "Admin": {
+      "type": "object",
+      "properties": {
+        "userName": {
+          "type": "string",
+          "description": "The username of the admin",
+          "required": true
+        },
+        "password": {
+          "type": "string",
+          "description": "The password of the admin",
+          "required": true
+        },
+        "email": {
+          "type": "string",
+          "description": "The email of the admin",
+          "required": true
+        },
+        "mainAdmin": {
+          "type": "boolean",
+          "description": "Indicates whether the admin is the main admin",
+          "default": false
+        }
+      },
+      "required": ["userName", "password", "email"]
+    },
+    "Cart": {
+      "type": "object",
+      "properties": {
+        "userId": {
+          "type": "string",
+          "description": "The user ID associated with the cart",
+          "required": true
+        },
+        "medicines": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "medicine": {
+                "$ref": "#/definitions/Medicine"
+              },
+              "quantity": {
+                "type": "number",
+                "description": "The quantity of the medicine in the cart",
+                "default": 1
+              }
+            },
+            "required": ["medicine"]
+          }
+        },
+        "prescriptions": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "prescriptionId": {
+                "type": "string",
+                "description": "The ID of the prescription"
+              },
+              "description": {
+                "type": "string",
+                "description": "Description of the prescription"
+              },
+              "doctorName": {
+                "type": "string",
+                "description": "Name of the doctor"
+              },
+              "medicines": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "medicineId": {
+                      "type": "string",
+                      "description": "ID of the prescribed medicine",
+                      "required": true
+                    },
+                    "name": {
+                      "type": "string",
+                      "description": "Name of the prescribed medicine",
+                      "required": true
+                    },
+                    "price": {
+                      "type": "number",
+                      "description": "Price of the prescribed medicine",
+                      "required": true
+                    },
+                    "amount": {
+                      "type": "number",
+                      "description": "Amount of the prescribed medicine",
+                      "required": true
+                    }
+                  },
+                  "required": ["medicineId", "name", "price", "amount"]
+                }
+              },
+              "medicinesQuantity": {
+                "type": "number",
+                "description": "Total quantity of prescribed medicines",
+                "required": true
+              },
+              "price": {
+                "type": "number",
+                "description": "Total price of the prescription",
+                "required": true
+              }
+            },
+            "required": ["prescriptionId", "medicines", "medicinesQuantity", "price"]
+          }
+        }
+      },
+      "required": ["userId", "medicines", "prescriptions"]
+    },
+    "Medicine": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "The name of the medicine",
+          "required": true
+        },
+        "price": {
+          "type": "number",
+          "description": "The price of the medicine",
+          "required": true
+        },
+        "description": {
+          "type": "string",
+          "description": "Description of the medicine",
+          "required": true
+        },
+        "pictureName": {
+          "type": "string",
+          "description": "Name of the medicine's picture"
+        },
+        "quantity": {
+          "type": "number",
+          "description": "The quantity of the medicine",
+          "required": true
+        },
+        "sales": {
+          "type": "number",
+          "description": "Number of sales of the medicine",
+          "required": true,
+          "default": 0
+        },
+        "medicinalUse": {
+          "type": "string",
+          "description": "Medicinal use of the medicine",
+          "required": true
+        },
+        "activeIngredients": {
+          "type": "string",
+          "description": "Active ingredients of the medicine",
+          "required": true
+        },
+        "monthlySales": {
+          "type": "array",
+          "items": {
+            "type": "array",
+            "items": {
+              "type": "number"
+            }
+          },
+          "description": "Monthly sales data",
+          "required": true,
+          "default": []
+        },
+        "prescriptionMedicine": {
+          "type": "boolean",
+          "description": "Indicates whether the medicine requires a prescription",
+          "default": false
+        },
+        "archive": {
+          "type": "boolean",
+          "description": "Indicates whether the medicine is archived",
+          "required": true,
+          "default": false
+        }
+      },
+      "required": ["name", "price", "description", "quantity", "sales", "medicinalUse", "activeIngredients", "monthlySales", "prescriptionMedicine", "archive"]
+    },
+    "Prescription": {
+      "type": "object",
+      "properties": {
+        "patientId": {
+          "type": "string",
+          "description": "ID of the patient associated with the prescription",
+          "required": true
+        },
+        "doctorId": {
+          "type": "string",
+          "description": "ID of the doctor who issued the prescription",
+          "required": true
+        },
+        "date": {
+          "type": "string",
+          "format": "date",
+          "description": "Date when the prescription was issued",
+          "required": true
+        },
+        "filled": {
+          "type": "boolean",
+          "description": "Indicates whether the prescription has been filled",
+          "required": true
+        }
+      },
+      "required": ["patientId", "doctorId", "date", "filled"]
+    },
+    "Pharmacist": {
+      "type": "object",
+      "properties": {
+        "userData": {
+          "$ref": "#/definitions/UserSchema",
+          "description": "The user data associated with the pharmacist",
+          "required": true
+        },
+        "hourlyRate": {
+          "type": "number",
+          "description": "The hourly rate of the pharmacist",
+          "required": true
+        },
+        "affiliation": {
+          "type": "string",
+          "description": "The affiliation of the pharmacist",
+          "required": true
+        },
+        "educationalBackground": {
+          "type": "string",
+          "description": "The educational background of the pharmacist",
+          "required": true
+        },
+        "documentsNames": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "description": "Names of documents related to the pharmacist"
+          },
+          "description": "List of document names related to the pharmacist",
+          "required": true
+        },
+        "yearsOfExperience": {
+          "type": "number",
+          "description": "The years of experience of the pharmacist",
+          "required": true
+        },
+        "specializations": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "List of specializations of the pharmacist",
+          "required": true
+        }
+      },
+      "required": ["userData", "hourlyRate", "affiliation", "educationalBackground", "documentsNames", "yearsOfExperience", "specializations"]
+    },
+    "UserSchema": {
+      "type": "object",
+      "properties": {
+        "userId": {
+          "type": "string",
+          "description": "The unique identifier of the user",
+          "required": true
+        },
+        "firstName": {
+          "type": "string",
+          "description": "The first name of the user",
+          "required": true
+        },
+        "lastName": {
+          "type": "string",
+          "description": "The last name of the user",
+          "required": true
+        },
+        "email": {
+          "type": "string",
+          "format": "email",
+          "description": "The email address of the user",
+          "required": true
+        },
+        "phone": {
+          "type": "string",
+          "description": "The phone number of the user"
+        },
+        "address": {
+          "type": "string",
+          "description": "The address of the user"
+        }
+      },
+      "required": ["userId", "firstName", "lastName", "email"]
+    },
+    "Patient": {
+      "type": "object",
+      "properties": {
+        "userData": {
+          "$ref": "#/definitions/UserSchema",
+          "description": "The user data associated with the patient",
+          "required": true
+        },
+        "prescriptions": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Prescription"
+          },
+          "description": "List of prescriptions associated with the patient"
+        }
+      },
+      "required": ["userData", "prescriptions"]
+    },
+    "Doctor": {
+      "type": "object",
+      "properties": {
+        "userData": {
+          "$ref": "#/definitions/UserSchema",
+          "description": "The user data associated with the doctor",
+          "required": true
+        },
+        "specialization": {
+          "type": "string",
+          "description": "The specialization of the doctor",
+          "required": true
+        },
+        "patients": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Patient"
+          },
+          "description": "List of patients associated with the doctor"
+        }
+      },
+      "required": ["userData", "specialization", "patients"]
+    },
+    "PrescriptionRequest" : {
+      "type": "object",
+      "properties": {
+        "prescriptionId": {
+          "type": "string",
+          "description": "ID of the prescription",
+          "required": true
+        },
+        "description": {
+          "type": "string",
+          "description": "Description of the prescription"
+        },
+        "doctorName": {
+          "type": "string",
+          "description": "Name of the doctor"
+        },
+        "medicines": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "medicineId": {
+                "type": "string",
+                "description": "ID of the prescribed medicine",
+                "required": true
+              },
+              "name": {
+                "type": "string",
+                "description": "Name of the prescribed medicine",
+                "required": true
+              },
+              "price": {
+                "type": "number",
+                "description": "Price of the prescribed medicine",
+                "required": true
+              },
+              "amount": {
+                "type": "number",
+                "description": "Amount of the prescribed medicine",
+                "required": true
+              }
+            },
+            "required": ["medicineId", "name", "price", "amount"]
+          }
+        },
+        "medicinesQuantity": {
+          "type": "number",
+          "description": "Total quantity of prescribed medicines",
+          "required": true
+        },
+        "price": {
+          "type": "number",
+          "description": "Total price of the prescription",
+          "required": true
+        }
+      },
+      "required": ["prescriptionId", "medicines", "medicinesQuantity", "price"]
+    },
+    "WalletAmountResponse": {
+      "type": "object",
+      "properties": {
+        "walletAmount": {
+          "type": "number",
+          "description": "The amount in the pharmacist's wallet."
+        }
+      },
+      "example": {
+        "walletAmount": 100.0
+      }
+    },
+    "DuplicateKeyErrorResponse": {
+      "type": "object",
+      "properties": {
+        "errCode": {
+          "type": "number"
+        },
+        "errMessage": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}

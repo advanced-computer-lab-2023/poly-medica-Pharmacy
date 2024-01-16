@@ -1,9 +1,6 @@
-# poly-medica-Pharmacy
+# Poly Medica Pharmacy  
 
-
-## Motivation
-
-Welcome to Poly-Medica, an innovative virtual pharmacy solution at the forefront of healthcare transformation. Designed to simplify medication management, Poly-Medica offers a streamlined interface for patients to effortlessly order prescriptions and manage medication refills. Through intuitive reminders and secure transactions, our platform ensures convenient access to prescribed medications within a digital healthcare ecosystem. Poly-Medica redefines the pharmacy experience, providing a reliable and efficient solution for patients' medication needs.
+This repository is a service integrated with [The Poly Medica Clinic](https://github.com/advanced-computer-lab-2023/poly-medica-Clinic) system.  
 
 
 ### Build Status
@@ -13,10 +10,6 @@ Welcome to Poly-Medica, an innovative virtual pharmacy solution at the forefront
 [![Pharmacy CI](https://github.com/advanced-computer-lab-2023/poly-medica-Pharmacy/actions/workflows/pharmacy-microservice-ci.yml/badge.svg)](https://github.com/advanced-computer-lab-2023/poly-medica-Pharmacy/actions/workflows/pharmacy-microservice-ci.yml)
 
 ### Planned Features
-
-#### Microservices with Kafka
-
-We're planning to implement a microservices architecture using Kafka as the messaging system. This will enable scalable and decoupled communication between various components of our system, ensuring robustness and flexibility.
 
 #### Frontend Automated Testing with Jest for React MUI
 
@@ -65,126 +58,48 @@ We're excited to introduce AI models to augment our system's capabilities:
 
 <!-- Admin Screenshots-->
 <details>
-<summary>Admin</summary>
+<summary>Patient Viewing Medicines</summary>
 
-<details>
-<summary>View All Admins</summary>
+![medicines](https://github.com/advanced-computer-lab-2023/poly-medica-Pharmacy/assets/102627389/513a501b-4e43-4918-a7ca-795976fd4848)
 
- ![admins](https://github.com/advanced-computer-lab-2023/poly-medica-Pharmacy/assets/101880627/8dc71a5b-9e78-4600-a7e6-5f6b8b7cbe33)
-
-    
-</details>
-<details>
-<summary>Add New Admin</summary>
-
-![add_admin](https://github.com/advanced-computer-lab-2023/poly-medica-Pharmacy/assets/101880627/f6b4a70c-528c-413d-aa84-bdcba18ce2c7)
-
-    
-</details>
-
-
-<details>
-<summary>View Medicines</summary>
-
-![admin_medicines](https://github.com/advanced-computer-lab-2023/poly-medica-Pharmacy/assets/101880627/9e6a5f72-4c12-4ec8-a052-8e715cf6907a)
-
-</details>
-
-
-
-
-
-
-
-
-</details>
-
-<!-- Patient Screenshots-->
-<details>
-<summary>Patient</summary>
-
-<details>
-<summary>Shoping Cart</summary>
-
-![WhatsApp Image 2023-12-17 at 5 47 14 AM](https://github.com/advanced-computer-lab-2023/poly-medica-Pharmacy/assets/101880627/89a55d39-3264-4f11-9caa-86b8bc50bcd4)
-
-    
 </details>
 
 <details>
-<summary>Checkout</summary>
+<summary>Patient Viewing Cart</summary>
 
- ![checkout](https://github.com/advanced-computer-lab-2023/poly-medica-Pharmacy/assets/101880627/175e647e-1c06-4350-b8ea-d7e28a4b668a)
-
-    
+ ![cart](https://github.com/advanced-computer-lab-2023/poly-medica-Pharmacy/assets/102627389/29cd8cab-7db6-4e7a-8922-154c7c1a5777)
+ 
 </details>
 
 <details>
-<summary>Credit Card</summary>
+<summary>Pateint Chatting With Pharmacy</summary>
 
-![credit_card](https://github.com/advanced-computer-lab-2023/poly-medica-Pharmacy/assets/101880627/4730d0bc-1328-49ff-80af-97a814b288e9)
+![payment using card](https://github.com/advanced-computer-lab-2023/poly-medica-Pharmacy/assets/102627389/7e7c3c66-a4b6-4bd2-ae6d-1ac1d3bee255)
 
-    
-</details>
-
-</details>
-
-
-
-<!-- Pharmacist Screenshots-->
-<details>
-<summary>Pharmacist</summary>
-
-<details>
-<summary>Edit Medicines</summary>
-
- ![phar_edit_medicines](https://github.com/advanced-computer-lab-2023/poly-medica-Pharmacy/assets/101880627/8b910093-f2e5-442b-9525-4881e101aeec)
-
-    
 </details>
 
 <details>
-<summary>View Orders</summary>
+<summary> Patient Viewing Order </summary>
+	
+ ![orders](https://github.com/advanced-computer-lab-2023/poly-medica-Pharmacy/assets/102627389/7764d06e-74bd-4dcf-b3f9-fb815b41f155)
 
- ![phar_orders](https://github.com/advanced-computer-lab-2023/poly-medica-Pharmacy/assets/101880627/d39eb15b-2e40-47f3-a59b-fa4200de25e3)
-
-    
 </details>
-
 
 <details>
-<summary>View Monthly Sales Report</summary>
 
- ![WhatsApp Image 2023-12-17 at 5 41 49 AM](https://github.com/advanced-computer-lab-2023/poly-medica-Pharmacy/assets/101880627/ff450c6e-c1b6-494b-a12d-ef93827c5893)
+<summary> Admin Viewing Sales Report </summary>
 
-    
-</details>
+ ![report](https://github.com/advanced-computer-lab-2023/poly-medica-Pharmacy/assets/102627389/9566f3a1-75ab-4239-81bd-7439523f3653)
 
 </details>
 
+<details>
+<summary> Pharmacist Receving Notification </summary>
 
+![notification](https://github.com/advanced-computer-lab-2023/poly-medica-Pharmacy/assets/102627389/c2638a98-4c46-4a35-8c3e-e63719a5b438)
 
-
-## Tech/Framework used 
-
--   [Node.js](https://nodejs.org/en/)
--   [Express](https://expressjs.com/)
--   [React](https://reactjs.org/)
-
--   [MongoDB](https://www.mongodb.com/)
--   [Mongoose](https://mongoosejs.com/)
--   [Jest](https://jestjs.io/)
-
--   [Material-UI](https://material-ui.com/)
--   [Stripe](https://stripe.com/)
-
--   [Git](https://git-scm.com/)
--   [Github Actions](github.com/features/actions)
-
--   [MongoDB Atlas](https://www.mongodb.com/cloud/atlas)
--   [Postman](https://www.postman.com/)
--   [VSCode](https://code.visualstudio.com/)
-- [Babel](https://babeljs.io/)
+ 
+</details>
 
 
 ## Features
@@ -862,8 +777,6 @@ export const cart = (app) => {
 
 ## Installation  
 
-Install my-project with `npm`
-
 ```bash
 > git clone https://github.com/advanced-computer-lab-2023/poly-medica-Pharmacy.git
 > cd poly-medica-pharmacy
@@ -873,1153 +786,17 @@ Install my-project with `npm`
 
 
 
- ## API Refrences
+ ## API Documentation
 
- ### Pharnacy Endpoints
- 
- #### Admin Endpoints
-    
-###### Example Request
+The API documentation is created using Swagger. To access it, follow these steps:
 
-    GET /admins
-<details>
-    <summary>
-        Response
-    </summary>
+1. Ensure the service is running.
+2. Open your browser and navigate to `localhost:SERVICE_PORT/api-docs`.
 
-    {
-    "admins": [
-        {
-            "_id": "6553da31154c235ee2273fb7",
-            "userName": "admin",
-            "mainAdmin": false,
-            "__v": 0
-        },
-        {
-            "_id": "657dc3c90ad23de5a4f3b21a",
-            "userName": "adminPhamracy",
-            "email": "admin@gmail.com",
-            "mainAdmin": false,
-            "__v": 0
-        }
-    ]
-}
-</details>
+![swagger-pharmacy](https://github.com/advanced-computer-lab-2023/poly-medica-Pharmacy/assets/102627389/6bbf9f77-6d7d-49b0-b969-c0adee93e1d3)
 
-###### Example Request
 
-    POST /admins 
-
-| Body | Type | Descroption
-| --- | --- | -----
-| userId | String | Required.admin user id
-| password | String | Required.admin password
-| userName | String | Required.admin username
-| email | String | Required.admin email
-| type | String | Required.admin type
-
-<details>
-    <summary>
-        Response
-    </summary>
-
-    state code = 200
-
-        {
-            "_id": "657dc3c90ad23de5a4f3b21a",
-            "userName": "adminPhamracy",
-            "email": "admin@gmail.com",
-            "mainAdmin": false,
-            "__v": 0
-        }
-    
-</details>
-
-###### Example Request
-
-    DELETE /admins/:id 
-
-| Parameter | Type | Descroption
-| --- | --- | -----
-| id | String | Required.admin's user id
-
-<details>
-    <summary>
-        Response
-    </summary>
-
-    state code = 200
-
-    {
-    message: 'admin deleted!', 
-        {
-            "_id": "657dc3c90ad23de5a4f3b21a",
-            "userName": "adminPhamracy",
-            "email": "admin@gmail.com",
-            "mainAdmin": false,
-            "__v": 0
-        }
-}
-</details>
-
-###### Example Request
-
-    DELETE /patients/:id 
-
-| Parameter | Type | Descroption
-| --- | --- | -----
-| id | String | Required.patient's user id
-
-<details>
-    <summary>
-        Response
-    </summary>
-
-    state code = 200
-
-    {
-    message: 'patient deleted!', 
-        {
-            "_id": "657dc3c90ad23de5a4f3b21a",
-            "userName": "patient",
-            "email": "patient@gmail.com",
-            "mainAdmin": false,
-            "__v": 0
-        }
-    
-}
-</details>
-
-#### Cart Endpoints
-
-###### Example Request
-
-    POST /cart/users
-
-| Body | Type | Descroption
-| --- | --- | -----
-| userId | String | Required.patient's user id
-
-<details>
-    <summary>
-        Response
-    </summary>
-
-    state code = 200
-
-    {
-    "cart": {
-        "_id": "65513bb6406b1ee9de6b90d4",
-        "userId": "6551271dc2777e21102ef271",
-        "medicines": [
-        ],
-        "__v": 65
-    }
-}
-    
-</details>
-
-###### Example Request
-
-    GET /cart/users/:userId
-
-| Parameter | Type | Descroption
-| --- | --- | -----
-| userId | String | Required.patient's user id
-
-<details>
-    <summary>
-        Response
-    </summary>
-
-    state code = 200
-
-   {
-    "cart": {
-        "_id": "65513bb6406b1ee9de6b90d4",
-        "userId": "6551271dc2777e21102ef271",
-        "medicines": [
-            {
-                "medicine": {
-                    "_id": "65513e3d406b1ee9de6b90ed",
-                    "name": "panadol",
-                    "price": 62,
-                    "description": "very good for cold",
-                    "pictureName": "Abdelrahman's photo1699823165934.jpg",
-                    "quantity": 3,
-                    "sales": 4,
-                    "medicinalUse": "for cold",
-                    "activeIngerdients": "Sugar",
-                    "monthlySales": []
-                },
-                "quantity": 1,
-                "_id": "657d6a250ad23de5a4f3b14a"
-            },
-            {
-                "medicine": {
-                    "_id": "65513e1b406b1ee9de6b90e9",
-                    "name": "bruffen",
-                    "price": 65,
-                    "description": "very good for flu",
-                    "pictureName": "969c85ae-40a8-416e-8d0c-1f11ee3aec8f1699823131168.jpg",
-                    "quantity": 4,
-                    "sales": 14,
-                    "medicinalUse": "for flu",
-                    "activeIngerdients": "Sugar",
-                    "monthlySales": []
-                },
-                "quantity": 1,
-                "_id": "657d6a260ad23de5a4f3b157"
-            }
-        ],
-        "__v": 65
-        }
-    }
-    
-</details>
-
-###### Example Request
-
-    POST /cart/users/:userId/medicines
-
-| Parameter | Type | Descroption
-| --- | --- | -----
-| userId | String | Required.patient's user id
-
-| Body | Type | Descroption
-| --- | --- | -----
-| medicine | medicine object | Required.medicines added to the cart
-
-<details>
-    <summary>
-        Response
-    </summary>
-
-    state code = 200
-
-   {
-    "cart": {
-        "_id": "65513bb6406b1ee9de6b90d4",
-        "userId": "6551271dc2777e21102ef271",
-        "medicines": [
-            {
-                "medicine": {
-                    "_id": "65513e3d406b1ee9de6b90ed",
-                    "name": "panadol",
-                    "price": 62,
-                    "description": "very good for cold",
-                    "pictureName": "Abdelrahman's photo1699823165934.jpg",
-                    "quantity": 3,
-                    "sales": 4,
-                    "medicinalUse": "for cold",
-                    "activeIngerdients": "Sugar",
-                    "monthlySales": []
-                },
-                "quantity": 1,
-                "_id": "657d6a250ad23de5a4f3b14a"
-            },
-            {
-                "medicine": {
-                    "_id": "65513e1b406b1ee9de6b90e9",
-                    "name": "bruffen",
-                    "price": 65,
-                    "description": "very good for flu",
-                    "pictureName": "969c85ae-40a8-416e-8d0c-1f11ee3aec8f1699823131168.jpg",
-                    "quantity": 4,
-                    "sales": 14,
-                    "medicinalUse": "for flu",
-                    "activeIngerdients": "Sugar",
-                    "monthlySales": []
-                },
-                "quantity": 1,
-                "_id": "657d6a260ad23de5a4f3b157"
-            }
-        ],
-        "__v": 65
-        }
-    }
-    
-</details>
-
-###### Example Request
-
-    DELETE /cart/users/:userId/medicines
-
-| Parameter | Type | Descroption
-| --- | --- | -----
-| userId | String | Required.patient's user id
-
-
-<details>
-    <summary>
-        Response
-    </summary>
-
-    state code = 200
-
-   {
-    "cart": {
-        "_id": "65513bb6406b1ee9de6b90d4",
-        "userId": "6551271dc2777e21102ef271",
-        "medicines": [
-            
-            {
-                "medicine": {
-                    "_id": "65513e1b406b1ee9de6b90e9",
-                    "name": "bruffen",
-                    "price": 65,
-                    "description": "very good for flu",
-                    "pictureName": "969c85ae-40a8-416e-8d0c-1f11ee3aec8f1699823131168.jpg",
-                    "quantity": 4,
-                    "sales": 14,
-                    "medicinalUse": "for flu",
-                    "activeIngerdients": "Sugar",
-                    "monthlySales": []
-                },
-                "quantity": 1,
-                "_id": "657d6a260ad23de5a4f3b157"
-            }
-        ],
-        "__v": 65
-        }
-    }
-    
-</details>
-
-###### Example Request
-
-    GET /cart/users/:userId/medicines
-
-| Parameter | Type | Descroption
-| --- | --- | -----
-| userId | String | Required.patient's user id
-
-
-<details>
-    <summary>
-        Response
-    </summary>
-
-    state code = 200
-
-            {
-                "medicine": {
-                    "_id": "65513e1b406b1ee9de6b90e9",
-                    "name": "bruffen",
-                    "price": 65,
-                    "description": "very good for flu",
-                    "pictureName": "969c85ae-40a8-416e-8d0c-1f11ee3aec8f1699823131168.jpg",
-                    "quantity": 4,
-                    "sales": 14,
-                    "medicinalUse": "for flu",
-                    "activeIngerdients": "Sugar",
-                    "monthlySales": []
-                },
-                "quantity": 1,
-                "_id": "657d6a260ad23de5a4f3b157"
-            }
-</details>
-
-###### Example Request
-
-    GET /cart/users/:userId/medicines/:medicineId
-
-| Parameter | Type | Descroption
-| --- | --- | -----
-| userId | String | Required.patient's user id
-|medicineId | String | Required.medicine user id
-
-
-<details>
-    <summary>
-        Response
-    </summary>
-
-    state code = 200
-    
-            {
-                "medicine": {
-                    "_id": "65513e1b406b1ee9de6b90e9",
-                    "name": "bruffen",
-                    "price": 65,
-                    "description": "very good for flu",
-                    "pictureName": "969c85ae-40a8-416e-8d0c-1f11ee3aec8f1699823131168.jpg",
-                    "quantity": 4,
-                    "sales": 14,
-                    "medicinalUse": "for flu",
-                    "activeIngerdients": "Sugar",
-                    "monthlySales": []
-                },
-                "quantity": 1,
-                "_id": "657d6a260ad23de5a4f3b157"
-            }
-</details>
-            
-###### Example Request
-
-    PATCH /cart/users/:userId/medicines/:medicineId
-
-| Parameter | Type | Descroption
-| --- | --- | -----
-| userId | String | Required.patient's user id
-| medicineId | String | Required.medicine user id
-
-| Query | Type | Descroption
-| --- | --- | -----
-| quantity | Number | Required.quanity of medicine in the cart
-
-<details>
-    <summary>
-        Response
-    </summary>
-
-    state code = 200
-
-    {
-    "cart": {
-        "_id": "65513bb6406b1ee9de6b90d4",
-        "userId": "6551271dc2777e21102ef271",
-        "medicines": [
-            
-            {
-                "medicine": {
-                    "_id": "65513e1b406b1ee9de6b90e9",
-                    "name": "bruffen",
-                    "price": 65,
-                    "description": "very good for flu",
-                    "pictureName": "969c85ae-40a8-416e-8d0c-1f11ee3aec8f1699823131168.jpg",
-                    "quantity": 4,
-                    "sales": 14,
-                    "medicinalUse": "for flu",
-                    "activeIngerdients": "Sugar",
-                    "monthlySales": []
-                },
-                "quantity": 1,
-                "_id": "657d6a260ad23de5a4f3b157"
-            }
-        ],
-        "__v": 65
-        }
-    }
-</details>
-
-###### Example Request
-
-    DELETE /cart/users/:userId/medicines/:medicineId
-
-| Parameter | Type | Descroption
-| --- | --- | -----
-| userId | String | Required.patient's user id
-| medicineId | String | Required.medicine user id
-
-
-<details>
-    <summary>
-        Response
-    </summary>
-
-    state code = 200
-    
-    {
-    "cart": {
-        "_id": "65513bb6406b1ee9de6b90d4",
-        "userId": "6551271dc2777e21102ef271",
-        "medicines": [
-        ],
-        "__v": 65
-        }
-    }
-</details>
-
-
-#### Medicine Endpoints
-
-###### Example Request
-
-    GET /medicines
-
-<details>
-    <summary>
-        Response
-    </summary>
-
-    state code = 200
-    
-   {
-    "medicines": [
-        {
-            "archive": false,
-            "_id": "65513e1b406b1ee9de6b90e9",
-            "name": "bruffen",
-            "price": 65,
-            "description": "very good ",
-            "pictureName": "969c85ae-40a8-416e-8d0c-1f11ee3aec8f1699823131168.jpg",
-            "quantity": 4,
-            "sales": 14,
-            "medicinalUse": "for mohamed",
-            "activeIngerdients": "Sugar",
-            "__v": 0,
-            "monthlySales": [
-            ]
-        }
-    ]
-   }
-</details>
-
-###### Example Request
-
-    GET /medicines/archive
-
-<details>
-    <summary>
-        Response
-    </summary>
-
-    state code = 200
-    
-   {
-    "medicines": [
-        {
-            "archive": true,
-            "_id": "65513e1b406b1ee9de6b90e9",
-            "name": "bruffen",
-            "price": 65,
-            "description": "very good ",
-            "pictureName": "969c85ae-40a8-416e-8d0c-1f11ee3aec8f1699823131168.jpg",
-            "quantity": 4,
-            "sales": 14,
-            "medicinalUse": "for mohamed",
-            "activeIngerdients": "Sugar",
-            "__v": 0,
-            "monthlySales": [
-            ]
-        }
-    ]
-   }
-</details>
-
-###### Example Request
-
-    GET /medicines/:id
-
-| Parameter | Type | Descroption
-| --- | --- | -----
-| id | String | Required.medicine's id
-
-
-<details>
-    <summary>
-        Response
-    </summary>
-
-    state code = 200
-
-            {
-            "archive": false,
-            "_id": "65513e1b406b1ee9de6b90e9",
-            "name": "bruffen",
-            "price": 65,
-            "description": "very good ",
-            "pictureName": "969c85ae-40a8-416e-8d0c-1f11ee3aec8f1699823131168.jpg",
-            "quantity": 4,
-            "sales": 14,
-            "medicinalUse": "for mohamed",
-            "activeIngerdients": "Sugar",
-            "__v": 0,
-            "monthlySales": [
-            ]
-        }
-</details>
-
-###### Example Request
-
-    GET medicines/:id/pictures
-
-| Parameter | Type | Descroption
-| --- | --- | -----
-| id | String | Required.medicine's id
-
-
-<details>
-    <summary>
-        Response
-    </summary>
-
-    state code = 200
-
-            {
-                C:\Users\unknown\Documents\pictures
-            }
-</details>
-
-###### Example Request
-
-    PATCH /medicines/:id
-
-| Parameter | Type | Descroption
-| --- | --- | -----
-| id | String | Required.medicine's id
-
-
-<details>
-    <summary>
-        Response
-    </summary>
-
-    state code = 200
-
-            {
-            "archive": false,
-            "_id": "65513e1b406b1ee9de6b90e9",
-            "name": "bruffen",
-            "price": 65,
-            "description": "very good ",
-            "pictureName": "969c85ae-40a8-416e-8d0c-1f11ee3aec8f1699823131168.jpg",
-            "quantity": 4,
-            "sales": 14,
-            "medicinalUse": "for mohamed",
-            "activeIngerdients": "Sugar",
-            "__v": 0,
-            "monthlySales": [
-            ]
-        }
-</details>
-
-###### Example Request
-
-    PATCH /medicines/:id/:quantity
-
-| Parameter | Type | Descroption
-| --- | --- | -----
-| id | String | Required.medicine's id
-| quantity | Number | Required.medicine's quantity
-
-
-<details>
-    <summary>
-        Response
-    </summary>
-
-    state code = 200
-
-            {
-            "archive": false,
-            "_id": "65513e1b406b1ee9de6b90e9",
-            "name": "bruffen",
-            "price": 65,
-            "description": "very good ",
-            "pictureName": "969c85ae-40a8-416e-8d0c-1f11ee3aec8f1699823131168.jpg",
-            "quantity": 5,
-            "sales": 14,
-            "medicinalUse": "for mohamed",
-            "activeIngerdients": "Sugar",
-            "__v": 0,
-            "monthlySales": [
-            ]
-        }
-</details>
-
-###### Example Request
-
-    PATCH /medicines/:id/:archive
-
-| Parameter | Type | Descroption
-| --- | --- | -----
-| id | String | Required.medicine's id
-| archive | Boolean | Required.medicine's archive state
-
-
-<details>
-    <summary>
-        Response
-    </summary>
-
-    state code = 200
-
-            {
-            
-            }
-</details>
-
-###### Example Request
-
-    POST /medicines
-
-| Body | Type | Descroption
-| --- | --- | -----
-| newMedicine | medicine object | Required. the new medicine object 
-
-<details>
-    <summary>
-        Response
-    </summary>
-
-    state code = 200
-    
-        {
-            "archive": false,
-            "_id": "65513e1b406b1ee9de6b90e9",
-            "name": "bruffen",
-            "price": 65,
-            "description": "very good ",
-            "pictureName": "969c85ae-40a8-416e-8d0c-1f11ee3aec8f1699823131168.jpg",
-            "quantity": 4,
-            "sales": 14,
-            "medicinalUse": "for mohamed",
-            "activeIngerdients": "Sugar",
-            "__v": 0,
-            "monthlySales": [
-            ]
-        }
-    
-</details>
-
-#### Pharmacist Endpoints
-
-###### Example Request
-
-    GET /patients
-
-
-<details>
-    <summary>
-        Response
-    </summary>
-
-    state code = 200
-    
-      {
-    "allPatients": {
-        "patients": [
-            {
-                "emergencyContact": {
-                    "name": "mohamedd lhaled",
-                    "mobile": "10019203",
-                    "relation": "Uncle"
-                },
-                "_id": "652abaded27a562a45ed3185",
-                "name": "mohamedd lhaled",
-                "userName": "abdelrahman.elmeky",
-                "email": "abdelrahman.a.f.m@gmail.com",
-                "password": "$2b$10$zh9jccFNqnzA9t1chhQuYu93VFjy5AdqxVUpZXNTQr67E8XUJIpZO",
-                "dateOfBirth": "2023-10-14T15:59:09.372Z",
-                "gender": "MALE",
-                "mobileNumber": "10019203",
-                "familyMembers": [
-                    {
-                        "name": "amir tarek",
-                        "nationalId": "12909245",
-                        "age": 56,
-                        "gender": "MALE",
-                        "relation": "CHILD",
-                        "email": "",
-                        "mobileNumber": "",
-                        "_id": "65512d2d3c230e8c8b83716e"
-                    }
-                ],
-                "__v": 0,
-                "walletAmount": 120,
-                "healthRecords": [],
-                "healthPackages": [],
-                "deliveryAddresses": []
-            }
-        ]
-    }
-}
-    
-</details>
-
-###### Example Request
-
-    GET /pharmacists
-
-
-<details>
-    <summary>
-        Response
-    </summary>
-
-    state code = 200
-    
-      {
-    "pharmacists": [
-        {
-            "_id": "655152517c84fccc7d4886b3",
-            "userData": {
-                "name": "pharmacist2",
-                "userName": "pharmacist1",
-                "email": "pharmacist@malek.com",
-                "password": "$2b$10$uydmwg8sp8pKenRkBobi1.z./JwAfOl3kNgFhSkHvR3dk7pm0cTzK",
-                "dateOfBirth": "2023-11-12T22:29:43.016Z",
-                "_id": "6551521a7c84fccc7d4886aa"
-            },
-            "hourlyRate": 90,
-            "affiliation": "sfg",
-            "educationalBackground": "highsxhool",
-            "documentsNames": [
-                "41699828250281.bmp",
-                "969c85ae-40a8-416e-8d0c-1f11ee3aec8f1699828250504.jpg",
-                "Abdelrahman,s passport1699828250512.jpg"
-            ],
-            "__v": 0,
-            "walletAmount": 69122
-        },
-        {
-            "_id": "6553d76e154c235ee2273f80",
-            "userData": {
-                "name": "pharmacist2",
-                "userName": "pharmacist2",
-                "email": "pharmacist@gmail1.com",
-                "password": "$2b$10$z1yuydoknHf4NgsbtrYE8O.QTmM1xw9I/2y.Dc31EDJLp6UWGVXf.",
-                "dateOfBirth": "2023-11-14T20:10:28.547Z",
-                "_id": "6553d71a154c235ee2273f69"
-            },
-            "hourlyRate": 90,
-            "affiliation": "asd",
-            "educationalBackground": "highsxhool",
-            "documentsNames": [
-                "41699993370287.bmp"
-            ],
-            "__v": 0,
-            "walletAmount": 69120
-        },
-        {
-            "_id": "65560594cb2888cf1686f748",
-            "userData": {
-                "name": "mohamed khaled",
-                "userName": "mohamed.khaled",
-                "email": "abdelrahman.a.f.m@gmail.com",
-                "password": "$2b$10$SCyzlwRlYv54NDvPqYM/teDRQNEbpzvyqLRt0Gf3H4QQqPYnr8T6e",
-                "dateOfBirth": "2002-11-16T12:03:17.412Z",
-                "_id": "6556053acb2888cf1686f744"
-            },
-            "hourlyRate": 90,
-            "affiliation": "sfg",
-            "educationalBackground": "highschool",
-            "documentsNames": [
-                "371700136250157.PNG"
-            ],
-            "__v": 0,
-            "walletAmount": 69120
-        }
-    ]
-}
-    
-</details>
-
-##### Example Request
-
-    POST /check-pharmacist-req
-
-| Body | Type | Descroption
-| --- | --- | -----
-| email | String | Required.pharmacist's email
-| userName | String | Required.pharmacist's username
-
-
-<details>
-    <summary>
-        Response
-    </summary>
-
-    state code = 200
-
-            {
-            
-            }
-</details>
-
-
-###### Example Request
-
-    GET /pharmacists/:id
-
-| Parameter | Type | Descroption
-| --- | --- | -----
-| id | String | Required.pharmacist's id
-
-<details>
-    <summary>
-        Response
-    </summary>
-
-    state code = 200
-    
-      {
-    "pharmacist":
-        {
-            "_id": "655152517c84fccc7d4886b3",
-            "userData": {
-                "name": "pharmacist2",
-                "userName": "pharmacist1",
-                "email": "pharmacist@malek.com",
-                "password": "$2b$10$uydmwg8sp8pKenRkBobi1.z./JwAfOl3kNgFhSkHvR3dk7pm0cTzK",
-                "dateOfBirth": "2023-11-12T22:29:43.016Z",
-                "_id": "6551521a7c84fccc7d4886aa"
-            },
-            "hourlyRate": 90,
-            "affiliation": "sfg",
-            "educationalBackground": "highsxhool",
-            "documentsNames": [
-                "41699828250281.bmp",
-                "969c85ae-40a8-416e-8d0c-1f11ee3aec8f1699828250504.jpg",
-                "Abdelrahman,s passport1699828250512.jpg"
-            ],
-            "__v": 0,
-            "walletAmount": 69122
-        },
-        
-}
-    
-</details>
-
-userData,
-			hourlyRate,
-			affiliation,
-			educationalBackground,
-			documentsNames,
-
-
-###### Example Request
-
-    POST /pharmacists
-
-| Parameter | Type | Descroption
-| --- | --- | -----
-| userData | User object | Required.pharmacist's user details
-| hourlyRate | Number | Required.pharmacist's hourlyRate
-| affiliation | String | Required.pharmacist's affiliation
-| affiliation | String | Required.pharmacist's affiliation
-| educationalBackground | String | Required.pharmacist's educational Background
-| documentsNames | String | Required.pharmacist's documents Names
-
-
-
-<details>
-    <summary>
-        Response
-    </summary>
-
-    state code = 200
-    
-      {
-    "pharmacist":
-        {
-            "_id": "655152517c84fccc7d4886b3",
-            "userData": {
-                "name": "pharmacist2",
-                "userName": "pharmacist1",
-                "email": "pharmacist@malek.com",
-                "password": "$2b$10$uydmwg8sp8pKenRkBobi1.z./JwAfOl3kNgFhSkHvR3dk7pm0cTzK",
-                "dateOfBirth": "2023-11-12T22:29:43.016Z",
-                "_id": "6551521a7c84fccc7d4886aa"
-            },
-            "hourlyRate": 90,
-            "affiliation": "sfg",
-            "educationalBackground": "highsxhool",
-            "documentsNames": [
-                "41699828250281.bmp",
-                "969c85ae-40a8-416e-8d0c-1f11ee3aec8f1699828250504.jpg",
-                "Abdelrahman,s passport1699828250512.jpg"
-            ],
-            "__v": 0,
-            "walletAmount": 69122
-        },
-        
-}
-    
-</details>
-
-
-###### Example Request
-
-    DELETE /pharmacists/:id
-
-| Parameter | Type | Descroption
-| --- | --- | -----
-| id | String | Required.pharmacist's id
-
-<details>
-    <summary>
-        Response
-    </summary>
-
-    state code = 200
-    
-      {
-    "deletedPharmacist":
-        {
-            "_id": "655152517c84fccc7d4886b3",
-            "userData": {
-                "name": "pharmacist2",
-                "userName": "pharmacist1",
-                "email": "pharmacist@malek.com",
-                "password": "$2b$10$uydmwg8sp8pKenRkBobi1.z./JwAfOl3kNgFhSkHvR3dk7pm0cTzK",
-                "dateOfBirth": "2023-11-12T22:29:43.016Z",
-                "_id": "6551521a7c84fccc7d4886aa"
-            },
-            "hourlyRate": 90,
-            "affiliation": "sfg",
-            "educationalBackground": "highsxhool",
-            "documentsNames": [
-                "41699828250281.bmp",
-                "969c85ae-40a8-416e-8d0c-1f11ee3aec8f1699828250504.jpg",
-                "Abdelrahman,s passport1699828250512.jpg"
-            ],
-            "__v": 0,
-            "walletAmount": 69122
-        }
-        
-}
-    
-</details>
-
-###### Example Request
-
-    GET /pharmacists/:id/wallet
-
-| Parameter | Type | Descroption
-| --- | --- | -----
-| id | String | Required.pharmacist's id
-
-<details>
-    <summary>
-        Response
-    </summary>
-
-    state code = 200
-    
-    {
-
-    "walletAmount": 69122
-        
-    }
-    
-</details>
-
-#### Pharmacist Requests Endpoints
-
-###### Example Request
-
-    GET /pharmacist-requests
-
-
-<details>
-    <summary>
-        Response
-    </summary>
-
-    state code = 200
-    
-    {
-    "pharmacistRequests": []
-    }
-    
-</details>
-
-###### Example Request
-
-    POST /add-pharmacist-req
-
-| Body | Type | Descroption
-| --- | --- | -----
-| userId | String | Required.pharmacist's id
-| email | String | Required.pharmacist's email
-| password | String | Required.pharmacist's password
-| userName | String | Required.pharmacist's user name
-| type | String | Required.pharmacist is the type
-
-
-<details>
-    <summary>
-        Response
-    </summary>
-
-    state code = 200
-    
-    {
-            "_id": "655152517c84fccc7d4886b3",
-            "userData": {
-                "userName": "pharmacist1",
-                "email": "pharmacist@malek.com",
-                "password": "$2b$10$uydmwg8sp8pKenRkBobi1.z./JwAfOl3kNgFhSkHvR3dk7pm0cTzK",
-                "userId": "6551521a7c84fccc7d4886aa",
-                "type": "phramcist"
-            }
-    }
-    
-</details>
-
-###### Example Request
-
-    GET pharmacist-requests/files/:fileName
-
-| Parameter | Type | Descroption
-| --- | --- | -----
-| fileName | String | Required.pharmacist's document name
-
-
-
-<details>
-    <summary>
-        Response
-    </summary>
-
-    state code = 200
-    
-    {
-        'C:\Users\unKnown\Documents/text.pdf'
-    }
-    
-</details>
-
-###### Example Request
-
-    GET pharmacist-requests/files/:fileName
-
-| Parameter | Type | Descroption
-| --- | --- | -----
-| id | String | Required.pharmacist's id
-
-| Query | Type | Descroption
-| --- | --- | -----
-| accept | Boolean | Required.flag acceptance of contract
-
-<details>
-    <summary>
-        Response
-    </summary>
-
-    state code = 200
-    
-    {
-        message: 'pharmacist request deleted',
-        "deletedPharmacistRequest":
-        {
-            "_id": "655152517c84fccc7d4886b3",
-            "userData": {
-                "name": "pharmacist2",
-                "userName": "pharmacist1",
-                "email": "pharmacist@malek.com",
-                "password": "$2b$10$uydmwg8sp8pKenRkBobi1.z./JwAfOl3kNgFhSkHvR3dk7pm0cTzK",
-                "dateOfBirth": "2023-11-12T22:29:43.016Z",
-                "_id": "6551521a7c84fccc7d4886aa"
-            },
-            "hourlyRate": 90,
-            "affiliation": "sfg",
-            "educationalBackground": "highsxhool",
-            "documentsNames": [
-                "41699828250281.bmp",
-                "969c85ae-40a8-416e-8d0c-1f11ee3aec8f1699828250504.jpg",
-                "Abdelrahman,s passport1699828250512.jpg"
-            ],
-            "__v": 0,
-            "walletAmount": 69122
-        }
-    }
-    
-</details>
-
+---
  
 ## Tests 
 
@@ -2037,12 +814,13 @@ The testing is done using `jest`. To run the tests, run the following command.
 There is tests done for the following models : `Admin` , `Pharmacist` ,`Cart` , `Medicine` ,`Request` , `Health Package` , `User Data`
 
 
-
+---
 
 
 ## How to use
-To run backend\
-Note: You will need to run all services in the following repo [Clinic](https://github.com/advanced-computer-lab-2023/poly-medica-Clinic.git)
+Note: You will need to run all services in the following repo [Clinic](https://github.com/advanced-computer-lab-2023/poly-medica-Clinic.git)  
+<br/>
+To run backend  
 #### pharmacy service
 ```bash
 cd pharmacy && nodemon start
@@ -2059,20 +837,20 @@ To run this project, you will need to add the following environment variables to
 
 <details>
     <summary>
-        envs
+       Pharmacy envs
     </summary>
 
 
 `MONGO_URI`
 
-`JWT_SECRETABLE_KEY`
+`PORT`
 
 `MONGO_URI_TEST` 
 </details>
 
 
 
-
+--- 
 
 ## Contributing
 Contributions are always welcome!
@@ -2088,7 +866,7 @@ Contributions are always welcome!
 7. Create a pull request
 8. Wait for your pull request to be reviewed and merged
 
-
+--- 
 
 ## Credits
 - [NodeJs docs](https://nodejs.org/en/docs/)
@@ -2099,20 +877,18 @@ Contributions are always welcome!
 - [Jest docs](https://jestjs.io/docs/getting-started)
 - [Stripe docs](https://stripe.com/docs)
 
-- [Clean code](https://www.oreilly.com/library/view/clean-code-a/9780136083238/)
-- [RESTful Web API Patterns and Practices Cookbook](https://learning.oreilly.com/library/view/restful-web-api/9781098106737/)
-- [Designing Data Intensive Applications](https://www.oreilly.com/library/view/designing-data-intensive-applications/9781491903063/)
-
 
 ## License
 
-#### Stripe License
-This project uses Stripe to process payments. By using this project, you agree to be bound by the Stripe Services Agreement.
+This project is open source following [MIT License](https://opensource.org/license/mit/).  
+---
 
-You can find the full text of the Stripe Services Agreement at the following link:
 
-https://stripe.com/legal
-
-Please make sure to read and understand the Stripe Services Agreement before using this project.
-
-If you have any questions about the Stripe Services Agreement or how it applies to your use of this project, please contact Stripe at support@stripe.com.    
+### Contributers: 
+- [Mohamed Khaled](https://github.com/Mohamed-Khaled308)
+- [Amir Tarek](https://github.com/amir-awad)
+- [Malek Mohamed](https://github.com/malekelkssas)
+- [Ahmad Hoseiny](https://github.com/AhmadHoseiny)
+- [Mohamed Hassan](https://github.com/mohamedhassans)
+- [Abdelrahman Amr](https://github.com/Aelmeky)
+- [Yehia Mohamed](https://github.com/YehiaFarghaly)

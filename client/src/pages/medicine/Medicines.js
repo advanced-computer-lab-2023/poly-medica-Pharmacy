@@ -233,7 +233,6 @@ const Medicines = () => {
 					horizontal={'right'}
 				/>
 			)}
-
 			{errorAddingToCart && (
 				<Message
 					message={'Error adding medicine to cart'}
