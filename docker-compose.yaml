@@ -1,64 +1,56 @@
 version: '3.8'
+
 services:
   zookeeper:
-    container_name: zookeper
     image: wurstmeister/zookeeper
     ports:
-      - 2181:2181
+      - ${ZOOKEEPER_PORT}:${ZOOKEEPER_PORT}
+
   kafka:
-    container_name: kafka
     image: wurstmeister/kafka
     ports:
-      - 9092:9092
+      - ${KAFKA_PORT}:${KAFKA_PORT}
     volumes:
       - ./data/kafka:/var/run/docker.sock
     environment:
       - KAFKA_ADVERTISED_HOST_NAME=kafka
-      - KAFKA_ZOOKEEPER_CONNECT=zookeeper:2181
+      - KAFKA_ZOOKEEPER_CONNECT=zookeeper:${ZOOKEEPER_PORT}
+      - KAFKA_CREATE_TOPICS=notifications:1:1,out_of_stock:1:1
+    depends_on:
+      - zookeeper
 
   pharmacy:
-    container_name: pharmacy
     build: ./pharmacy
     ports:
-      - 8003:8003
+      - ${PHARMACY_PORT}:${PHARMACY_PORT}
     volumes:
       - ./pharmacy:/pharmacy
-    environment:
-      - PORT=8003
-      - KAFKA_BOOTSTRAP_SERVERS=kafka:9092
-      - MONGO_URI=mongodb+srv://amir:01090613786@nodeexpressprojects.koaaprr.mongodb.net/pharmacy?retryWrites=true&w=majority
-      - MONGO_URI_TEST=mongodb+srv://amir:01090613786@nodeexpressprojects.koaaprr.mongodb.net/pharmacy-tests?retryWrites=true&w=majority
     depends_on:
       - kafka
 
   clinic:
-    container_name: clinic
     build: ../../Clinic/poly-medica-Clinic/clinic
     ports:
-      - 8001:8001
+      - ${CLINIC_PORT}:${CLINIC_PORT}
     volumes:
       - ../../Clinic/poly-medica-Clinic/clinic:/clinic
-    environment:
-      - PORT=8001
-      - MONGO_URL=mongodb://mongo:27017/clinic
-      - MONGO_URI=mongodb+srv://amir:01090613786@nodeexpressprojects.koaaprr.mongodb.net/clinic?retryWrites=true&w=majority
-      - MONGO_URI_TEST=mongodb+srv://amir:01090613786@nodeexpressprojects.koaaprr.mongodb.net/clinic-tests?retryWrites=true&w=majority
-      - KAFKA_BOOTSTRAP_SERVERS=kafka:9092
     depends_on:
       - kafka
 
   communication:
-    container_name: communication
     build: ../../Clinic/poly-medica-Clinic/communication
     ports:
-      - 8006:8006
+      - ${COMMUNICATION_PORT}:${COMMUNICATION_PORT}
     volumes:
       - ../../Clinic/poly-medica-Clinic/communication:/communication
-    environment:
-      - PORT=8006
-      - MONGO_URL=mongodb://mongo:27017/communication
-      - MONGO_URI=mongodb+srv://amir:01090613786@nodeexpressprojects.koaaprr.mongodb.net/communication?retryWrites=true&w=majority
-      - MONGO_URI_TEST=mongodb+srv://amir:01090613786@nodeexpressprojects.koaaprr.mongodb.net/communication-tests?retryWrites=true&w=majority
-      - KAFKA_BOOTSTRAP_SERVERS=kafka:9092
+    depends_on:
+      - kafka
+
+  authentication:
+    build: ../../Clinic/poly-medica-Clinic/authentication
+    ports:
+      - ${AUTHENTICATION_PORT}:${AUTHENTICATION_PORT}
+    volumes:
+      - ../../Clinic/poly-medica-Clinic/authentication:/authentication
     depends_on:
       - kafka

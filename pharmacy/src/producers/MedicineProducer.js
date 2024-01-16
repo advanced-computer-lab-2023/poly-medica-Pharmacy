@@ -3,7 +3,7 @@ import {
 	ERROR_STATUS_CODE,
 	MEDICINE_NOTIFICATION_TYPE_ENUM,
 	OK_STATUS_CODE,
-} from '../utils/Constants';
+} from '../utils/Constants.js';
 
 export const medicineProducer = (app) => {
 	const client = new KafkaNode.KafkaClient({ kafkaHost: 'kafka:9092' });
