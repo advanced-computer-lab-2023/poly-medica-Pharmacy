@@ -14,6 +14,11 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - name: Run Docker
+        run: docker-compose up -d
+
+      - name: Wait for Kafka to be ready
+        run: npx wait-on tcp:localhost:${{ secrets.KAFKA_PORT }} && echo "Kafka is ready!"
       - name: Checkout code
         uses: actions/checkout@v2
 
