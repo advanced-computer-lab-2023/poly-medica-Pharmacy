@@ -15,7 +15,7 @@ jobs:
 
     steps:
       - name: Run Docker
-        run: docker-compose up -d
+        run: docker-compose -f ./docker-compose.yaml up -d
 
       - name: Wait for Kafka to be ready
         run: npx wait-on tcp:localhost:${{ secrets.KAFKA_PORT }} && echo "Kafka is ready!"
