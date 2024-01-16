@@ -22,8 +22,6 @@ jobs:
 
       - name: Wait for Kafka to be ready
         run: npx wait-on tcp:localhost:${{ secrets.KAFKA_PORT }} && echo "Kafka is ready!"
-      - name: Checkout code
-        uses: actions/checkout@v2
 
       - name: Setup Node.js
         uses: actions/setup-node@v2
