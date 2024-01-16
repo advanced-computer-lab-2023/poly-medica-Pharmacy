@@ -17,9 +17,9 @@ services:
       - ./data/kafka:/var/run/docker.sock
     environment:
       - KAFKA_BROKER_ID=1
-      - KAFKA_LISTENERS=PLAINTEXT://:9092
-      - KAFKA_ADVERTISED_LISTENERS=PLAINTEXT://127.0.0.1:9092
-      - KAFKA_ZOOKEEPER_CONNECT=zookeeper:${ZOOKEEPER_PORT}
+      - KAFKA_LISTENERS=PLAINTEXT://:${KAFKA_PORT}
+      - KAFKA_ADVERTISED_LISTENERS=PLAINTEXT://localhost:${KAFKA_PORT}
+      - KAFKA_ZOOKEEPER_CONNECT=${ZOOKEEPER_HOST_NAME}:${ZOOKEEPER_PORT}
       - KAFKA_CREATE_TOPICS=notifications:1:1,out_of_stock:1:1
       - ALLOW_PLAINTEXT_LISTENER=yes
     depends_on:
