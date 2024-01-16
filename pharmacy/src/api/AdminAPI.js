@@ -7,11 +7,11 @@ import {
 	OK_STATUS_CODE,
 	AUTH_BASE_URL,
 	PATIENTS_BASE_URL,
-	ADMIN_ENUM,
-	DUPLICATE_KEY_ERROR_CODE,
-	BAD_REQUEST_CODE_400,
-	ZERO_INDEX_ARR,
-	ONE_ELEMENT_IN_ARR,
+	// ADMIN_ENUM,
+	// DUPLICATE_KEY_ERROR_CODE,
+	// BAD_REQUEST_CODE_400,
+	// ZERO_INDEX_ARR,
+	// ONE_ELEMENT_IN_ARR,
 } from '../utils/Constants.js';
 
 export const admin = (app) => {
@@ -26,30 +26,30 @@ export const admin = (app) => {
 		}
 	});
 
-	app.post('/admins', async (req, res) => {
-		try {
-			const adminUser = await service.addAdmin(req);
-			req.body = {
-				userId: adminUser._id,
-				password: adminUser.password,
-				userName: adminUser.userName,
-				email: adminUser.email,
-				type: ADMIN_ENUM,
-			};
-			res.status(OK_STATUS_CODE).send(req.body);
-		} catch (err) {
-			if (err.code == DUPLICATE_KEY_ERROR_CODE) {
-				const duplicateKeyAttrb = Object.keys(err.keyPattern)[ZERO_INDEX_ARR];
-				const keyAttrb = duplicateKeyAttrb.split('.');
-				res.status(BAD_REQUEST_CODE_400).send({
-					errCode: DUPLICATE_KEY_ERROR_CODE,
-					errMessage: `that ${
-						keyAttrb[keyAttrb.length - ONE_ELEMENT_IN_ARR]
-					} is already registered`,
-				});
-			} else res.status(ERROR_STATUS_CODE).send({ errMessage: err.message });
-		}
-	});
+	// app.post('/admins', async (req, res) => {
+	// 	try {
+	// 		const adminUser = await service.addAdmin(req);
+	// 		req.body = {
+	// 			userId: adminUser._id,
+	// 			password: adminUser.password,
+	// 			userName: adminUser.userName,
+	// 			email: adminUser.email,
+	// 			type: ADMIN_ENUM,
+	// 		};
+	// 		res.status(OK_STATUS_CODE).send(req.body);
+	// 	} catch (err) {
+	// 		if (err.code == DUPLICATE_KEY_ERROR_CODE) {
+	// 			const duplicateKeyAttrb = Object.keys(err.keyPattern)[ZERO_INDEX_ARR];
+	// 			const keyAttrb = duplicateKeyAttrb.split('.');
+	// 			res.status(BAD_REQUEST_CODE_400).send({
+	// 				errCode: DUPLICATE_KEY_ERROR_CODE,
+	// 				errMessage: `that ${
+	// 					keyAttrb[keyAttrb.length - ONE_ELEMENT_IN_ARR]
+	// 				} is already registered`,
+	// 			});
+	// 		} else res.status(ERROR_STATUS_CODE).send({ errMessage: err.message });
+	// 	}
+	// });
 
 	app.delete('/admins/:id', async (req, res) => {
 		try {

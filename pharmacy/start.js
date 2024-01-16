@@ -6,7 +6,6 @@ import { scheduleTasks } from './src/utils/SchudulerTasks.js';
 
 dotenv.config();
 
-
 const mongoURL = process.env.MONGO_URI;
 console.log(mongoURL);
 
@@ -21,7 +20,6 @@ const connect = async () => {
 };
 
 await connect();
-
 
 const port = process.env.PORT || PORT;
 

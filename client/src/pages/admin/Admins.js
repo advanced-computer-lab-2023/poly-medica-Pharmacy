@@ -122,13 +122,19 @@ const Admins = () => {
 
 		setAdminIsBeingAdded(true);
 		authenticationAxios
-			.post('/admins/pharmacy', JSON.stringify(newAdmin), {
+			.post('/check-admin/pharmacy', JSON.stringify(newAdmin), {
 				headers: {
 					'Content-Type': 'application/json',
 				},
 			})
 			.then((response) => response.data)
 			.then(() => {
+				authenticationAxios.post('/admins/pharmacy', JSON.stringify(newAdmin), {
+					headers: {
+						'Content-Type': 'application/json',
+					},
+				});
+
 				setAdmins((prevAdmins) => [...prevAdmins, newAdmin]);
 				setAdminIsBeingAdded(false);
 				setOpenAddDialog(false);

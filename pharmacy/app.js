@@ -10,8 +10,9 @@ import cookieParser from 'cookie-parser';
 import bodyParser from 'body-parser';
 import dotenv from 'dotenv';
 import { checkUser } from './src/middleware/authMiddleware.js';
-import swaggerUi from "swagger-ui-express";
-import { default as swaggerFile } from './src/swagger/swagger.json' assert { type: "json" };
+import { medicineProducer } from './src/producers/MedicineProducer.js';
+import swaggerUi from 'swagger-ui-express';
+import { default as swaggerFile } from './src/swagger/swagger.json' assert { type: 'json' };
 
 const app = express();
 
@@ -34,12 +35,13 @@ app.use(
 );
 
 app.use('*', checkUser);
-app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerFile));
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerFile));
 
 admin(app);
 cart(app);
 pharmacist(app);
 pharmacistRequests(app);
 medicine(app);
+medicineProducer(app);
 
 export default app;
