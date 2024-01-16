@@ -21,7 +21,7 @@ jobs:
         run: docker-compose up -d
 
       - name: Wait for Kafka to be ready
-        run: npx wait-on tcp:localhost:${{ secrets.KAFKA_PORT }} && echo "Kafka is ready!"
+        run: npx wait-on tcp:127.0.0.1:${{ secrets.KAFKA_PORT }} && echo "Kafka is ready!"
 
       - name: Setup Node.js
         uses: actions/setup-node@v2
