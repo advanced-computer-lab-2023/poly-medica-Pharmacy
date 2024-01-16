@@ -14,10 +14,9 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Print Current Directory
-        run: |
-            ls -al
-            pwd
+      - name: Checkout code
+        uses: actions/checkout@v2
+        
       - name: Run Docker
         run: docker-compose up -d
 
