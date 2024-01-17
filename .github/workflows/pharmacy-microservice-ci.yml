@@ -44,3 +44,4 @@ env:
   MONGO_URI_TEST: ${{ secrets.MONGO_URI_TEST }}
   ZOOKEEPER_PORT: ${{ secrets.ZOOKEEPER_PORT }}
   KAFKA_PORT: ${{ secrets.KAFKA_PORT }}
+  ZOOKEEPER_HOST_NAME: ${{ secrets.ZOOKEEPER_HOST_NAME}}
