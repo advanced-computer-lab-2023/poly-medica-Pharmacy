@@ -20,7 +20,6 @@ import {
 } from '@jest/globals';
 
 import { faker } from '@faker-js/faker';
-jest.useFakeTimers();
 
 const SECONDS = 1000;
 jest.setTimeout(80 * SECONDS);
