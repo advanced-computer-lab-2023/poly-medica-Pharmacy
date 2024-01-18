@@ -1,3 +1,4 @@
+const { producer } = require('../producers/MedicineProducer.js');
 const mongoose = require('mongoose');
 const dotenv = require('dotenv');
 dotenv.config();
@@ -14,6 +15,7 @@ const connectDBTest = async () => {
 
 const disconnectDBTest = async () => {
 	try {
+		producer.close();
 		await mongoose.connection.db.dropDatabase();
 		await mongoose.disconnect();
 	} catch (err) {
