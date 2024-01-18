@@ -6,7 +6,7 @@ import {
 } from '../utils/Constants.js';
 
 export const medicineProducer = (app) => {
-	const client = new KafkaNode.KafkaClient({ kafkaHost: '127.0.0.1:9092' });
+	const client = new KafkaNode.KafkaClient({ kafkaHost: 'localhost:9092' });
 	const producer = new KafkaNode.Producer(client);
 	const kafka_topic = 'out_of_stock';
 
