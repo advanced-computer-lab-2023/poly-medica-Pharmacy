@@ -20,15 +20,6 @@ jobs:
       - name: Run Docker
         run: docker-compose up -d
 
-      - name: Use Secret1
-        run: echo "Kafka Port: ${{ secrets.KAFKA_PORT }}"
-
-      - name: Use Secret2
-        run: echo "Zookeeper Port: ${{ secrets.ZOOKEEPER_PORT }}"
-
-      - name: Use Secret3
-        run: echo "Zookeeper Host Name: ${{ secrets.ZOOKEEPER_HOST_NAME }}"
-
       - name: Wait for Kafka to be ready
         run: npx wait-on tcp:127.0.0.1:${{ secrets.KAFKA_PORT }} && echo "Kafka is ready!"
 
