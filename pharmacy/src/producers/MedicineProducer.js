@@ -10,15 +10,6 @@ export const medicineProducer = (app) => {
 	const producer = new KafkaNode.Producer(client);
 	const kafka_topic = 'out_of_stock';
 
-	producer.on('ready', function () {
-		console.log('Producer is ready');
-	});
-
-	producer.on('error', function (err) {
-		console.log('Producer is in error state');
-		console.log(err);
-	});
-
 	const sendOutOfStockNotification = async (medicineName) => {
 		const notification = {
 			notificationHead: 'medicine out of stock',
