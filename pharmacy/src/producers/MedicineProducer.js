@@ -5,9 +5,10 @@ import {
 	OK_STATUS_CODE,
 } from '../utils/Constants.js';
 
-export const medicineProducer = (app) => {
-	const client = new KafkaNode.KafkaClient({ kafkaHost: 'localhost:9092' });
-	const producer = new KafkaNode.Producer(client);
+const client = new KafkaNode.KafkaClient({ kafkaHost: 'localhost:9092' });
+const producer = new KafkaNode.Producer(client);
+
+const medicineProducer = (app) => {
 	const kafka_topic = 'out_of_stock';
 
 	producer.on('ready', function () {
@@ -60,3 +61,5 @@ export const medicineProducer = (app) => {
 		}
 	});
 };
+
+export { producer, medicineProducer };
