@@ -10,7 +10,7 @@ export const medicineProducer = (app) => {
 	const producer = new KafkaNode.Producer(client);
 	const kafka_topic = 'out_of_stock';
 
-	producer.on('ready', async function () {
+	producer.on('ready', function () {
 		console.log('Producer is ready');
 	});
 
